@@ -9,6 +9,7 @@
   "author": "braydenweigel",
   "license": "ISC",
   "dependencies": {
+    "csv": "^6.3.11",
     "express": "^4.21.2",
     "morgan": "^1.10.0",
     "mysql2": "^3.12.0",

@@ -7,7 +7,11 @@ const router = Router()
 
 //get list of all players
 router.get('/', async function (req, res, next) {
-    res.status(200).send({})
+    const result = await Player.findAll({
+        where: {club: "Portland Timbers"}
+    })
+
+    res.status(200).send({result})
 })
 
 //get individual player by id
