@@ -17,7 +17,19 @@ router.get('/', async function (req, res, next) {
 //get individual player by id
 router.get('/:id', async function (req, res, next) {
     const id = req.params.id
-    res.status(200).send({})
+    try {
+        const player = await Player.findByPk(id)
+        console.log(player)
+        if (player) {
+            res.status(200).send(player)
+
+        } else {
+            next()
+
+        }
+    } catch (e) {
+        next(e)
+    }
 })
 
 module.exports = router
