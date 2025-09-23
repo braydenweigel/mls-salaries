@@ -1,3 +1,4 @@
+# Combines yearly reports into one file, also flags some duplicate names
 import csv
 import unicodedata
 
