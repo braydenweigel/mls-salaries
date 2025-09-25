@@ -1,4 +1,4 @@
-RecordID,PlayerID,Club,Position,BaseSalary,GuaranteedComp,Year
+RecordID,PlayerID,ClubID,Position,BaseSalary,GuaranteedComp,Year
 kvIERT1c,nokVxF,PHI,M-F,"70000.08","98309.48",2019
 FLFrtIYG,nokVxF,PHI,M,"85000.00","103309.00",2020
 CCQ7EN1Z,3Gr5oW,PHI,M,"87500.00","91500.00",2021

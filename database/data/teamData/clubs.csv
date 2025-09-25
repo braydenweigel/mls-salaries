@@ -1,0 +1,33 @@
+Name,ClubID,YearFirst,YearFinal,ColorPrimary,ColorSecondary
+Austin FC,ATX,2021,0,#00b13E,#000000
+Atlanta United,ATL,2017,0,#992121,#000000
+Charlotte FC,CLT,2022,0,#0185d0,#000000
+Chicago Fire,CHI,1998,0,#FE0000,#75c5de
+Chivas USA,CHV,2005,2014,#e31b22,#FFFFFF
+FC Cincinnati,CIN,2019,0,#fe5104,#041e43
+Columbus Crew,CLB,1996,0,#FFDD00,#000000
+Colorado Rapids,COL,1996,0,#8a2432,#8cb7ea
+FC Dallas,DAL,1996,0,#c5093b,#041f54
+DC United,DC,1996,0,#e1032c,#000000
+Houston Dynamo,HOU,2006,0,#FF6900,#000000
+Sporting Kansas City,KC,1996,0,#a6c6ed,#0d223f
+LA Galaxy,LA,1996,0,#12294b,#FFFFFF
+LAFC,LAFC,2018,0,#a99968,#FFFFFF
+Inter Miami,MIA,2020,0,#f7b7cf,#FFFFFF
+Minnesota United,MNUFC,2017,0,#9acee3,#232323
+CF Montreal,MTL,2012,0,#003da7,#FFFFFF
+Nashville SC,NSH,2020,0,#ece938,#101044
+New England Revolution,NE,1996,0,#0c2140,#d60b28
+New York City FC,NYC,2015,0,#9fd2ff,#000228
+New York Red Bulls,RBNY,1996,0,#d91c3a,#FFFFFF
+Orlando City SC,ORL,2015,0,#62279f,#ebd57d
+Philadelphia Union,PHI,2010,0,#051c2c,#d7cc9e
+Portland Timbers,POR,2011,0,#014711,#c99839
+Real Salt Lake,RSL,2005,0,#ae0933,#011e62
+St. Louis City SC,STL,2023,0,#eb1458,#0f1843
+Seattle Sounders FC,SEA,2009,0,#2ec84e,#0231a3
+San Diego FC,SD,2025,0,#011329,#FFFFFF
+San Jose Earthquakes,SJ,1996,0,#0153b7,#000000
+Toronto FC,TOR,2007,0,#b01229,#FFFFFF
+Vancouver Whitecaps,VAN,2011,0,#1f2c4c,#8ebde7
+MLS Pool,MLS,0,0,#e31b22,#FFFFFF
