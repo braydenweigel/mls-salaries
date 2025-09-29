@@ -1,4 +1,4 @@
-Name,ClubID,YearFirst,YearFinal,ColorPrimary,ColorSecondary
+clubname,clubid,yearfirst,yearfinal,colorprimary,colorsecondary
 Austin FC,ATX,2021,0,#00b13E,#000000
 Atlanta United,ATL,2017,0,#992121,#000000
 Charlotte FC,CLT,2022,0,#0185d0,#000000
