@@ -7,10 +7,14 @@ import {
   NavigationMenuItem,
   NavigationMenuLink,
   NavigationMenuList,
-  NavigationMenuTrigger,
-  NavigationMenuContent,
-  navigationMenuTriggerStyle
+  navigationMenuTriggerStyle,
 } from "@/components/ui/navigation-menu"
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu"
 import { ThemeProvider } from "@/components/theme-provider"
 import { ModeToggle } from "@/components/lib/mode-toggle";
 
@@ -43,43 +47,45 @@ export default function RootLayout({
             enableSystem
             disableTransitionOnChange
           >
-          <NavigationMenu viewport={false}>
-            <NavigationMenuList>
-              <NavigationMenuItem>
-                <NavigationMenuLink asChild className={navigationMenuTriggerStyle()}>
-                  <Link href="/">Home</Link>
-                </NavigationMenuLink>
-              </NavigationMenuItem>
-              <NavigationMenuItem>
-                <NavigationMenuLink asChild className={navigationMenuTriggerStyle()}>
-                  <Link href="/players">Players</Link>
-                </NavigationMenuLink>
-              </NavigationMenuItem>
-              <NavigationMenuItem>
-                <NavigationMenuLink asChild className={navigationMenuTriggerStyle()}>
-                  <Link href="/clubs">Clubs</Link>
-                </NavigationMenuLink>
-              </NavigationMenuItem>
-              <NavigationMenuItem>
-                <NavigationMenuTrigger>Compare</NavigationMenuTrigger>
-                <NavigationMenuContent>
-                  <ul className="grid w-[200px] gap-4">
-                    <li>
-                      <NavigationMenuLink asChild>
+          <div className="flex items-start py-6">
+            <NavigationMenu viewport={false} className="fixed top-0 left-0 pl-4 pt-2">
+              <NavigationMenuList>
+                <NavigationMenuItem>
+                  <NavigationMenuLink asChild className={navigationMenuTriggerStyle()}>
+                    <Link href="/">Home</Link>
+                  </NavigationMenuLink>
+                </NavigationMenuItem>
+                <NavigationMenuItem>
+                  <NavigationMenuLink asChild className={navigationMenuTriggerStyle()}>
+                    <Link href="/players">Players</Link>
+                  </NavigationMenuLink>
+                </NavigationMenuItem>
+                <NavigationMenuItem>
+                  <NavigationMenuLink asChild className={navigationMenuTriggerStyle()}>
+                    <Link href="/clubs">Clubs</Link>
+                  </NavigationMenuLink>
+                </NavigationMenuItem>
+                <NavigationMenuItem>
+                  <DropdownMenu>
+                    <DropdownMenuTrigger
+                      className={navigationMenuTriggerStyle()}
+                    >
+                      Compare
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent>
+                      <DropdownMenuItem asChild>
                         <Link href="/players/compare">Players</Link>
-                      </NavigationMenuLink>
-                      <NavigationMenuLink asChild>
+                      </DropdownMenuItem>
+                      <DropdownMenuItem asChild>
                         <Link href="/clubs/compare">Clubs</Link>
-                      </NavigationMenuLink>
-                    </li>
-                  </ul>
-                </NavigationMenuContent>
-              </NavigationMenuItem>
-              <NavigationMenuItem>
-                <ModeToggle/>
-              </NavigationMenuItem>
-            </NavigationMenuList>
-          </NavigationMenu>
+                      </DropdownMenuItem>
+                    </DropdownMenuContent>
+                  </DropdownMenu>
+                </NavigationMenuItem>
+              </NavigationMenuList>
+            </NavigationMenu>
+            <div className="fixed right-0 top-0 pr-2 pt-2"><ModeToggle/></div>
+          </div>
           {children}
         </ThemeProvider>
       </body>
