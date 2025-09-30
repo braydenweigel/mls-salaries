@@ -47,7 +47,7 @@ export default function RootLayout({
             enableSystem
             disableTransitionOnChange
           >
-          <div className="flex items-start py-6">
+          <div className="flex fixed w-full top-0 items-start py-6 bg-background">
             <NavigationMenu viewport={false} className="fixed top-0 left-0 pl-4 pt-2">
               <NavigationMenuList>
                 <NavigationMenuItem>
@@ -86,6 +86,7 @@ export default function RootLayout({
             </NavigationMenu>
             <div className="fixed right-0 top-0 pr-2 pt-2"><ModeToggle/></div>
           </div>
+          <div className="my-12"/>
           {children}
         </ThemeProvider>
       </body>
