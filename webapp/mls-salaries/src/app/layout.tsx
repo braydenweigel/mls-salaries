@@ -19,8 +19,8 @@ import {
 } from "@/components/ui/dropdown-menu"
 import { ThemeProvider } from "@/components/theme-provider"
 import { ModeToggle } from "@/components/lib/mode-toggle";
-import StoreProvider from "./StoreProvider";
-import { useAppDispatch } from "@/lib/store/hooks";
+import { Provider, useDispatch } from "react-redux";
+import { AppDispatch, store } from "@/lib/store/store";
 import { useEffect } from "react";
 import { fetchPlayers } from "@/lib/store/playersSlice";
 import { fetchClubs } from "@/lib/store/clubsSlice";
@@ -38,7 +38,7 @@ const geistMono = Geist_Mono({
 
 
 function InitData() {
-  const dispatch = useAppDispatch()
+  const dispatch = useDispatch<AppDispatch>()
   useEffect(() => {
     dispatch(fetchPlayers())
     dispatch(fetchClubs())
@@ -62,8 +62,8 @@ export default function RootLayout({
             enableSystem
             disableTransitionOnChange
           >
-          <header className="flex fixed w-full top-0 items-start py-6 bg-background">
-            <NavigationMenu viewport={false} className="fixed top-0 left-0 pl-4 pt-2">
+          <header className="flex fixed w-full top-0 items-start bg-background bg-opacity-100 z-50">
+            <NavigationMenu viewport={false} className=" top-0 left-0 pl-4 pt-2">
               <NavigationMenuList>
                 <NavigationMenuItem>
                   <NavigationMenuLink asChild className={navigationMenuTriggerStyle()}>
@@ -102,10 +102,10 @@ export default function RootLayout({
             <div className="fixed right-0 top-0 pr-2 pt-2"><ModeToggle/></div>
           </header>
           <main className="min-h-screen mt-12 mx-auto w-full max-w-[90%] lg:max-w-[66%] px-4">
-            <StoreProvider>
+            <Provider store={store}>
               <InitData/>
               {children}
-            </StoreProvider>
+            </Provider>
           </main>
           <footer className="bottom-0 mx-auto w-full max-w-[90%] lg:max-w-[66%] px-4 py-2">
             <p className="text-muted-foreground text-center">Built by <a href="https://github.com/braydenweigel" target="_blank" className="inline-block"><u>Brayden Weigel</u> &nbsp;<SiGithub className="inline-block"/></a></p>

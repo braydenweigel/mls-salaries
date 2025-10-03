@@ -1,5 +1,6 @@
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
+import { createSlice, createAsyncThunk, createSelector } from '@reduxjs/toolkit'
 import { supabase } from '@/lib/supabase/server'
+import { RootState } from './store';
 
 export interface Record {
     recordid: string;
@@ -50,5 +51,10 @@ const recordsSlice = createSlice({
             })
     }
 })
-
+export const makeSelectRecordsByPlayerId = (playerId: string) =>
+  createSelector(
+    (state: RootState) => state.records.data,
+    (records) => records.filter((record) => record.playerid === playerId)
+  )
+  
 export default recordsSlice.reducer
