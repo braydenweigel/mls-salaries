@@ -35,8 +35,10 @@ import { useEffect, useState } from "react"
 import { RootState } from "@/lib/store/store"
 import React, { use } from "react";
 import { makeSelectRecordsByPlayerId } from '@/lib/store/recordsSlice'
+import { makeSelectPlayerRecordsByPlayerId } from '@/lib/store/playerRecordsSlice'
 import { Club } from '@/lib/store/clubsSlice'
 import { useTheme } from "next-themes"
+import LoadingPlayerPage from './loading'
 
 const chartConfig: ChartConfig = {
   basesalary: {
@@ -87,12 +89,11 @@ export default function PlayerPage(props: { params: Promise<{ id: string }> }) {
   const { data: players, loading: playerLoading, error: playerError } = useSelector((state: RootState) => state.players)
   const player = isValidPlayer(players, id)
 
-  const selectRecordsByPlayerId = makeSelectRecordsByPlayerId(player?.playerid ?? "");
-  const playerRecords = useSelector(selectRecordsByPlayerId)
+  const selectPlayerRecordsByPlayerId = makeSelectPlayerRecordsByPlayerId(player?.playerid ?? "");
+  const playerRecords = useSelector(selectPlayerRecordsByPlayerId)
 
   const allClubs = useSelector((state: RootState) => state.clubs.data)
   
-
   const records = [...playerRecords].sort((a, b) => {
     if (a.recordyear < b.recordyear) return 1;
     if (a.recordyear > b.recordyear) return -1;
@@ -110,7 +111,8 @@ export default function PlayerPage(props: { params: Promise<{ id: string }> }) {
     return <p>Player not found</p>
 
   } else if (playerLoading || records.length == 0){
-      return <p>Loading Player...</p>
+    console.log("Records: ", records)
+    return <LoadingPlayerPage/>
 
   } else {
     let playerClubs: Club[] = []
@@ -121,7 +123,7 @@ export default function PlayerPage(props: { params: Promise<{ id: string }> }) {
     }
 
     let clubText = "Last Club: "
-    if (records[0].recordyear == "2025 Sp"){
+    if (records[0].recordyear == "2025" && records[0].recordseason == "Spring"){
       clubText = "Current Club: "
     } 
 
@@ -162,7 +164,7 @@ export default function PlayerPage(props: { params: Promise<{ id: string }> }) {
       <div>
       <Card className="my-4">
         <CardHeader>
-          <CardTitle className="text-2xl">{player.lastname} {player.firstname}</CardTitle>
+          <CardTitle className="text-2xl">{records[0].firstname} {records[0].lastname}</CardTitle>
           <CardDescription className="text-base">{clubText} <Link href={`/clubs/${records[0].club}`} className="hover:underline">{playerClubs[0].clubname}</Link> &emsp; Position: {position}</CardDescription>
         </CardHeader>
       </Card>
@@ -180,7 +182,7 @@ export default function PlayerPage(props: { params: Promise<{ id: string }> }) {
             </TableHeader>
             <TableBody>
               {records.map((record, index) => (
-                <TableRow key={record.recordid}>
+                <TableRow key={record.id}>
                   <TableCell>{record.recordyear}</TableCell>
                   <TableCell><Link href={`/clubs/${record.club}`} className="hover:underline">{playerClubs[index].clubname}</Link></TableCell>
                   <TableCell>{record.position}</TableCell>

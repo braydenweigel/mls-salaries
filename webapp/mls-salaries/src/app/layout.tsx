@@ -25,6 +25,7 @@ import { useEffect } from "react";
 import { fetchPlayers } from "@/lib/store/playersSlice";
 import { fetchClubs } from "@/lib/store/clubsSlice";
 import { fetchRecords } from "@/lib/store/recordsSlice";
+import { fetchPlayerRecords } from "@/lib/store/playerRecordsSlice";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -42,7 +43,7 @@ function InitData() {
   useEffect(() => {
     dispatch(fetchPlayers())
     dispatch(fetchClubs())
-    dispatch(fetchRecords())
+    dispatch(fetchPlayerRecords())
   }), [dispatch]
 
   return null

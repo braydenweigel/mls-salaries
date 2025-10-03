@@ -2,12 +2,14 @@ import { configureStore } from '@reduxjs/toolkit'
 import playersReducer from './playersSlice'
 import clubsReducer from './clubsSlice'
 import recordsReducer from './recordsSlice'
+import playerRecordsReducer from './playerRecordsSlice'
 
 export const store = configureStore({
     reducer: {
         players: playersReducer,
         clubs: clubsReducer,
-        records: recordsReducer
+        records: recordsReducer,
+        playerRecords: playerRecordsReducer
     }
 })
 
