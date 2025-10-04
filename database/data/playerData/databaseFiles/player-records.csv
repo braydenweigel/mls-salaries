@@ -58,7 +58,7 @@ BF6bBxB3,KR2qnF,Bryan,Acosta,DAL,M,"650000.00","700000.00",2021,Fall
 E6vc0ydw,KR2qnF,Bryan,Acosta,COL,M,"650000.00","706667.00",2022,Fall
 63QBbFXb,KR2qnF,Bryan,Acosta,POR,M,"675000.00","731667.00",2023,Fall
 InIFp6Bv,KR2qnF,Bryan,Acosta,NSH,M,"175000.00","196250.00",2025,Spring
-8TKx651K,q9M7fQ,Danilo,Acosta,RSL,D/M,"62500.0","62500.0",2016,Fall
+8TKx651K,q9M7fQ,Danilo,Acosta,RSL,D-M,"62500.0","62500.0",2016,Fall
 A4Qf5ZyV,q9M7fQ,Danilo,Acosta,RSL,M,"65625.0","65625.0",2017,Fall
 5BQrPVRw,q9M7fQ,Danilo,Acosta,RSL,M,"100000.00","100000.00",2018,Fall
 3YJCiZKP,q9M7fQ,Danilo,Acosta,ORL,D,"110000.04","110000.04",2019,Fall
@@ -299,8 +299,8 @@ pbkw6o8h,7vI7xt,Brandon,Allen,RBNY,F,"62500.0","62500.0",2016,Fall
 EWWKlk9x,7vI7xt,Brandon,Allen,RBNY,F,"65625.0","65625.0",2017,Fall
 PYMCrDv3,o1W5f0,Ely,Allen,LA,F,"12900.0","12900.0",2008,Fall
 s3whV9Ju,o1W5f0,Ely,Allen,DC,F-M,"15300.0","15300.0",2009,Fall
-f9j83KaJ,sW8hQB,Jordan,Allen,RSL,M/F,"80000.0","90000.0",2014,Fall
-kxlCjIts,sW8hQB,Jordan,Allen,RSL,M/F,"80000.0","90000.0",2015,Fall
+f9j83KaJ,sW8hQB,Jordan,Allen,RSL,M-F,"80000.0","90000.0",2014,Fall
+kxlCjIts,sW8hQB,Jordan,Allen,RSL,M-F,"80000.0","90000.0",2015,Fall
 oyZwEU6a,sW8hQB,Jordan,Allen,RSL,M,"100000.0","110000.0",2016,Fall
 nEsUZ8e9,sW8hQB,Jordan,Allen,RSL,M,"178000.0","178000.0",2017,Fall
 cA35lBBn,sW8hQB,Jordan,Allen,RSL,M,"225000.00","225000.00",2018,Fall
@@ -568,7 +568,7 @@ lfBsZ9jw,y2UFDh,Luis,Argudo,CLB,M,"54500.04","54500.04",2018,Fall
 Y9eCCeFf,y2UFDh,Luis,Argudo,CLB,M-F,"57225.00","57225.00",2019,Fall
 4AC8tXoT,y2UFDh,Luis,Argudo,MLS,M,"81375.00","81375.00",2020,Fall
 mcaMFP9g,8CAiH4,Bryan,Arguez,DC,M-D,"45000.0","76200.0",2007,Fall
-4r3m8pjB,8CAiH4,Bryan,Arguez,MTL,D/M,"65000.0","65000.0",2012,Fall
+4r3m8pjB,8CAiH4,Bryan,Arguez,MTL,D-M,"65000.0","65000.0",2012,Fall
 vxDLAHCw,OnERZn,Santiago,Arias,CIN,D,"550000.00","611354.00",2023,Fall
 Yfbsk2jJ,4mWiX3,Sergio,Arias,CHV,GK,"45000.0","45000.0",2011,Fall
 qSSBC3R2,pxBz14,Allan,Arigoni,CHI,D,"462000.00","472000.00",2024,Fall
@@ -938,7 +938,7 @@ S1tzo1k1,zeFGES,Guillermo,Barros Schelotto,CLB,F,"250000.0","375000.0",2008,Fall
 AQLKTcup,zeFGES,Guillermo,Barros Schelotto,CLB,F-M,"650000.0","775000.0",2009,Fall
 n2agoFUs,zeFGES,Guillermo,Barros Schelotto,CLB,M-F,"140000.0","241250.0",2010,Fall
 iwEbR8Xo,muZsMt,Leonardo,Barroso,CHI,D,"300000.00","345500.00",2025,Spring
-arzgwuhC,8Hwkus,Hadji,Barry,ORL,M/F,"62500.0","62500.0",2016,Fall
+arzgwuhC,8Hwkus,Hadji,Barry,ORL,M-F,"62500.0","62500.0",2016,Fall
 Lk31mX4h,8Hwkus,Hadji,Barry,ORL,F,"68750.0","73312.5",2017,Fall
 hdgMTe25,Izx7Gs,Shawn,Barry,RSL,D,"131250.00","131250.00",2018,Fall
 t7GwguML,gHmwnS,Chad,Barson,CLB,D,"46500.0","46500.0",2013,Fall
@@ -1900,11 +1900,11 @@ t2InmMOi,kMCw1E,Rudy,Camacho,MTL,D,"800000.00","851653.00",2021,Fall
 bXIVERR9,kMCw1E,Rudy,Camacho,CLB,D,"500000.00","554000.00",2023,Fall
 dtYmDsQY,kMCw1E,Rudy,Camacho,CLB,D,"475000.00","551000.00",2024,Fall
 5NGkBjSf,kMCw1E,Rudy,Camacho,CLB,D,"525000.00","601000.00",2025,Spring
-u0DTjm5d,HjpBVG,Hassoun,Camara,MTL,D/M,"75000.0","75000.0",2012,Fall
-WrX1YJmc,HjpBVG,Hassoun,Camara,MTL,D/M,"115000.0","126625.0",2013,Fall
-AXDd2Z8U,HjpBVG,Hassoun,Camara,MTL,D/M,"215000.0","226625.0",2014,Fall
-fUuRsJxu,HjpBVG,Hassoun,Camara,MTL,D/M,"235000.0","246625.0",2015,Fall
-pUnp2t69,HjpBVG,Hassoun,Camara,MTL,D/M,"180000.0","180000.0",2016,Fall
+u0DTjm5d,HjpBVG,Hassoun,Camara,MTL,D-M,"75000.0","75000.0",2012,Fall
+WrX1YJmc,HjpBVG,Hassoun,Camara,MTL,D-M,"115000.0","126625.0",2013,Fall
+AXDd2Z8U,HjpBVG,Hassoun,Camara,MTL,D-M,"215000.0","226625.0",2014,Fall
+fUuRsJxu,HjpBVG,Hassoun,Camara,MTL,D-M,"235000.0","246625.0",2015,Fall
+pUnp2t69,HjpBVG,Hassoun,Camara,MTL,D-M,"180000.0","180000.0",2016,Fall
 4yg9DJF9,HjpBVG,Hassoun,Camara,MTL,D,"255000.0","255000.0",2017,Fall
 CjMUjsm4,wnGCUm,Luiz,Camargo,HOU,M,"168000.0","178000.0",2011,Fall
 y3leJiHi,wnGCUm,Luiz,Camargo,HOU,M,"192000.0","202000.0",2012,Fall
@@ -1937,7 +1937,7 @@ ATcM0pJU,mrTUxi,George,Campbell,MTL,D,"475000.00","517500.00",2025,Spring
 hes3CfSD,nzrvrE,Jonathan,Campbell,CHI,D,"101750.0","109875.0",2017,Fall
 91UzIYjL,nzrvrE,Jonathan,Campbell,CHI,D,"120175.00","128300.00",2018,Fall
 n7dS636X,nzrvrE,Jonathan,Campbell,SEA,D,"70250.04","70250.04",2019,Fall
-HhbIpCeW,ZUjMWx,Sergio,Campbell,CLB,D/M,"50000.0","52500.0",2015,Fall
+HhbIpCeW,ZUjMWx,Sergio,Campbell,CLB,D-M,"50000.0","52500.0",2015,Fall
 8hezNJSp,BK2oIy,Diego,Campos,CHI,M,"54500.04","54500.04",2018,Fall
 ZOldVJDL,BK2oIy,Diego,Campos,CHI,D,"70250.04","72825.04",2019,Fall
 pXKhZme7,rysmvj,Omar,Campos,LAFC,D,"675000.00","675000.00",2024,Fall
@@ -1973,7 +1973,7 @@ ox7D5YGV,vtOwWR,Gustavo,Caraballo,ORL,F,"80622.00","86997.00",2025,Spring
 IMuxb4ZF,FJGSTK,Milton,Caraglio,NE,F,"54000.0","54000.0",2011,Fall
 m3PZhofN,JbkYE4,Felipe,Carballo,RBNY,M,"1020000.00","1169777.00",2024,Fall
 uAmEjvV8,JbkYE4,Felipe,Carballo,RBNY,M,"1050000.00","1199777.00",2025,Spring
-Wtsclk9x,UMwuLQ,Fernando,Cardenas,NE,M/F,"99996.0","99996.0",2012,Fall
+Wtsclk9x,UMwuLQ,Fernando,Cardenas,NE,M-F,"99996.0","99996.0",2012,Fall
 LiReN9YI,ho3ACI,Nathan,Cardoso,SJ,D,"600000.00","641250.00",2021,Fall
 qYbMMAg9,02v8sR,Paolo,Cardozo,LA,M,"42000.0","53250.0",2011,Fall
 I6UCV48t,02v8sR,Paolo,Cardozo,CHV,M,"70000.0","81250.0",2012,Fall
@@ -2267,7 +2267,7 @@ UJi1ZDVm,82awxp,Giorgi,Chirgadze,RBNY,F,"40000.0","40000.0",2010,Fall
 RoVxEpeK,82awxp,Giorgi,Chirgadze,RBNY,F,"42000.0","42000.0",2011,Fall
 3yUkom8d,cOXJmm,Stefan,Chirila,CIN,F,"80622.00","95402.00",2025,Spring
 9CrRLP0E,iYN3dp,Michaell,Chirinos,VAN,M,"360000.00","396875.00",2019,Fall
-cSgXcBfg,THlwZm,Davide,Chiumiento,VAN,M/F,"280000.0","280000.0",2011,Fall
+cSgXcBfg,THlwZm,Davide,Chiumiento,VAN,M-F,"280000.0","280000.0",2011,Fall
 g6ezQlwF,Owi9DE,David,Choiniere,MTL,M,"54075.0","54075.0",2017,Fall
 RPaGCWzg,Owi9DE,David,Choiniere,MTL,M,"67500.00","67500.00",2018,Fall
 SgpGPGR4,KhQz5C,Mathieu,Choiniere,MTL,M,"54500.04","59441.04",2018,Fall
@@ -4266,7 +4266,7 @@ hsgQ9ZMN,PSKK8C,Omar,Gonzalez,TOR,D,"780000.00","1055936.00",2021,Fall
 d0S2PaAT,PSKK8C,Omar,Gonzalez,NE,D,"425000.00","450000.00",2023,Fall
 33kfsxbY,PSKK8C,Omar,Gonzalez,DAL,D,"89716.00","114716.00",2024,Fall
 9nyIPxCe,PSKK8C,Omar,Gonzalez,CHI,D,"104000.00","123333.00",2025,Spring
-YYpmdEAD,58A7tY,Santiago,Gonzalez,MTL,M/F,"50000.0","50000.0",2014,Fall
+YYpmdEAD,58A7tY,Santiago,Gonzalez,MTL,M-F,"50000.0","50000.0",2014,Fall
 miHRZX7l,r8qPkK,Yony,Gonzalez,LA,F-M,"1266667.00","1270667.00",2020,Fall
 M4YyXTvS,QNcBbs,Leandro,Gonzalez Pirez,ATL,D,"250008.0","285008.0",2017,Fall
 g5E0sxxb,QNcBbs,Leandro,Gonzalez Pirez,ATL,D,"650004.00","685004.00",2018,Fall
@@ -5043,12 +5043,12 @@ MIweXRJa,IdDwFP,Adrien,Hunou,MNUFC,F,"2350000.00","2587702.00",2021,Fall
 75SlB1IC,bcXbh9,Ben,Hunter,CLB,F,"12900.0","12900.0",2007,Fall
 6fqqTsrn,i8aU36,Taylor,Hunter,HOU,D,"50000.0","50000.0",2015,Fall
 laAJkVle,i8aU36,Taylor,Hunter,HOU,D,"53004.0","53004.0",2017,Fall
-9m09woXH,5AGSKn,Erik,Hurtado,VAN,F/M,"46500.0","81500.0",2013,Fall
-W03dMLNd,5AGSKn,Erik,Hurtado,VAN,F/M,"51150.0","86150.0",2014,Fall
-BoJ8wDd2,5AGSKn,Erik,Hurtado,VAN,F/M,"78265.0","113265.0",2015,Fall
-lKsqRcAM,5AGSKn,Erik,Hurtado,VAN,F/M,"86091.5","121091.5",2016,Fall
-Z3t51b0d,5AGSKn,Erik,Hurtado,VAN,F/M,"125000.0","131250.0",2017,Fall
-yCb53Clw,5AGSKn,Erik,Hurtado,VAN,F/M,"150000.00","156250.00",2018,Fall
+9m09woXH,5AGSKn,Erik,Hurtado,VAN,F-M,"46500.0","81500.0",2013,Fall
+W03dMLNd,5AGSKn,Erik,Hurtado,VAN,F-M,"51150.0","86150.0",2014,Fall
+BoJ8wDd2,5AGSKn,Erik,Hurtado,VAN,F-M,"78265.0","113265.0",2015,Fall
+lKsqRcAM,5AGSKn,Erik,Hurtado,VAN,F-M,"86091.5","121091.5",2016,Fall
+Z3t51b0d,5AGSKn,Erik,Hurtado,VAN,F-M,"125000.0","131250.0",2017,Fall
+yCb53Clw,5AGSKn,Erik,Hurtado,VAN,F-M,"150000.00","156250.00",2018,Fall
 EHAXqy8I,5AGSKn,Erik,Hurtado,KC,F,"174999.96","181249.96",2019,Fall
 XQCDy20W,5AGSKn,Erik,Hurtado,KC,F,"","198750.00",2020,Fall
 pmifPWqV,5AGSKn,Erik,Hurtado,CLB,F,"218182.00","245682.00",2021,Fall
@@ -5879,7 +5879,7 @@ k2EEkaLS,UoDbvi,Chris,Klute,CLB,D,"82500.0","87802.09",2015,Fall
 HLqfPfR7,UoDbvi,Chris,Klute,POR,D,"86625.0","91924.63",2016,Fall
 gGe9X9EF,AiYSce,Matus,Kmet,MNUFC,D,"165000.00","182469.00",2024,Fall
 31twI7iL,AiYSce,Matus,Kmet,MNUFC,D,"195000.00","212469.00",2025,Spring
-05hxXnVl,uaDmAH,Wes,Knight,VAN,M/D,"50000.0","50000.0",2011,Fall
+05hxXnVl,uaDmAH,Wes,Knight,VAN,M-D,"50000.0","50000.0",2011,Fall
 NZtdq2Ql,ORycpN,Zat,Knight,COL,D,"120000.0","139583.33",2014,Fall
 0OUxoj8Y,JZ0Sxb,Brad,Knighton,NE,GK,"12900.0","12900.0",2007,Fall
 eJBcEK0n,JZ0Sxb,Brad,Knighton,NE,GK,"17700.0","17700.0",2008,Fall
@@ -7297,9 +7297,9 @@ G7laxnDP,6PHOUh,David,Milinkovic,VAN,M,"180000.00","200000.00",2020,Fall
 w7s9YG6m,i3kLu4,Matko,Miljevic,MTL,M,"545455.00","593364.00",2021,Fall
 fiPs3fJ6,i3kLu4,Matko,Miljevic,MTL,M,"545455.00","593364.00",2022,Fall
 J0Ht9FIf,i3kLu4,Matko,Miljevic,MTL,M,"545455.00","593364.00",2023,Fall
-nLWwgkiN,nFvtBP,Eric,Miller,MTL,M/D,"57500.0","68500.0",2014,Fall
-4aeDf3sL,nFvtBP,Eric,Miller,MTL,M/D,"60375.0","71375.0",2015,Fall
-mi3falYe,nFvtBP,Eric,Miller,COL,M/D,"66412.5","77412.5",2016,Fall
+nLWwgkiN,nFvtBP,Eric,Miller,MTL,M-D,"57500.0","68500.0",2014,Fall
+4aeDf3sL,nFvtBP,Eric,Miller,MTL,M-D,"60375.0","71375.0",2015,Fall
+mi3falYe,nFvtBP,Eric,Miller,COL,M-D,"66412.5","77412.5",2016,Fall
 pWz7mX9s,nFvtBP,Eric,Miller,COL,D,"75553.75","86553.75",2017,Fall
 3cvzpOqN,nFvtBP,Eric,Miller,MNUFC,D,"84997.97","105997.97",2018,Fall
 6Om1nJ4k,nFvtBP,Eric,Miller,NYC,D,"108549.96","124424.96",2019,Fall
@@ -7372,7 +7372,7 @@ f7HPtTHM,l0PT85,Leonel,Miranda,HOU,M,"60000.0","60000.0",2015,Fall
 Z93KxvFg,l0PT85,Leonel,Miranda,HOU,M,"62500.0","62500.0",2016,Fall
 x9pFb2YX,tqsKFY,Sebastian,Miranda,CLB,D,"110000.0","115000.0",2011,Fall
 SpVEp32J,tqsKFY,Sebastian,Miranda,CLB,D,"135000.0","140000.0",2012,Fall
-Ur7kAPmN,ElK6xX,Milovan,Mirosevic,CLB,M/F,"200000.0","223333.33",2012,Fall
+Ur7kAPmN,ElK6xX,Milovan,Mirosevic,CLB,M-F,"200000.0","223333.33",2012,Fall
 yHYDEhpa,FSbYxe,Selmir,Miscic,PHI,M,"63547.00","70026.00",2021,Fall
 MMjaEuP4,JWysKZ,Luke,Mishu,DC,D,"50000.0","50000.0",2015,Fall
 NtNOdAou,JWysKZ,Luke,Mishu,DC,D,"62500.0","62500.0",2016,Fall
@@ -7803,13 +7803,13 @@ SHmKz76Z,Fdvr34,Paulo,Nagamura,KC,M,"265000.0","270500.0",2013,Fall
 kxBb3QYT,Fdvr34,Paulo,Nagamura,KC,M,"220000.0","220000.0",2014,Fall
 PbOjoDLp,Fdvr34,Paulo,Nagamura,KC,M,"230000.0","230000.0",2015,Fall
 KnYkGJ6R,Fdvr34,Paulo,Nagamura,KC,M,"225000.0","225000.0",2016,Fall
-VZR1UvDb,RshFkO,Darlington,Nagbe,POR,M/F,"65000.0","201000.0",2011,Fall
-R7BpJduc,RshFkO,Darlington,Nagbe,POR,M/F,"90000.0","226000.0",2012,Fall
-pZLVTo6O,RshFkO,Darlington,Nagbe,POR,M/F,"130000.0","266000.0",2013,Fall
-erBIWY47,RshFkO,Darlington,Nagbe,POR,M/F,"250000.0","260000.0",2014,Fall
-3MAMhDUo,RshFkO,Darlington,Nagbe,POR,M/F,"244000.0","263000.0",2015,Fall
-CmaNSw64,RshFkO,Darlington,Nagbe,POR,M/F,"500000.0","500000.0",2016,Fall
-BiYmyEeA,RshFkO,Darlington,Nagbe,POR,M/F,"550000.0","565000.0",2017,Fall
+VZR1UvDb,RshFkO,Darlington,Nagbe,POR,M-F,"65000.0","201000.0",2011,Fall
+R7BpJduc,RshFkO,Darlington,Nagbe,POR,M-F,"90000.0","226000.0",2012,Fall
+pZLVTo6O,RshFkO,Darlington,Nagbe,POR,M-F,"130000.0","266000.0",2013,Fall
+erBIWY47,RshFkO,Darlington,Nagbe,POR,M-F,"250000.0","260000.0",2014,Fall
+3MAMhDUo,RshFkO,Darlington,Nagbe,POR,M-F,"244000.0","263000.0",2015,Fall
+CmaNSw64,RshFkO,Darlington,Nagbe,POR,M-F,"500000.0","500000.0",2016,Fall
+BiYmyEeA,RshFkO,Darlington,Nagbe,POR,M-F,"550000.0","565000.0",2017,Fall
 h6SZZGSt,RshFkO,Darlington,Nagbe,ATL,F-M,"605000.00","620000.00",2018,Fall
 Yxgd4ijn,RshFkO,Darlington,Nagbe,ATL,M,"665499.96","665499.96",2019,Fall
 lW6JZTg4,RshFkO,Darlington,Nagbe,CLB,M,"1530000.00","1530000.00",2020,Fall
@@ -7969,18 +7969,18 @@ PnU2hora,dDVAfz,J.C.,Ngando,VAN,M,"104000.00","104000.00",2025,Spring
 DusNv5yQ,mbMo3p,Serge,Ngoma Jr.,RBNY,M,"67360.00","87312.00",2023,Fall
 x4RdIqMd,mbMo3p,Serge,Ngoma Jr.,RBNY,F,"89716.00","109668.00",2024,Fall
 90cla9G1,mbMo3p,Serge,Ngoma Jr.,RBNY,F,"165000.00","193700.00",2025,Spring
-1souyb8n,kDBqSW,Lee,Nguyen,NE,M/F,"44000.0","50500.0",2012,Fall
-5tv14I8C,kDBqSW,Lee,Nguyen,NE,M/F,"73600.0","80100.0",2013,Fall
-ufhL62Ee,kDBqSW,Lee,Nguyen,NE,M/F,"175000.0","193750.0",2014,Fall
-uV3q3coJ,kDBqSW,Lee,Nguyen,NE,M/F,"175000.0","193750.0",2015,Fall
+1souyb8n,kDBqSW,Lee,Nguyen,NE,M-F,"44000.0","50500.0",2012,Fall
+5tv14I8C,kDBqSW,Lee,Nguyen,NE,M-F,"73600.0","80100.0",2013,Fall
+ufhL62Ee,kDBqSW,Lee,Nguyen,NE,M-F,"175000.0","193750.0",2014,Fall
+uV3q3coJ,kDBqSW,Lee,Nguyen,NE,M-F,"175000.0","193750.0",2015,Fall
 njN9w8B3,kDBqSW,Lee,Nguyen,NE,M,"500000.0","500000.0",2016,Fall
 6B4FvCt0,kDBqSW,Lee,Nguyen,NE,M,"500000.0","500000.0",2017,Fall
 8kqo4h5v,kDBqSW,Lee,Nguyen,LAFC,M,"500000.00","500000.00",2018,Fall
 XwJMvgjx,kDBqSW,Lee,Nguyen,LAFC,M,"525000.00","530000.00",2019,Fall
 HtjB20XH,kDBqSW,Lee,Nguyen,NE,M,"525000.00","530000.00",2020,Fall
 XjVfX9vF,Cs0MeV,Joseph,Ngwenya,HOU,F,"51148.13","62023.13",2007,Fall
-fF5Jug4y,Cs0MeV,Joseph,Ngwenya,HOU,M/F,"72000.0","72000.0",2010,Fall
-hkn10cmL,Cs0MeV,Joseph,Ngwenya,DC,M/F,"156000.0","156000.0",2011,Fall
+fF5Jug4y,Cs0MeV,Joseph,Ngwenya,HOU,M-F,"72000.0","72000.0",2010,Fall
+hkn10cmL,Cs0MeV,Joseph,Ngwenya,DC,M-F,"156000.0","156000.0",2011,Fall
 fkg8gLSp,djK2K2,Sam,Nicholson,COL,M,"265008.00","311456.00",2018,Fall
 L74BYU6C,djK2K2,Sam,Nicholson,COL,M-F,"300000.00","342073.00",2019,Fall
 HGvqcYbM,djK2K2,Sam,Nicholson,COL,M,"300000.00","335313.00",2022,Fall
@@ -8237,9 +8237,9 @@ roVSgpeB,3U6yTf,CJ,Olney Jr.,PHI,M,"80622.00","94287.00",2025,Spring
 sPvaISsH,m7esCT,Ben,Olsen,DC,M,"155000.0","177500.0",2007,Fall
 ZbNiMUVl,m7esCT,Ben,Olsen,DC,M,"215000.0","215000.0",2008,Fall
 6lpupp5Z,m7esCT,Ben,Olsen,DC,M,"225000.0","225000.0",2009,Fall
-hbbYdW1u,Fg9JUc,Lawrence,Olum,KC,M/D,"44100.0","44100.0",2012,Fall
-wMYJXeFl,Fg9JUc,Lawrence,Olum,KC,M/D,"46500.0","46500.0",2013,Fall
-5gMSurjT,Fg9JUc,Lawrence,Olum,KC,M/D,"48825.0","48825.0",2014,Fall
+hbbYdW1u,Fg9JUc,Lawrence,Olum,KC,M-D,"44100.0","44100.0",2012,Fall
+wMYJXeFl,Fg9JUc,Lawrence,Olum,KC,M-D,"46500.0","46500.0",2013,Fall
+5gMSurjT,Fg9JUc,Lawrence,Olum,KC,M-D,"48825.0","48825.0",2014,Fall
 IZ4DLH4O,Fg9JUc,Lawrence,Olum,KC,M,"105000.0","115000.0",2016,Fall
 SxBiyzaZ,Fg9JUc,Lawrence,Olum,POR,M,"142500.0","157500.0",2017,Fall
 07XH1EE3,Fg9JUc,Lawrence,Olum,POR,M,"185004.00","200004.00",2018,Fall
@@ -8549,7 +8549,7 @@ hNZPxJ8v,5qNPOj,Caleb,Patterson-Sewell,MLS,GK,"81375.00","81375.00",2020,Fall
 o2UWtqAQ,PR1WoI,Ilijah,Paul,RSL,F,"67360.00","74873.00",2023,Fall
 98QVa6lr,PR1WoI,Ilijah,Paul,RSL,F,"89716.00","97229.00",2024,Fall
 BjJj0iCC,CBWXS3,Marcos,Paulo,RBNY,F,"82000.0","82000.0",2011,Fall
-yvAR130X,t2boXL,Veljko,Paunovic,PHI,M/F,"90000.0","90000.0",2011,Fall
+yvAR130X,t2boXL,Veljko,Paunovic,PHI,M-F,"90000.0","90000.0",2011,Fall
 hUyLfKqv,dBJhLq,Logan,Pause,CHI,M,"69300.0","69300.0",2007,Fall
 6YIEDS4C,dBJhLq,Logan,Pause,CHI,M,"81730.0","84230.0",2008,Fall
 k1BbU0Ql,dBJhLq,Logan,Pause,CHI,M,"145000.0","153125.0",2009,Fall
@@ -8632,9 +8632,9 @@ R4aDfRJ1,dLfDIg,Daniel,Pereira,ATX,M,"475000.00","514375.00",2025,Spring
 mkYc1CzD,L74nxL,Dion,Pereira,ATL,M-F,"56250.00","56250.00",2019,Fall
 czeGS9qn,HyNy6E,Gabriel,Pereira,NYC,F,"555000.00","624500.00",2022,Fall
 ELgcsLnJ,91yOQY,Jeanderson,Pereira,POR,D,"60000.0","60000.0",2015,Fall
-frqg5xFl,cpl88R,Michel,Pereira,DAL,M/D,"60000.0","81500.0",2013,Fall
-Dijq5NIh,cpl88R,Michel,Pereira,DAL,M/D,"120000.0","141500.0",2014,Fall
-sbFAVkcY,cpl88R,Michel,Pereira,DAL,M/D,"140000.0","161500.0",2015,Fall
+frqg5xFl,cpl88R,Michel,Pereira,DAL,M-D,"60000.0","81500.0",2013,Fall
+Dijq5NIh,cpl88R,Michel,Pereira,DAL,M-D,"120000.0","141500.0",2014,Fall
+sbFAVkcY,cpl88R,Michel,Pereira,DAL,M-D,"140000.0","161500.0",2015,Fall
 AFx1NvV4,r6p2Lo,Ricardo,Pereira,DAL,F,"30000.0","30000.0",2007,Fall
 CP0ztQJz,9NiPXR,Joaquin,Pereyra,MNUFC,M,"610000.00","699800.00",2024,Fall
 9pr8QHrb,9NiPXR,Joaquin,Pereyra,MNUFC,M,"655000.00","754800.00",2025,Spring
@@ -11699,10 +11699,10 @@ EpmxFTEw,itj3AC,Zachary,Wells,DC,GK,"52920.0","52920.0",2008,Fall
 1X502vvx,vHmu9w,Andrew,Welsh,TOR,M,"195000.0","204750.0",2007,Fall
 dxqs53MM,yBQIEk,Emery,Welshman,TOR,F,"46500.0","46500.0",2013,Fall
 kObOnvoy,yBQIEk,Emery,Welshman,RSL,F,"62500.0","62500.0",2016,Fall
-Kvk0WRaD,XoeYrP,Andrew,Wenger,MTL,D/F,"100000.0","202000.0",2012,Fall
-GLepqyMe,XoeYrP,Andrew,Wenger,MTL,D/F,"120000.0","222000.0",2013,Fall
-EWeEfxuk,XoeYrP,Andrew,Wenger,PHI,D/F,"140000.0","242000.0",2014,Fall
-2a2KKBD4,XoeYrP,Andrew,Wenger,PHI,D/F,"180000.0","282000.0",2015,Fall
+Kvk0WRaD,XoeYrP,Andrew,Wenger,MTL,D-F,"100000.0","202000.0",2012,Fall
+GLepqyMe,XoeYrP,Andrew,Wenger,MTL,D-F,"120000.0","222000.0",2013,Fall
+EWeEfxuk,XoeYrP,Andrew,Wenger,PHI,D-F,"140000.0","242000.0",2014,Fall
+2a2KKBD4,XoeYrP,Andrew,Wenger,PHI,D-F,"180000.0","282000.0",2015,Fall
 ulOIyIwE,XoeYrP,Andrew,Wenger,HOU,M-F,"190000.0","190000.0",2016,Fall
 NyFtWr0N,XoeYrP,Andrew,Wenger,HOU,M,"210000.0","210000.0",2017,Fall
 6b9TgamW,XoeYrP,Andrew,Wenger,HOU,M,"230000.00","230000.00",2018,Fall

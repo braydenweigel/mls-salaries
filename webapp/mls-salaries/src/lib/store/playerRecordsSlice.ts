@@ -58,6 +58,12 @@ export const makeSelectPlayerRecordsByPlayerId = (playerId: string) =>
   createSelector(
     (state: RootState) => state.playerRecords.data,
     (records) => records.filter((record) => record.playerid === playerId)
-  )
+)
+
+export const makeSelectPlayerRecordsByYear = (year: string, season: string) =>
+  createSelector(
+    (state: RootState) => state.playerRecords.data,
+    (records) => records.filter((record) => record.recordyear === year && record.recordseason === season)
+)
   
 export default playerRecordsSlice.reducer

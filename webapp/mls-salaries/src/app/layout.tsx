@@ -24,7 +24,6 @@ import { AppDispatch, store } from "@/lib/store/store";
 import { useEffect } from "react";
 import { fetchPlayers } from "@/lib/store/playersSlice";
 import { fetchClubs } from "@/lib/store/clubsSlice";
-import { fetchRecords } from "@/lib/store/recordsSlice";
 import { fetchPlayerRecords } from "@/lib/store/playerRecordsSlice";
 
 const geistSans = Geist({
