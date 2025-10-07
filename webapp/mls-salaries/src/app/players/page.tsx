@@ -10,15 +10,15 @@ import { isValidClub } from "@/lib/storeUtils"
 import { useSelector } from "react-redux"
 import { reports } from "@/lib/dicts"
 import React from "react"
-import { ScrollArea } from "@/components/ui/scroll-area"
+import SelectReport from "@/components/lib/SelectReport"
 
 export default function Players() {
   const [reportValue, setReportValue] = React.useState("2025")
   const year = reports[reportValue].year
   const season = reports[reportValue].season
 
-  const selectPlayerRecordsByPlayerId = makeSelectPlayerRecordsByYear(year, season);
-  const playerRecords = useSelector(selectPlayerRecordsByPlayerId)
+  const selectPlayerRecordsByYear = makeSelectPlayerRecordsByYear(year, season);
+  const playerRecords = useSelector(selectPlayerRecordsByYear)
   const allClubs = useSelector((state: RootState) => state.clubs.data)
 
   let data: TablePlayer[] = []
@@ -49,20 +49,7 @@ export default function Players() {
   return (
     <Card>
       <CardContent className="overflow-hidden">
-        <Select defaultValue={"2025"} onValueChange={(value) => setReportValue(value)} >
-          <SelectTrigger className="w-[180px]">
-            <SelectValue/>
-          </SelectTrigger>
-          <SelectContent className="max-h-60 overflow-y-auto">
-            {Object.entries(reports)
-              .sort((a, b) => Number(b[0]) - Number(a[0]))
-              .map(([key, report]) => (
-              <SelectItem key={key} value={key}>
-                {report.year} {report.season}
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
+      <SelectReport onReportValueChange={(report) => setReportValue(report)}/>
         <div>
           <PlayerTable columns={playerColumns} data={data} />
         </div>

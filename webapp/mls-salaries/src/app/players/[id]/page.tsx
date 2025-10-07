@@ -187,7 +187,7 @@ export default function PlayerPage(props: { params: Promise<{ id: string }> }) {
                   <TableCell><Link href={`/clubs/${record.club}`} className="hover:underline">{playerClubs[index].clubname}</Link></TableCell>
                   <TableCell>{record.position}</TableCell>
                   <TableCell className="text-right">
-                    ${record.basesalary.toLocaleString()}
+                    ${record.basesalary ? record.basesalary.toLocaleString() : record.guaranteedcomp.toLocaleString()}
                   </TableCell>
                   <TableCell className="text-right">
                     ${record.guaranteedcomp.toLocaleString()}
