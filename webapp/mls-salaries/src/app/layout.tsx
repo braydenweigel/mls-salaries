@@ -80,7 +80,7 @@ export default function RootLayout({
                     <Link href="/clubs">Clubs</Link>
                   </NavigationMenuLink>
                 </NavigationMenuItem>
-                <NavigationMenuItem>
+                {/* {<NavigationMenuItem>
                   <DropdownMenu>
                     <DropdownMenuTrigger
                       className={navigationMenuTriggerStyle()}
@@ -96,7 +96,7 @@ export default function RootLayout({
                       </DropdownMenuItem>
                     </DropdownMenuContent>
                   </DropdownMenu>
-                </NavigationMenuItem>
+                </NavigationMenuItem>} */}
               </NavigationMenuList>
             </NavigationMenu>
             <div className="fixed right-0 top-0 pr-2 pt-2"><ModeToggle/></div>

@@ -7,18 +7,21 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
-import { reports } from "@/lib/dicts"
 
-interface RowsPerPageSelectProps {
+interface ReportSelectProps {
+    reports: Object
+    defaultReport: string
     onReportValueChange: (report: string) => void
 }
 
 export default function SelectReport({
-    onReportValueChange
-}: RowsPerPageSelectProps){
+    reports,
+    defaultReport,
+    onReportValueChange,
+}: ReportSelectProps){
 
     return (
-        <Select defaultValue={"2025"} onValueChange={(value) => onReportValueChange(value)} >
+        <Select defaultValue={defaultReport} onValueChange={(value) => onReportValueChange(value)} >
           <SelectTrigger className="w-[180px]">
             <SelectValue/>
           </SelectTrigger>

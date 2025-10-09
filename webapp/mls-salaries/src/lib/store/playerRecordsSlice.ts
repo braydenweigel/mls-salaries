@@ -65,5 +65,11 @@ export const makeSelectPlayerRecordsByYear = (year: string, season: string) =>
     (state: RootState) => state.playerRecords.data,
     (records) => records.filter((record) => record.recordyear === year && record.recordseason === season)
 )
+
+export const makeSelectPlayerRecordsByClub = (clubID: string) =>
+  createSelector(
+    (state: RootState) => state.playerRecords.data,
+    (records) => records.filter((record) => record.club === clubID)
+)
   
 export default playerRecordsSlice.reducer

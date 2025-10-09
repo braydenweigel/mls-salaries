@@ -9,47 +9,121 @@ import {
   CardHeader,
   CardTitle 
 } from '@/components/ui/card'
-import {
-  Table,
-  TableBody,
-  TableCaption,
-  TableCell,
-  TableFooter,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table"
-import {
-  ChartConfig,
-  ChartContainer,
-  ChartLegend,
-  ChartLegendContent,
-  ChartTooltip,
-  ChartTooltipContent,
-} from "@/components/ui/chart"
-import { Area, AreaChart, XAxis, YAxis} from "recharts"
 import Link from 'next/link'
 import { isValidClub, isValidPlayer} from '@/lib/storeUtils'
 import { useSelector } from "react-redux"
 import { useEffect, useState } from "react"
 import { RootState } from "@/lib/store/store"
 import React, { use } from "react";
-import { makeSelectRecordsByPlayerId } from '@/lib/store/recordsSlice'
-import { makeSelectPlayerRecordsByPlayerId } from '@/lib/store/playerRecordsSlice'
+import { makeSelectPlayerRecordsByPlayerId, PlayerRecord } from '@/lib/store/playerRecordsSlice'
 import { Club } from '@/lib/store/clubsSlice'
 import { useTheme } from "next-themes"
 import LoadingPlayerPage from './loading'
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
+import PlayerIDTable from '@/app/clubs/[id]/table'
+import { reports } from "@/lib/dicts"
+import PlayerIDChart from '@/app/clubs/[id]/chart'
 
-const chartConfig: ChartConfig = {
-  basesalary: {
-    label: "Base Salary",
-    color: "var(--chart-1)",
-  },
-  guaranteedcomp: {
-    label: "Guaranteed Compensation",
-    color: "var(--chart-2)",
-  },
-} 
+
+function getPlayerClubs(allClubs: Club[], records: PlayerRecord[]){
+  let playerClubs: Club[] = []
+  for (let i of records){
+    const clubName = isValidClub(allClubs, i.club)
+    if (clubName) 
+      playerClubs.push(clubName)
+  }
+
+  return playerClubs
+}
+
+function determineTheme(theme: string | undefined, systemTheme: "light" | "dark" | undefined){
+  let actualTheme = "dark"
+  if (theme === "dark"){
+    actualTheme = "dark"
+  } else if (theme === "light"){
+    actualTheme = "light"
+  } else if (theme === "system"){
+    if (systemTheme === "dark"){
+      actualTheme = "dark"
+    } else if (systemTheme === "light"){
+      actualTheme = "light"
+    }
+  }
+
+  return actualTheme
+}
+
+function determineColors(theme: string, club: Club){
+  const clubColor = theme === "dark" ? club.colorprimary : club.colorsecondary
+
+  let bsColor = "#FFFFFF"
+  let gcColor = "#FFFFFF"
+  if (theme === "dark"){
+    bsColor = "#A0A0A0"
+    gcColor = "#C0C0C0"
+  } else {
+    bsColor = "#303030"
+    gcColor = "#606060"
+  }
+
+  return {
+    bsColor: bsColor,
+    gcColor: gcColor
+  }
+}
+
+function formatData(playerRecords: PlayerRecord[]){
+  let data: {
+    report: string,
+    baseSalary: number,
+    guaranteedComp: number,
+    club: string,
+    position: string
+  }[] = []
+
+  let firstKey = playerRecords[playerRecords.length - 1].recordyear
+  if (playerRecords[playerRecords.length - 1].recordseason == "Fall") firstKey += ".5"
+
+  let finalKey = playerRecords[0].recordyear
+  if (playerRecords[0].recordseason == "Fall") finalKey += ".5" 
+
+
+  Object.entries(reports).forEach(([key, report]) => {
+    const record = playerRecords.find((record) => record.recordyear == report.year && record.recordseason == report.season)
+
+    if (record){
+
+      let bS = 0
+      let gC = 0
+
+      if (!record.basesalary){
+        bS = record.guaranteedcomp ?? 0
+      } else {
+        bS = record.basesalary
+        gC = record.guaranteedcomp - record.basesalary
+      }
+
+      data.push({
+        report: key,
+        baseSalary: bS,
+        guaranteedComp: gC,
+        club: record.club,
+        position: record.position
+      })
+
+      console.log("Record Added - Key: ", key)
+
+    } else if (Number(key) > Number(firstKey) && Number(key) < Number(finalKey)){//player not in league this year, but has been in league before, so send values of 0
+      data.push({ report: key, baseSalary: 0, guaranteedComp: 0, club: "", position: "" })
+      console.log("Empty Record Added - Key: ", key)
+    }
+
+  })
+
+  data.sort((a,b) => Number(a.report) - Number(b.report))
+
+  return data
+}
 
 function adjustHexColor(hex: string, percent: number): string {
   // Remove leading "#" if present
@@ -115,12 +189,7 @@ export default function PlayerPage(props: { params: Promise<{ id: string }> }) {
     return <LoadingPlayerPage/>
 
   } else {
-    let playerClubs: Club[] = []
-    for (let i of records){
-      const clubName = isValidClub(allClubs, i.club)
-      if (clubName) 
-        playerClubs.push(clubName)
-    }
+    const playerClubs = getPlayerClubs(allClubs, records)
 
     let clubText = "Last Club: "
     if (records[0].recordyear == "2025" && records[0].recordseason == "Spring"){
@@ -128,37 +197,10 @@ export default function PlayerPage(props: { params: Promise<{ id: string }> }) {
     } 
 
     const position = records[0].position
+    const data = formatData(records)
 
-    const data = records.map((r) => ({
-      year: r.recordyear,
-      basesalary: r.basesalary,
-      guaranteedcomp: r.guaranteedcomp,
-    }))
-
-    let actualTheme = "dark"
-    if (theme === "dark"){
-      actualTheme = "dark"
-    } else if (theme === "light"){
-      actualTheme = "light"
-    } else if (theme === "system"){
-      if (systemTheme === "dark"){
-        actualTheme = "dark"
-      } else if (systemTheme === "light"){
-        actualTheme = "light"
-      }
-    }
-
-    const clubColor = actualTheme === "dark" ? playerClubs[0].colorprimary : playerClubs[0].colorsecondary
-
-    let bsColor = "#FFFFFF"
-    let gcColor = "#FFFFFF"
-    if (actualTheme === "dark"){
-      bsColor = adjustHexColor(clubColor, -10)
-      gcColor = clubColor
-    } else {
-      bsColor = clubColor
-      gcColor = adjustHexColor(clubColor, 10)
-    }
+    let actualTheme = determineTheme(theme, systemTheme)
+    const colors = determineColors(actualTheme, playerClubs[0])
 
     return (
       <div>
@@ -168,87 +210,26 @@ export default function PlayerPage(props: { params: Promise<{ id: string }> }) {
           <CardDescription className="text-base">{clubText} <Link href={`/clubs/${records[0].club}`} className="hover:underline">{playerClubs[0].clubname}</Link> &emsp; Position: {position}</CardDescription>
         </CardHeader>
       </Card>
-      <Card className="my-4">
-        <CardContent>
-          <Table className="mx-auto px-4">
-            <TableHeader>
-              <TableRow>
-                <TableHead className="w-[120px]">Year</TableHead>
-                <TableHead>Club</TableHead>
-                <TableHead>Position</TableHead>
-                <TableHead className="text-right">Base Salary</TableHead>
-                <TableHead className="text-right">Guaranteed Comp</TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {records.map((record, index) => (
-                <TableRow key={record.id}>
-                  <TableCell>{record.recordyear}</TableCell>
-                  <TableCell><Link href={`/clubs/${record.club}`} className="hover:underline">{playerClubs[index].clubname}</Link></TableCell>
-                  <TableCell>{record.position}</TableCell>
-                  <TableCell className="text-right">
-                    ${record.basesalary ? record.basesalary.toLocaleString() : record.guaranteedcomp.toLocaleString()}
-                  </TableCell>
-                  <TableCell className="text-right">
-                    ${record.guaranteedcomp.toLocaleString()}
-                  </TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </CardContent>
-      </Card>
-      <Card>
-        <CardContent>
-          <ChartContainer config={chartConfig}>
-            <AreaChart data={data}>
-              <defs>
-                <linearGradient id="fillBaseSalary" x1="0" y1="0" x2="0" y2="1">
-                  <stop
-                    offset="5%"
-                    stopColor={bsColor}
-                    stopOpacity={0.8}
-                  />
-                  <stop
-                    offset="95%"
-                    stopColor={bsColor}
-                    stopOpacity={0.8}
-                  />
-                </linearGradient>
-                <linearGradient id="fillGuaranteedComp" x1="0" y1="0" x2="0" y2="1">
-                  <stop
-                    offset="5%"
-                    stopColor={gcColor}
-                    stopOpacity={0.8}
-                  />
-                  <stop
-                    offset="95%"
-                    stopColor={gcColor}
-                    stopOpacity={0.1}
-                  />
-                </linearGradient>
-              </defs>
-              <XAxis dataKey="year" reversed/>
-              <YAxis />
-              <ChartTooltip content={<ChartTooltipContent />} />
-              <ChartLegend content={<ChartLegendContent />} />
-
-              <Area
-                type="monotone"
-                dataKey="basesalary"
-                stroke={bsColor}
-                fill={bsColor}
-              />
-              <Area
-                type="monotone"
-                dataKey="guaranteedcomp"
-                stroke={gcColor}
-                fill="url(#fillGuaranteedComp)"
-              />
-            </AreaChart>
-          </ChartContainer>
-        </CardContent>
-      </Card>
+      <Tabs defaultValue="table">
+          <TabsList>
+            <TabsTrigger value="table">Table</TabsTrigger>
+            <TabsTrigger value="chart">Chart</TabsTrigger>
+          </TabsList>
+          <TabsContent value="table">
+            <Card >
+              <CardContent>
+                <PlayerIDTable records={records} playerClubs={playerClubs} />
+              </CardContent>
+            </Card>
+          </TabsContent>
+          <TabsContent value="chart">
+            <Card>
+              <CardContent>
+                <PlayerIDChart data={data} colors={colors}/>
+              </CardContent>
+            </Card>
+          </TabsContent>
+        </Tabs>
 
       </div>
     );

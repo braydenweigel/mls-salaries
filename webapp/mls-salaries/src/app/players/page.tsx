@@ -49,14 +49,12 @@ export default function Players() {
   return (
     <Card>
       <CardContent className="overflow-hidden">
-      <SelectReport onReportValueChange={(report) => setReportValue(report)}/>
+        <SelectReport onReportValueChange={(report) => setReportValue(report)} reports={reports} defaultReport={"2025"}/>
         <div>
           <PlayerTable columns={playerColumns} data={data} />
         </div>
       </CardContent>
-
     </Card>
-    
   )
 }
   
