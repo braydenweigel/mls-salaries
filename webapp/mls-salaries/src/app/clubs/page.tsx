@@ -51,6 +51,7 @@ export default function Clubs() {
   }
 
   const data: TableClub[] = createTableData(clubs, reportValue)
+  data.sort((a,b) => b.totalGuarComp - a.totalGuarComp)
 
     return (
       <Card>

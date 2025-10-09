@@ -100,6 +100,8 @@ export default function ClubPage(props: { params: Promise<{ id: string }> }) {
       }
     }
 
+    data.sort((a,b) => b.guarComp - a.guarComp)
+
     let clubYears = ""
     if (club.clubid == "SJ"){
       clubYears = "1996-2005, 2008-"

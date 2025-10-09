@@ -49,7 +49,7 @@ export default function PlayerIDChart({
                     dataKey="baseSalary"
                     stackId="a"
                     fill={colors.bsColor}
-                    radius={[0,0,4,4]}
+                    shape={<CustomBaseBar />}
                 />
                 <Bar 
                     dataKey="guaranteedComp"
@@ -78,4 +78,11 @@ export default function PlayerIDChart({
         </ChartContainer>
     )
 }
+
+const CustomBaseBar = (props: any) => {
+    const { payload, fill, x, y, width, height } = props;
+    const isSolo = payload.guaranteedComp === 0;
+    const radius = isSolo ? [4, 4, 4, 4] : [0, 0, 4, 4];
+    return <rect x={x} y={y} width={width} height={height} fill={fill} rx={radius[0]} ry={radius[0]} />;
+  }
 

@@ -46,6 +46,8 @@ export default function Players() {
     })
   }
 
+  data.sort((a,b) => b.guarComp - a.guarComp)
+
   return (
     <Card>
       <CardContent className="overflow-hidden">
