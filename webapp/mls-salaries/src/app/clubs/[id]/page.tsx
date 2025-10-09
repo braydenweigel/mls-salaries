@@ -2,23 +2,12 @@
 
 import { 
   Card,
-  CardAction,
   CardContent,
   CardDescription,
-  CardFooter,
   CardHeader,
   CardTitle 
 } from '@/components/ui/card'
-import {
-  Table,
-  TableBody,
-  TableCaption,
-  TableCell,
-  TableFooter,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table"
+
 import {
   ChartConfig,
   ChartContainer,
@@ -37,10 +26,47 @@ import { reports } from '@/lib/dicts'
 import SelectReport from '@/components/lib/SelectReport'
 import LoadingPlayerPage from '@/app/players/[id]/loading'
 import { makeSelectPlayerRecordsByClub } from '@/lib/store/playerRecordsSlice'
-import { report } from 'process'
 import { clubPlayerColumns, TableClubPlayers } from '@/components/lib/clubPlayerTableColumns'
 import { ClubPlayersTable } from '@/components/lib/ClubPlayersTable'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
+import ClubIDChart from './chart'
+import { Club } from '@/lib/store/clubsSlice'
+
+function determineTheme(theme: string | undefined, systemTheme: "light" | "dark" | undefined){
+  let actualTheme = "dark"
+  if (theme === "dark"){
+    actualTheme = "dark"
+  } else if (theme === "light"){
+    actualTheme = "light"
+  } else if (theme === "system"){
+    if (systemTheme === "dark"){
+      actualTheme = "dark"
+    } else if (systemTheme === "light"){
+      actualTheme = "light"
+    }
+  }
+
+  return actualTheme
+}
+
+function determineColors(theme: string, club: Club){
+  const clubColor = theme === "dark" ? club.colorprimary : club.colorsecondary
+
+  let bsColor = "#FFFFFF"
+  let gcColor = "#FFFFFF"
+  if (theme === "dark"){
+    bsColor = "#A0A0A0"
+    gcColor = "#C0C0C0"
+  } else {
+    bsColor = "#303030"
+    gcColor = "#606060"
+  }
+
+  return {
+    bsColor: bsColor,
+    gcColor: gcColor
+  }
+}
 
 export default function ClubPage(props: { params: Promise<{ id: string }> }) {
   const [mounted, setMounted] = useState(false);
@@ -57,6 +83,8 @@ export default function ClubPage(props: { params: Promise<{ id: string }> }) {
 
   const selectPlayerRecordsByClub = makeSelectPlayerRecordsByClub(club?.clubid ?? "");
   const clubRecords = useSelector(selectPlayerRecordsByClub)
+
+  let actualTheme = determineTheme(theme, systemTheme)
 
   if (!mounted) {
     return null
@@ -122,6 +150,25 @@ export default function ClubPage(props: { params: Promise<{ id: string }> }) {
       }
     }
 
+    let chartData = structuredClone(data).reverse()
+
+    for (let record of chartData){
+      let bS = 0
+      let gC = 0
+
+      if (!record.baseSal){
+        bS = record.guarComp ?? 0
+      } else {
+        bS = record.baseSal
+        gC = record.guarComp - record.baseSal
+      }
+
+      record.baseSal = bS
+      record.guarComp = gC
+    }
+
+    const colors = determineColors(actualTheme, club)
+
     return (
       <div>
        <Card className="my-4">
@@ -150,7 +197,7 @@ export default function ClubPage(props: { params: Promise<{ id: string }> }) {
           <TabsContent value="chart">
             <Card className="">
               <CardContent className="overflow-hidden space-y-2">
-                
+                <ClubIDChart data={chartData} colors={colors}/>
               </CardContent>
             </Card>
           </TabsContent>

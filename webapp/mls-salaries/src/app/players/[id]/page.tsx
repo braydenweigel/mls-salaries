@@ -20,9 +20,9 @@ import { Club } from '@/lib/store/clubsSlice'
 import { useTheme } from "next-themes"
 import LoadingPlayerPage from './loading'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
-import PlayerIDTable from '@/app/clubs/[id]/table'
+import PlayerIDTable from '@/app/players/[id]/table'
 import { reports } from "@/lib/dicts"
-import PlayerIDChart from '@/app/clubs/[id]/chart'
+import PlayerIDChart from '@/app/players/[id]/chart'
 
 
 function getPlayerClubs(allClubs: Club[], records: PlayerRecord[]){

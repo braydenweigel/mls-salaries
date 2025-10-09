@@ -1,16 +1,18 @@
 "use client"
 
 import { ChartConfig, ChartContainer, ChartLegend, ChartLegendContent, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart"
+import { Club } from "@/lib/store/clubsSlice"
+import { PlayerRecord } from "@/lib/store/playerRecordsSlice"
 import { Bar, BarChart, XAxis, YAxis, TooltipProps} from "recharts"
-import { reports } from "@/lib/dicts"
+import { reports, clubs } from "@/lib/dicts"
 
 interface Props {
     data: {
-        id: string,
-        name: string,
-        position: string,
-        baseSal: number,
-        guarComp: number
+        report: string,
+        baseSalary: number,
+        guaranteedComp: number,
+        club: string,
+        position: string
     }[]
     colors: {
         bsColor: string,
@@ -19,63 +21,49 @@ interface Props {
 
 }
 
-export default function ClubIDChart({
+export default function PlayerIDChart({
     data,
     colors
 }: Props){
     const chartConfig: ChartConfig = {
-        baseSal: {
+        baseSalary: {
           label: "Base Salary",
           color: colors.bsColor,
         },
-        guarComp: {
+        guaranteedComp: {
           label: "Guaranteed Compensation",
           color: colors.gcColor,
         },
     } 
 
     return (
-        <ChartContainer config={chartConfig} className="">
+        <ChartContainer config={chartConfig}>
             <BarChart data={data}>
                 <XAxis 
-                    dataKey="name"
+                    dataKey="report"
                     tickLine={false}
                     axisLine={false}
-                    interval={0} // ensures all ticks show
-                    angle={-45}
-                    textAnchor="end"
-                    height={80} // add more height so labels fit
-                    tick={{ fontSize: 12 }}
-                    
+                    tickFormatter={(key) => {return (reports[key].year + " " + reports[key].season)}}
                 />
-                <YAxis
-                    type="number"
-                    tickLine={false}
-                    axisLine={false}
-                    width={80}
-                    tickFormatter={(value: number) => {return `$${value.toLocaleString()}`}}
-                />
-
                 <Bar 
-                    dataKey="baseSal"
+                    dataKey="baseSalary"
                     stackId="a"
                     fill={colors.bsColor}
                 />
                 <Bar 
-                    dataKey="guarComp"
+                    dataKey="guaranteedComp"
                     stackId="a"
                     fill={colors.gcColor}
-
                 />
                 <ChartTooltip 
                     cursor={false}
                     content={<ChartTooltipContent 
-                        
+                        labelFormatter={(value) => {return (reports[value].year + " " + reports[value].season)}}
                         formatter={(value, name, item) => {
-                            if (item.payload.baseSal == 0 && item.payload.guarComp == 0) return null
-                            const base = item?.payload?.baseSal ?? 0
+                            if (item.payload.baseSalary == 0 && item.payload.guaranteedComp == 0) return null
+                            const base = item?.payload?.baseSalary ?? 0
 
-                            if (name === "guarComp"){
+                            if (name === "guaranteedComp"){
                                 return `Guaranteed Compensation: $${(base + value).toLocaleString()}`
                             }
                             return `Base Salary: $${value.toLocaleString()}`
@@ -88,4 +76,5 @@ export default function ClubIDChart({
         </ChartContainer>
     )
 }
+
 
