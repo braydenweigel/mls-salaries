@@ -23,6 +23,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import PlayerIDTable from '@/app/players/[id]/table'
 import { CURRENT_YEAR, reports } from "@/lib/globals"
 import PlayerIDChart from '@/app/players/[id]/chart'
+import { notFound } from 'next/navigation'
 
 
 function getPlayerClubs(allClubs: Club[], records: PlayerRecord[]){
@@ -182,7 +183,7 @@ export default function PlayerPage(props: { params: Promise<{ id: string }> }) {
     return <p>Error Loading Player: {playerError}</p>
 
   } else if (!player){
-    return <p>Player not found</p>
+    notFound()
 
   } else if (playerLoading || records.length == 0){
     console.log("Records: ", records)

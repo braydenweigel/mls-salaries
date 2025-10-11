@@ -31,7 +31,7 @@ import { ClubPlayersTable } from '@/components/lib/ClubPlayersTable'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import ClubIDChart from './chart'
 import { Club } from '@/lib/store/clubsSlice'
-import { useSearchParams } from 'next/navigation'
+import { notFound, useSearchParams } from 'next/navigation'
 
 function determineTheme(theme: string | undefined, systemTheme: "light" | "dark" | undefined){
   let actualTheme = "dark"
@@ -109,7 +109,7 @@ export default function ClubPage(props: { params: Promise<{ id: string }> }) {
     return <p>Error Loading Club: {clubError}</p>
 
   } else if (!club){
-    return (<p>Error: Club not found</p>)
+    notFound()
 
   } else if (clubLoading || clubRecords.length == 0){
     return <LoadingPlayerPage/>
