@@ -1,9 +1,10 @@
 "use client"
 
 import { ColumnDef } from "@tanstack/react-table"
-import { ArrowUpDown } from "lucide-react";
+import { ArrowUpDown, Info } from "lucide-react";
 import Link from "next/link";
 import { Button } from "../ui/button";
+import { Tooltip, TooltipTrigger, TooltipContent } from "../ui/tooltip";
 
 export type TableClubPlayers = {
     id: string;
@@ -62,6 +63,14 @@ export const clubPlayerColumns: ColumnDef<TableClubPlayers>[] = [
               variant="ghost"
               onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
             >
+              <Tooltip>
+                <TooltipTrigger>
+                  < Info className="mr-1 h-4 w-4"/>
+                </TooltipTrigger>
+                <TooltipContent>
+                  <p>Base Salary plus annualized signing</p><p>and guaranteed bonuses.</p>
+                </TooltipContent>
+              </Tooltip>
               Guaranteed Comp
               <ArrowUpDown className="ml-2 h-4 w-4" />
             </Button>

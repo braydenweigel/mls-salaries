@@ -1,8 +1,10 @@
 "use client"
 
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
+import { Tooltip, TooltipTrigger, TooltipContent } from "@/components/ui/tooltip"
 import { Club } from "@/lib/store/clubsSlice"
 import { PlayerRecord } from "@/lib/store/playerRecordsSlice"
+import { Info } from "lucide-react"
 import Link from 'next/link'
 
 interface Props {
@@ -23,7 +25,19 @@ export default function PlayerIDTable({
                     <TableHead>Club</TableHead>
                     <TableHead>Position</TableHead>
                     <TableHead className="text-right">Base Salary</TableHead>
-                    <TableHead className="text-right">Guaranteed Comp</TableHead>
+                    <TableHead className="text-right">
+                        <div className="flex items-center place-self-end">
+                            <Tooltip>
+                                <TooltipTrigger>
+                                    <Info className="mr-1 h-4 w-4"/>
+                                </TooltipTrigger>
+                                <TooltipContent>
+                                    <p>Base Salary plus annualized signing</p><p>and guaranteed bonuses.</p>
+                                </TooltipContent>
+                            </Tooltip>
+                            Guaranteed Comp
+                        </div>
+                    </TableHead>
                 </TableRow>
             </TableHeader>
             <TableBody>
