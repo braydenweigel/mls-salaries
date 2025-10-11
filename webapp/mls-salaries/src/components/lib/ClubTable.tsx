@@ -30,13 +30,14 @@ import { ButtonGroup } from "../ui/button-group";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 import SelectNumRows from "./SelectNumRows";
 import { Label } from "../ui/label";
+import { TableClub } from "./clubTableColumns";
 
-interface DataTableProps<TData, TValue>{
+interface DataTableProps<TData extends TableClub, TValue>{
     columns: ColumnDef<TData, TValue>[];
     data: TData[]
 }
 
-export function ClubTable<TData, TValue>({
+export function ClubTable<TData extends TableClub, TValue>({
     columns,
     data
 }: DataTableProps<TData, TValue>) {
@@ -57,11 +58,16 @@ export function ClubTable<TData, TValue>({
         }
     })
 
+    let clubs: string[] = []
+    for (const club of data){
+        clubs.push(club.clubName)
+    }
+
     return (
         <div className="w-full table-fixed">
             <div className="flex items-center w-full py-4 justify-between">
                 <div className="flex items-center space-x-4">
-                    <ClubFilter column={table.getColumn("clubName")} />
+                    <ClubFilter column={table.getColumn("clubName")} clubs={clubs} />
                 </div>
             </div>
             <div className="max-h-[55vh] overflow-auto w-full">

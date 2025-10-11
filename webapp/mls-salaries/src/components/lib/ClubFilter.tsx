@@ -22,7 +22,13 @@ const CLUBS = [
     "Vancouver Whitecaps"
 ]
 
-export function ClubFilter({ column }: { column: any }) {
+export function ClubFilter({
+     column, 
+     clubs 
+}: { 
+    column: any; 
+    clubs: string[]
+}) {
     const [open, setOpen] = React.useState(false)
     const currentFilter = (column?.getFilterValue() as string[]) ?? []
     const [selected, setSelected] = React.useState<string[]>(currentFilter)
@@ -43,6 +49,8 @@ export function ClubFilter({ column }: { column: any }) {
       column.setFilterValue(undefined)
       setOpen(false)
     }
+
+    clubs.sort()
     
     return (
         <Dialog open={open} onOpenChange={setOpen}>
@@ -54,7 +62,7 @@ export function ClubFilter({ column }: { column: any }) {
                     <DialogTitle>Select Clubs</DialogTitle>
                 </DialogHeader> 
                 <div className="flex flex-col gap-2 max-h-80 overflow-y-auto">
-                    {CLUBS.map((club) => (
+                    {clubs.map((club) => (
                         <label key={club} className="flex items-center gap-2 cursor-pointer">
                         <Checkbox
                             checked={selected.includes(club)}

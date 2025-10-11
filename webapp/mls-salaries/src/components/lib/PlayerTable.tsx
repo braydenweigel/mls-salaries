@@ -30,13 +30,14 @@ import { ArrowLeft, ArrowRight } from "lucide-react";
 import SelectNumRows from "./SelectNumRows";
 import { Label } from "../ui/label";
 import { ScrollArea } from "../ui/scroll-area";
+import { TablePlayer } from "./playerTableColumns";
 
-interface DataTableProps<TData, TValue>{
+interface DataTableProps<TData extends TablePlayer, TValue>{
     columns: ColumnDef<TData, TValue>[];
     data: TData[]
 }
 
-export function PlayerTable<TData, TValue>({
+export function PlayerTable<TData extends TablePlayer, TValue>({
     columns,
     data
 }: DataTableProps<TData, TValue>) {
@@ -59,6 +60,12 @@ export function PlayerTable<TData, TValue>({
         }
     })
 
+    let allPlayerClubs: string[] = []
+    for (const player of data){
+        allPlayerClubs.push(player.club)
+    }
+    const clubs = [...new Set(allPlayerClubs)]//remove duplicates
+
     return (
         <div className="w-full table-fixed">
             <div className="flex items-center w-full py-4 justify-between">
@@ -72,7 +79,7 @@ export function PlayerTable<TData, TValue>({
                     className="max-w-sm"
                     />
                     <PositionFilter column={table.getColumn("position")}/>
-                    <ClubFilter column={table.getColumn("club")} />
+                    <ClubFilter column={table.getColumn("club")} clubs={clubs}/>
                 </div>
                 <div className="flex items-center space-x-4">
                     <Label>Rows per page:</Label>
