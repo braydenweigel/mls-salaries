@@ -8,7 +8,7 @@ import { makeSelectPlayerRecordsByYear } from "@/lib/store/playerRecordsSlice"
 import { RootState } from "@/lib/store/store"
 import { isValidClub } from "@/lib/storeUtils"
 import { useSelector } from "react-redux"
-import { reports } from "@/lib/globals"
+import { CURRENT_YEAR, reports } from "@/lib/globals"
 import React from "react"
 import SelectReport from "@/components/lib/SelectReport"
 import { useSearchParams } from "next/navigation"
@@ -16,10 +16,10 @@ import { useSearchParams } from "next/navigation"
 export default function Players() {
   const searchParams = useSearchParams()
   let reportParams = searchParams.get("year")
-  const [reportValue, setReportValue] = React.useState(reports[reportParams ?? ""] && reportParams ? reportParams : "2025")//report params used when params exist and are a valid year
+  const [reportValue, setReportValue] = React.useState(reports[reportParams ?? ""] && reportParams ? reportParams : CURRENT_YEAR)//report params used when params exist and are a valid year
   const year = reports[reportValue].year
   const season = reports[reportValue].season
-  const defaultReport = reports[reportParams ?? ""] && reportParams ? reportParams : "2025"
+  const defaultReport = reports[reportParams ?? ""] && reportParams ? reportParams : CURRENT_YEAR
 
   const selectPlayerRecordsByYear = makeSelectPlayerRecordsByYear(year, season);
   const playerRecords = useSelector(selectPlayerRecordsByYear)

@@ -2,7 +2,7 @@
 
 import SelectReport from "@/components/lib/SelectReport"
 import { Card, CardContent } from "@/components/ui/card"
-import { reports, clubs as clubsObject} from "@/lib/globals"
+import { reports, clubs as clubsObject, CURRENT_YEAR} from "@/lib/globals"
 import { makeSelectPlayerRecordsByYear } from "@/lib/store/playerRecordsSlice"
 import { RootState } from "@/lib/store/store"
 import React from "react"
@@ -40,10 +40,10 @@ function createTableData(clubs: typeof clubsObject, reportValue: string){
 export default function Clubs() {
   const searchParams = useSearchParams()
   let reportParams = searchParams.get("year")
-  const [reportValue, setReportValue] = React.useState(reports[reportParams ?? ""] && reportParams ? reportParams : "2025")//report params used when params exist and are a valid year
+  const [reportValue, setReportValue] = React.useState(reports[reportParams ?? ""] && reportParams ? reportParams : CURRENT_YEAR)//report params used when params exist and are a valid year
   const year = reports[reportValue].year
   const season = reports[reportValue].season
-  const defaultReport = reports[reportParams ?? ""] && reportParams ? reportParams : "2025"
+  const defaultReport = reports[reportParams ?? ""] && reportParams ? reportParams : CURRENT_YEAR
   
 
   const selectPlayerRecordsByYear = makeSelectPlayerRecordsByYear(year, season);

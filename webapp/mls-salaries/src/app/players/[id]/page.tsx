@@ -21,7 +21,7 @@ import { useTheme } from "next-themes"
 import LoadingPlayerPage from './loading'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import PlayerIDTable from '@/app/players/[id]/table'
-import { reports } from "@/lib/globals"
+import { CURRENT_YEAR, reports } from "@/lib/globals"
 import PlayerIDChart from '@/app/players/[id]/chart'
 
 
@@ -192,7 +192,9 @@ export default function PlayerPage(props: { params: Promise<{ id: string }> }) {
     const playerClubs = getPlayerClubs(allClubs, records)
 
     let clubText = "Last Club: "
-    if (records[0].recordyear == "2025" && records[0].recordseason == "Spring"){
+    const year = reports[CURRENT_YEAR].year
+    const season = reports[CURRENT_YEAR].season
+    if (records[0].recordyear == year && records[0].recordseason == season){
       clubText = "Current Club: "
     } 
 

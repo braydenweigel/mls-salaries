@@ -22,7 +22,7 @@ import { useEffect, useState } from "react"
 import { RootState } from "@/lib/store/store"
 import React, { use } from "react"
 import { useTheme } from "next-themes"
-import { reports } from '@/lib/globals'
+import { CURRENT_YEAR, reports } from '@/lib/globals'
 import SelectReport from '@/components/lib/SelectReport'
 import LoadingPlayerPage from '@/app/players/[id]/loading'
 import { makeSelectPlayerRecordsByClub } from '@/lib/store/playerRecordsSlice'
@@ -77,7 +77,7 @@ export default function ClubPage(props: { params: Promise<{ id: string }> }) {
   const { id } = use(props.params)
   const searchParams = useSearchParams()
   let reportParams = searchParams.get("year")
-  const defaultReport = id == "CHV" ? "2014.5" : "2025"
+  const defaultReport = id == "CHV" ? "2014.5" : CURRENT_YEAR
 
 
   const [reportValue, setReportValue] = React.useState(reportParams ?? defaultReport)
@@ -87,10 +87,10 @@ export default function ClubPage(props: { params: Promise<{ id: string }> }) {
     year = reports[reportValue].year
     season = reports[reportValue].season
   } else {
-    year = "2025"
-    season = "Spring"
+    year = reports[CURRENT_YEAR].year
+    season = reports[CURRENT_YEAR].season
     reportParams = defaultReport
-    setReportValue("2025")
+    setReportValue(CURRENT_YEAR)
   }
 
   const { data: allClubs, loading: clubLoading, error: clubError } = useSelector((state: RootState) => state.clubs)
