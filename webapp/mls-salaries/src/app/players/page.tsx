@@ -8,14 +8,18 @@ import { makeSelectPlayerRecordsByYear } from "@/lib/store/playerRecordsSlice"
 import { RootState } from "@/lib/store/store"
 import { isValidClub } from "@/lib/storeUtils"
 import { useSelector } from "react-redux"
-import { reports } from "@/lib/dicts"
+import { reports } from "@/lib/globals"
 import React from "react"
 import SelectReport from "@/components/lib/SelectReport"
+import { useSearchParams } from "next/navigation"
 
 export default function Players() {
-  const [reportValue, setReportValue] = React.useState("2025")
+  const searchParams = useSearchParams()
+  let reportParams = searchParams.get("year")
+  const [reportValue, setReportValue] = React.useState(reports[reportParams ?? ""] && reportParams ? reportParams : "2025")//report params used when params exist and are a valid year
   const year = reports[reportValue].year
   const season = reports[reportValue].season
+  const defaultReport = reports[reportParams ?? ""] && reportParams ? reportParams : "2025"
 
   const selectPlayerRecordsByYear = makeSelectPlayerRecordsByYear(year, season);
   const playerRecords = useSelector(selectPlayerRecordsByYear)
@@ -42,7 +46,8 @@ export default function Players() {
       clubid: record.club,
       position: record.position,
       baseSal: record.basesalary,
-      guarComp: record.guaranteedcomp
+      guarComp: record.guaranteedcomp,
+      reportYear: reportValue
     })
   }
 
@@ -51,7 +56,7 @@ export default function Players() {
   return (
     <Card>
       <CardContent className="overflow-hidden">
-        <SelectReport onReportValueChange={(report) => setReportValue(report)} reports={reports} defaultReport={"2025"}/>
+        <SelectReport onReportValueChange={(report) => setReportValue(report)} reports={reports} defaultReport={defaultReport}/>
         <div>
           <PlayerTable columns={playerColumns} data={data} />
         </div>

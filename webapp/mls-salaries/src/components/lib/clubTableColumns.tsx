@@ -10,6 +10,7 @@ export type TableClub = {
     clubid: string;
     totalBaseSal: number;
     totalGuarComp: number;
+    reportYear: string;
 }
 
 export const clubColumns: ColumnDef<TableClub>[] = [
@@ -19,7 +20,7 @@ export const clubColumns: ColumnDef<TableClub>[] = [
         cell: ({ row }) => {
             const club = row.original
             return (
-                <Link href={`/clubs/${club.clubid}`} className="hover:underline">{club.clubName}</Link>
+                <Link href={`/clubs/${club.clubid}?year=${club.reportYear}`} className="hover:underline">{club.clubName}</Link>
             )
         },
         filterFn: (row, club, filterValue: string[]) => {

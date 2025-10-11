@@ -20,7 +20,6 @@ import {
     TableHeader,
     TableRow
 } from "@/components/ui/table"
-import { Card, CardContent } from "../ui/card";
 import { Button } from "../ui/button";
 import React from "react";
 import { Input } from "../ui/input";
@@ -29,7 +28,6 @@ import { ClubFilter } from "./ClubFilter";
 import { ButtonGroup } from "../ui/button-group";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 import SelectNumRows from "./SelectNumRows";
-import { Field, FieldLabel } from "../ui/field";
 import { Label } from "../ui/label";
 import { ScrollArea } from "../ui/scroll-area";
 

@@ -2,7 +2,7 @@
 
 import SelectReport from "@/components/lib/SelectReport"
 import { Card, CardContent } from "@/components/ui/card"
-import { reports, clubs as clubsObject} from "@/lib/dicts"
+import { reports, clubs as clubsObject} from "@/lib/globals"
 import { makeSelectPlayerRecordsByYear } from "@/lib/store/playerRecordsSlice"
 import { RootState } from "@/lib/store/store"
 import React from "react"
@@ -10,11 +10,12 @@ import { useSelector } from "react-redux"
 import { clubColumns, TableClub} from "@/components/lib/clubTableColumns"
 import { isValidClub } from "@/lib/storeUtils"
 import { ClubTable } from "@/components/lib/ClubTable"
-import { report } from "process"
+import { useSearchParams } from "next/navigation"
 
 function createTableData(clubs: typeof clubsObject, reportValue: string){
   let data: TableClub[] = []
 
+  console.log("Report Value: ", reportValue)
   Object.entries(clubs).forEach(([key, club]) => {
     if (Number(reports[reportValue].year) >= club.yearFirst) {
       if (key == "SJ" && reportValue == "2007"){
@@ -27,6 +28,7 @@ function createTableData(clubs: typeof clubsObject, reportValue: string){
           clubName: club.clubName,
           totalBaseSal: club.totalBaseSal,
           totalGuarComp: club.totalGuarComp,
+          reportYear: reportValue
         })
       }
     }
@@ -36,9 +38,13 @@ function createTableData(clubs: typeof clubsObject, reportValue: string){
 }
 
 export default function Clubs() {
-  const [reportValue, setReportValue] = React.useState("2025")
+  const searchParams = useSearchParams()
+  let reportParams = searchParams.get("year")
+  const [reportValue, setReportValue] = React.useState(reports[reportParams ?? ""] && reportParams ? reportParams : "2025")//report params used when params exist and are a valid year
   const year = reports[reportValue].year
   const season = reports[reportValue].season
+  const defaultReport = reports[reportParams ?? ""] && reportParams ? reportParams : "2025"
+  
 
   const selectPlayerRecordsByYear = makeSelectPlayerRecordsByYear(year, season);
   const playerRecords = useSelector(selectPlayerRecordsByYear)
@@ -56,9 +62,9 @@ export default function Clubs() {
     return (
       <Card>
         <CardContent className="overflow-hidden">
-          <SelectReport onReportValueChange={(report) => setReportValue(report)} reports={reports} defaultReport={"2025"}/>
+          <SelectReport onReportValueChange={(report) => setReportValue(report)} reports={reports} defaultReport={defaultReport}/>
           <div>
-          <ClubTable columns={clubColumns} data={data} />
+          <ClubTable columns={clubColumns} data={data}/>
           </div>
         </CardContent>
     </Card>

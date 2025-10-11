@@ -22,7 +22,7 @@ import { useEffect, useState } from "react"
 import { RootState } from "@/lib/store/store"
 import React, { use } from "react"
 import { useTheme } from "next-themes"
-import { reports } from '@/lib/dicts'
+import { reports } from '@/lib/globals'
 import SelectReport from '@/components/lib/SelectReport'
 import LoadingPlayerPage from '@/app/players/[id]/loading'
 import { makeSelectPlayerRecordsByClub } from '@/lib/store/playerRecordsSlice'
@@ -31,6 +31,7 @@ import { ClubPlayersTable } from '@/components/lib/ClubPlayersTable'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import ClubIDChart from './chart'
 import { Club } from '@/lib/store/clubsSlice'
+import { useSearchParams } from 'next/navigation'
 
 function determineTheme(theme: string | undefined, systemTheme: "light" | "dark" | undefined){
   let actualTheme = "dark"
@@ -74,9 +75,23 @@ export default function ClubPage(props: { params: Promise<{ id: string }> }) {
   const { theme, systemTheme } = useTheme()
 
   const { id } = use(props.params)
-  const [reportValue, setReportValue] = React.useState(id == "CHV" ? "2014.5" : "2025")
-  const year = reports[reportValue].year
-  const season = reports[reportValue].season
+  const searchParams = useSearchParams()
+  let reportParams = searchParams.get("year")
+  const defaultReport = id == "CHV" ? "2014.5" : "2025"
+
+
+  const [reportValue, setReportValue] = React.useState(reportParams ?? defaultReport)
+
+  let year, season
+  if (reports[reportValue]){
+    year = reports[reportValue].year
+    season = reports[reportValue].season
+  } else {
+    year = "2025"
+    season = "Spring"
+    reportParams = defaultReport
+    setReportValue("2025")
+  }
 
   const { data: allClubs, loading: clubLoading, error: clubError } = useSelector((state: RootState) => state.clubs)
   const club = allClubs.find((club) => club.clubid == id)
@@ -93,13 +108,13 @@ export default function ClubPage(props: { params: Promise<{ id: string }> }) {
   if (clubError){
     return <p>Error Loading Club: {clubError}</p>
 
-  } else if (clubLoading || clubRecords.length == 0){
-    return <LoadingPlayerPage/>
-
   } else if (!club){
     return (<p>Error: Club not found</p>)
 
-  } else {
+  } else if (clubLoading || clubRecords.length == 0){
+    return <LoadingPlayerPage/>
+
+  }  else {
     let totalBaseSal = 0
     let totalGuarComp = 0
     let data: TableClubPlayers[] = []
@@ -123,7 +138,8 @@ export default function ClubPage(props: { params: Promise<{ id: string }> }) {
           name: name,
           position: record.position,
           baseSal: record.basesalary,
-          guarComp: record.guaranteedcomp
+          guarComp: record.guaranteedcomp,
+          reportYear: reportValue
         })
       }
     }
@@ -177,7 +193,7 @@ export default function ClubPage(props: { params: Promise<{ id: string }> }) {
            <CardDescription className="text-base">Years Active: {clubYears}</CardDescription>
          </CardHeader>
          <CardContent className="overflow-hidden space-y-2">
-           <SelectReport onReportValueChange={(report) => setReportValue(report)} reports={clubReports} defaultReport={id == "CHV" ? "2014.5" : "2025"}/>
+           <SelectReport onReportValueChange={(report) => setReportValue(report)} reports={clubReports} defaultReport={reportParams ?? defaultReport}/>
            <p>Total Base Salary: ${totalBaseSal.toLocaleString()}</p> 
            <p>Total Guaranteed Compensation: ${totalGuarComp.toLocaleString()}</p>
          </CardContent>

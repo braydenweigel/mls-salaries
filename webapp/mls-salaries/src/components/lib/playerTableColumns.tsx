@@ -13,6 +13,7 @@ export type TablePlayer = {
     position: string;
     baseSal: number;
     guarComp: number;
+    reportYear: string;
 }
 
 export const playerColumns: ColumnDef<TablePlayer>[] = [
@@ -33,7 +34,7 @@ export const playerColumns: ColumnDef<TablePlayer>[] = [
         cell: ({ row }) => {
             const player = row.original
             return (
-                <Link href={`/clubs/${player.clubid}`} className="hover:underline">{player.club}</Link>
+                <Link href={`/clubs/${player.clubid}?year=${player.reportYear}`} className="hover:underline">{player.club}</Link>
             )
         },
         filterFn: (row, club, filterValue: string[]) => {

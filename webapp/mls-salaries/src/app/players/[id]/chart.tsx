@@ -4,7 +4,7 @@ import { ChartConfig, ChartContainer, ChartLegend, ChartLegendContent, ChartTool
 import { Club } from "@/lib/store/clubsSlice"
 import { PlayerRecord } from "@/lib/store/playerRecordsSlice"
 import { Bar, BarChart, XAxis, YAxis, TooltipProps} from "recharts"
-import { reports, clubs } from "@/lib/dicts"
+import { reports, clubs } from "@/lib/globals"
 
 interface Props {
     data: {

@@ -11,6 +11,7 @@ export type TableClubPlayers = {
     position: string;
     baseSal: number;
     guarComp: number;
+    reportYear: string;
 }
 
 export const clubPlayerColumns: ColumnDef<TableClubPlayers>[] = [
@@ -48,7 +49,8 @@ export const clubPlayerColumns: ColumnDef<TableClubPlayers>[] = [
         },
         cell: ({ row }) => {
             const value = row.getValue<number>("baseSal")
-            return `$${value.toLocaleString()}`
+            const backup = row.getValue<number>("guarComp")
+            return `$${(value ?? backup).toLocaleString()}`
         }
 
     },

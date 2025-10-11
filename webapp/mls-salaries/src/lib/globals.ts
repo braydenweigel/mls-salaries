@@ -55,3 +55,5 @@ export const clubs: Record<string, { clubName: string; yearFirst: number; yearFi
     "VAN": { clubName: "Vancouver Whitecaps", yearFirst: 2011, yearFinal: 0, totalBaseSal: 0, totalGuarComp: 0 },
     "MLS": { clubName: "MLS Pool", yearFirst: 0, yearFinal: 0, totalBaseSal: 0, totalGuarComp: 0 },
 }
+
+export const CURRENT_YEAR = "2025"

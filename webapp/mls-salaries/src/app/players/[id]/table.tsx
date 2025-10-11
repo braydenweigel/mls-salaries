@@ -30,7 +30,7 @@ export default function PlayerIDTable({
             {records.map((record, index) => (
                 <TableRow key={record.id}>
                 <TableCell>{record.recordyear}</TableCell>
-                <TableCell><Link href={`/clubs/${record.club}`} className="hover:underline">{playerClubs[index].clubname}</Link></TableCell>
+                <TableCell><Link href={`/clubs/${record.club}?year=${(record.recordyear.toString()) + (record.recordseason == "Fall" ? ".5" : "")}`} className="hover:underline">{playerClubs[index].clubname}</Link></TableCell>
                 <TableCell>{record.position}</TableCell>
                 <TableCell className="text-right">
                     ${record.basesalary ? record.basesalary.toLocaleString() : record.guaranteedcomp.toLocaleString()}
