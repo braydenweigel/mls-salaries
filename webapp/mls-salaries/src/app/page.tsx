@@ -27,7 +27,7 @@ export default function Home() {
         <div className="mt-2">
           <h4 className="text-lg font-medium">View an individual player&apos;s salaries:</h4>
           <h5 className="text-base italic">
-            Suggested: <Link href="/players" className="hover:underline">Lionel Messi</Link> • <Link href="/players" className="hover:underline">Diego Chara</Link> • <Link href="/players" className="hover:underline">Darlington Nagbe</Link>
+            Suggested: <Link href="/players/f5LSPK" className="hover:underline">Lionel Messi</Link> • <Link href="/players/DcH4r4" className="hover:underline">Diego Chara</Link> • <Link href="/players/RshFkO" className="hover:underline">Darlington Nagbe</Link>
           </h5>
         </div>
       </div>
