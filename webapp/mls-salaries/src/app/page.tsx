@@ -25,7 +25,7 @@ export default function Home() {
           </ButtonGroup>
         </Field>
         <div className="mt-2">
-          <h4 className="text-lg font-medium">View an individual player's salaries:</h4>
+          <h4 className="text-lg font-medium">View an individual player&apos;s salaries:</h4>
           <h5 className="text-base italic">
             Suggested: <Link href="/players" className="hover:underline">Lionel Messi</Link> • <Link href="/players" className="hover:underline">Diego Chara</Link> • <Link href="/players" className="hover:underline">Darlington Nagbe</Link>
           </h5>
@@ -43,7 +43,7 @@ export default function Home() {
           </ButtonGroup>
         </Field>
         <div className="mt-2">
-          <h4 className="text-lg font-medium">View an individual club's salaries:</h4>
+          <h4 className="text-lg font-medium">View an individual club&apos;s salaries:</h4>
           <h5 className="text-base italic">
             Suggested: <Link href="/clubs/MIA" className="hover:underline">Inter Miami</Link> • <Link href="/clubs/LA" className="hover:underline">LA Galaxy</Link> • <Link href="/clubs/POR" className="hover:underline">Portland Timbers</Link>
           </h5>

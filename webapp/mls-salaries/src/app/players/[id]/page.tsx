@@ -2,10 +2,8 @@
 
 import { 
   Card,
-  CardAction,
   CardContent,
   CardDescription,
-  CardFooter,
   CardHeader,
   CardTitle 
 } from '@/components/ui/card'
@@ -27,8 +25,8 @@ import { notFound } from 'next/navigation'
 
 
 function getPlayerClubs(allClubs: Club[], records: PlayerRecord[]){
-  let playerClubs: Club[] = []
-  for (let i of records){
+  const playerClubs: Club[] = []
+  for (const i of records){
     const clubName = isValidClub(allClubs, i.club)
     if (clubName) 
       playerClubs.push(clubName)
@@ -54,8 +52,8 @@ function determineTheme(theme: string | undefined, systemTheme: "light" | "dark"
   return actualTheme
 }
 
-function determineColors(theme: string, club: Club){
-  const clubColor = theme === "dark" ? club.colorprimary : club.colorsecondary
+function determineColors(theme: string){
+  // const clubColor = theme === "dark" ? club.colorprimary : club.colorsecondary
 
   let bsColor = "#FFFFFF"
   let gcColor = "#FFFFFF"
@@ -74,7 +72,7 @@ function determineColors(theme: string, club: Club){
 }
 
 function formatData(playerRecords: PlayerRecord[]){
-  let data: {
+  const data: {
     report: string,
     baseSalary: number,
     guaranteedComp: number,
@@ -126,34 +124,34 @@ function formatData(playerRecords: PlayerRecord[]){
   return data
 }
 
-function adjustHexColor(hex: string, percent: number): string {
-  // Remove leading "#" if present
-  hex = hex.replace(/^#/, "");
+// function adjustHexColor(hex: string, percent: number): string {
+//   // Remove leading "#" if present
+//   hex = hex.replace(/^#/, "");
 
-  // Parse r, g, b
-  const num = parseInt(hex, 16);
-  let r = (num >> 16) & 0xff;
-  let g = (num >> 8) & 0xff;
-  let b = num & 0xff;
+//   // Parse r, g, b
+//   const num = parseInt(hex, 16);
+//   let r = (num >> 16) & 0xff;
+//   let g = (num >> 8) & 0xff;
+//   let b = num & 0xff;
 
-  // Apply adjustment
-  const adjust = (channel: number) =>
-    Math.min(255, Math.max(0, Math.round(channel * (100 + percent) / 100)));
+//   // Apply adjustment
+//   const adjust = (channel: number) =>
+//     Math.min(255, Math.max(0, Math.round(channel * (100 + percent) / 100)));
 
-  r = adjust(r);
-  g = adjust(g);
-  b = adjust(b);
+//   r = adjust(r);
+//   g = adjust(g);
+//   b = adjust(b);
 
-  // Convert back to hex string
-  const newHex =
-    "#" +
-    (1 << 24 | (r << 16) | (g << 8) | b)
-      .toString(16)
-      .slice(1)
-      .toUpperCase();
+//   // Convert back to hex string
+//   const newHex =
+//     "#" +
+//     (1 << 24 | (r << 16) | (g << 8) | b)
+//       .toString(16)
+//       .slice(1)
+//       .toUpperCase();
 
-  return newHex;
-}
+//   return newHex;
+// }
 
 export default function PlayerPage(props: { params: Promise<{ id: string }> }) {
   const [mounted, setMounted] = useState(false);
@@ -202,8 +200,8 @@ export default function PlayerPage(props: { params: Promise<{ id: string }> }) {
     const position = records[0].position
     const data = formatData(records)
 
-    let actualTheme = determineTheme(theme, systemTheme)
-    const colors = determineColors(actualTheme, playerClubs[0])
+    const actualTheme = determineTheme(theme, systemTheme)
+    const colors = determineColors(actualTheme)
 
     return (
       <div>

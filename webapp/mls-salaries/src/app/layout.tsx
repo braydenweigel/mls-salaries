@@ -11,20 +11,21 @@ import {
   NavigationMenuList,
   navigationMenuTriggerStyle,
 } from "@/components/ui/navigation-menu"
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
+// import {
+//   DropdownMenu,
+//   DropdownMenuContent,
+//   DropdownMenuItem,
+//   DropdownMenuTrigger,
+// } from "@/components/ui/dropdown-menu"
 import { ThemeProvider } from "@/components/theme-provider"
 import { ModeToggle } from "@/components/lib/mode-toggle";
 import { Provider, useDispatch } from "react-redux";
 import { AppDispatch, store } from "@/lib/store/store";
-import { useEffect } from "react";
+import { Suspense, useEffect } from "react";
 import { fetchPlayers } from "@/lib/store/playersSlice";
 import { fetchClubs } from "@/lib/store/clubsSlice";
 import { fetchPlayerRecords } from "@/lib/store/playerRecordsSlice";
+import LoadingPlayerPage from "./players/[id]/loading";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -43,7 +44,7 @@ function InitData() {
     dispatch(fetchPlayers())
     dispatch(fetchClubs())
     dispatch(fetchPlayerRecords())
-  }), [dispatch]
+  }, [dispatch])
 
   return null
 }
@@ -104,7 +105,9 @@ export default function RootLayout({
           <main className="min-h-screen mt-12 mx-auto w-full max-w-[90%] lg:max-w-[66%] px-4">
             <Provider store={store}>
               <InitData/>
-              {children}
+              <Suspense fallback={<LoadingPlayerPage/>}>
+                {children}
+              </Suspense>
             </Provider>
           </main>
           <footer className="bottom-0 mx-auto w-full max-w-[90%] lg:max-w-[66%] px-4 py-2">

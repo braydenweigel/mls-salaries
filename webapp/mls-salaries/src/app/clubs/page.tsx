@@ -4,16 +4,14 @@ import SelectReport from "@/components/lib/SelectReport"
 import { Card, CardContent } from "@/components/ui/card"
 import { reports, clubs as clubsObject, CURRENT_YEAR} from "@/lib/globals"
 import { makeSelectPlayerRecordsByYear } from "@/lib/store/playerRecordsSlice"
-import { RootState } from "@/lib/store/store"
 import React from "react"
 import { useSelector } from "react-redux"
 import { clubColumns, TableClub} from "@/components/lib/clubTableColumns"
-import { isValidClub } from "@/lib/storeUtils"
 import { ClubTable } from "@/components/lib/ClubTable"
 import { useSearchParams } from "next/navigation"
 
 function createTableData(clubs: typeof clubsObject, reportValue: string){
-  let data: TableClub[] = []
+  const data: TableClub[] = []
 
   console.log("Report Value: ", reportValue)
   Object.entries(clubs).forEach(([key, club]) => {
@@ -39,7 +37,7 @@ function createTableData(clubs: typeof clubsObject, reportValue: string){
 
 export default function Clubs() {
   const searchParams = useSearchParams()
-  let reportParams = searchParams.get("year")
+  const reportParams = searchParams.get("year")
   const [reportValue, setReportValue] = React.useState(reports[reportParams ?? ""] && reportParams ? reportParams : CURRENT_YEAR)//report params used when params exist and are a valid year
   const year = reports[reportValue].year
   const season = reports[reportValue].season
@@ -49,7 +47,7 @@ export default function Clubs() {
   const selectPlayerRecordsByYear = makeSelectPlayerRecordsByYear(year, season);
   const playerRecords = useSelector(selectPlayerRecordsByYear)
 
-  let clubs = structuredClone(clubsObject)
+  const clubs = structuredClone(clubsObject)
 
   for (const record of playerRecords){
     clubs[record.club].totalBaseSal += record.basesalary

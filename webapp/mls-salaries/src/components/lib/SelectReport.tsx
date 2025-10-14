@@ -9,7 +9,7 @@ import {
 } from "@/components/ui/select"
 
 interface ReportSelectProps {
-    reports: Object
+    reports: object
     defaultReport: string
     onReportValueChange: (report: string) => void
 }

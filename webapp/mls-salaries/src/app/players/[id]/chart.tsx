@@ -1,10 +1,8 @@
 "use client"
 
 import { ChartConfig, ChartContainer, ChartLegend, ChartLegendContent, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart"
-import { Club } from "@/lib/store/clubsSlice"
-import { PlayerRecord } from "@/lib/store/playerRecordsSlice"
-import { Bar, BarChart, XAxis, YAxis, TooltipProps} from "recharts"
-import { reports, clubs } from "@/lib/globals"
+import { Bar, BarChart, XAxis} from "recharts"
+import { reports} from "@/lib/globals"
 
 interface Props {
     data: {

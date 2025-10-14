@@ -6,7 +6,6 @@ import {
     SortingState,
     flexRender,
     getCoreRowModel,
-    getPaginationRowModel,
     getFilteredRowModel,
     getSortedRowModel,
     useReactTable
@@ -20,18 +19,10 @@ import {
     TableHeader,
     TableRow
 } from "@/components/ui/table"
-import { Card, CardContent } from "../ui/card";
 import { Button } from "../ui/button";
 import React from "react";
 import { Input } from "../ui/input";
 import { PositionFilter } from "./PositionFilter";
-import { ClubFilter } from "./ClubFilter";
-import { ButtonGroup } from "../ui/button-group";
-import { ArrowLeft, ArrowRight } from "lucide-react";
-import SelectNumRows from "./SelectNumRows";
-import { Field, FieldLabel } from "../ui/field";
-import { Label } from "../ui/label";
-import { ScrollArea } from "../ui/scroll-area";
 
 interface DataTableProps<TData, TValue>{
     columns: ColumnDef<TData, TValue>[];
@@ -71,7 +62,7 @@ export function ClubPlayersTable<TData, TValue>({
                     }
                     className="max-w-sm"
                     />
-                    <PositionFilter column={table.getColumn("position")}/>
+                    <PositionFilter column={table.getColumn("position")!}/>
                 </div>
             </div>
             <div className="max-h-[55vh] overflow-auto w-full">

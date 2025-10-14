@@ -6,7 +6,6 @@ import {
     SortingState,
     flexRender,
     getCoreRowModel,
-    getPaginationRowModel,
     getFilteredRowModel,
     getSortedRowModel,
     useReactTable
@@ -20,16 +19,9 @@ import {
     TableHeader,
     TableRow
 } from "@/components/ui/table"
-import { Card, CardContent } from "../ui/card";
 import { Button } from "../ui/button";
 import React from "react";
-import { Input } from "../ui/input";
-import { PositionFilter } from "./PositionFilter";
 import { ClubFilter } from "./ClubFilter";
-import { ButtonGroup } from "../ui/button-group";
-import { ArrowLeft, ArrowRight } from "lucide-react";
-import SelectNumRows from "./SelectNumRows";
-import { Label } from "../ui/label";
 import { TableClub } from "./clubTableColumns";
 
 interface DataTableProps<TData extends TableClub, TValue>{
@@ -58,7 +50,7 @@ export function ClubTable<TData extends TableClub, TValue>({
         }
     })
 
-    let clubs: string[] = []
+    const clubs: string[] = []
     for (const club of data){
         clubs.push(club.clubName)
     }
@@ -67,7 +59,7 @@ export function ClubTable<TData extends TableClub, TValue>({
         <div className="w-full table-fixed">
             <div className="flex items-center w-full py-4 justify-between">
                 <div className="flex items-center space-x-4">
-                    <ClubFilter column={table.getColumn("clubName")} clubs={clubs} />
+                    <ClubFilter column={table.getColumn("clubName")!} clubs={clubs} />
                 </div>
             </div>
             <div className="max-h-[55vh] overflow-auto w-full">

@@ -11,22 +11,23 @@ import {
   DialogFooter,
 } from "@/components/ui/dialog"
 import { Checkbox } from "@/components/ui/checkbox"
+import type { Column } from "@tanstack/react-table"
 
-const CLUBS = [
-    "Austin FC","Atlanta United","Charlotte FC","Chicago Fire","Chivas USA","FC Cincinnati",
-    "Columbus Crew","Colorado Rapids","FC Dallas","DC United","Houston Dynamo",
-    "Sporting Kansas City","LA Galaxy","LAFC","Inter Miami","Minnesota United",
-    "CF Montreal","Nashville SC","New England Revolution","New York City FC",
-    "New York Red Bulls","Orlando City SC","Philadelphia Union","Portland Timbers","Real Salt Lake",
-    "St. Louis City SC","San Diego FC","Seattle Sounders FC","San Jose Earthquakes","Toronto FC",
-    "Vancouver Whitecaps"
-]
+// const CLUBS = [
+//     "Austin FC","Atlanta United","Charlotte FC","Chicago Fire","Chivas USA","FC Cincinnati",
+//     "Columbus Crew","Colorado Rapids","FC Dallas","DC United","Houston Dynamo",
+//     "Sporting Kansas City","LA Galaxy","LAFC","Inter Miami","Minnesota United",
+//     "CF Montreal","Nashville SC","New England Revolution","New York City FC",
+//     "New York Red Bulls","Orlando City SC","Philadelphia Union","Portland Timbers","Real Salt Lake",
+//     "St. Louis City SC","San Diego FC","Seattle Sounders FC","San Jose Earthquakes","Toronto FC",
+//     "Vancouver Whitecaps"
+// ]
 
-export function ClubFilter({
+export function ClubFilter<TData>({
      column, 
      clubs 
 }: { 
-    column: any; 
+    column: Column<TData, unknown>; 
     clubs: string[]
 }) {
     const [open, setOpen] = React.useState(false)

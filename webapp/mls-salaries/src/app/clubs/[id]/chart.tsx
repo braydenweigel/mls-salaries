@@ -1,8 +1,7 @@
 "use client"
 
 import { ChartConfig, ChartContainer, ChartLegend, ChartLegendContent, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart"
-import { Bar, BarChart, XAxis, YAxis, TooltipProps} from "recharts"
-import { reports } from "@/lib/globals"
+import { Bar, BarChart, XAxis, YAxis} from "recharts"
 
 interface Props {
     data: {

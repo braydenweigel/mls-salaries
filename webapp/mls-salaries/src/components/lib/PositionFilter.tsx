@@ -11,10 +11,11 @@ import {
   DialogFooter,
 } from "@/components/ui/dialog"
 import { Checkbox } from "@/components/ui/checkbox"
+import type { Column } from "@tanstack/react-table"
 
 const POSITIONS = ["GK", "D", "D-M", "M-D", "M", "M-F", "F-M", "F"]
 
-export function PositionFilter({ column }: { column: any }) {
+export function PositionFilter<TData>({ column }: { column: Column<TData, unknown> }) {
     const [open, setOpen] = React.useState(false)
     const currentFilter = (column?.getFilterValue() as string[]) ?? []
     const [selected, setSelected] = React.useState<string[]>(currentFilter)

@@ -8,15 +8,6 @@ import {
   CardTitle 
 } from '@/components/ui/card'
 
-import {
-  ChartConfig,
-  ChartContainer,
-  ChartLegend,
-  ChartLegendContent,
-  ChartTooltip,
-  ChartTooltipContent,
-} from "@/components/ui/chart"
-
 import { useSelector } from "react-redux"
 import { useEffect, useState } from "react"
 import { RootState } from "@/lib/store/store"
@@ -30,7 +21,6 @@ import { clubPlayerColumns, TableClubPlayers } from '@/components/lib/clubPlayer
 import { ClubPlayersTable } from '@/components/lib/ClubPlayersTable'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import ClubIDChart from './chart'
-import { Club } from '@/lib/store/clubsSlice'
 import { notFound, useSearchParams } from 'next/navigation'
 
 function determineTheme(theme: string | undefined, systemTheme: "light" | "dark" | undefined){
@@ -50,8 +40,8 @@ function determineTheme(theme: string | undefined, systemTheme: "light" | "dark"
   return actualTheme
 }
 
-function determineColors(theme: string, club: Club){
-  const clubColor = theme === "dark" ? club.colorprimary : club.colorsecondary
+function determineColors(theme: string){
+  //const clubColor = theme === "dark" ? club.colorprimary : club.colorsecondary
 
   let bsColor = "#FFFFFF"
   let gcColor = "#FFFFFF"
@@ -99,7 +89,7 @@ export default function ClubPage(props: { params: Promise<{ id: string }> }) {
   const selectPlayerRecordsByClub = makeSelectPlayerRecordsByClub(club?.clubid ?? "");
   const clubRecords = useSelector(selectPlayerRecordsByClub)
 
-  let actualTheme = determineTheme(theme, systemTheme)
+  const actualTheme = determineTheme(theme, systemTheme)
 
   if (!mounted) {
     return null
@@ -117,7 +107,7 @@ export default function ClubPage(props: { params: Promise<{ id: string }> }) {
   }  else {
     let totalBaseSal = 0
     let totalGuarComp = 0
-    let data: TableClubPlayers[] = []
+    const data: TableClubPlayers[] = []
 
     for (const record of clubRecords){
       if (record.recordyear === year && record.recordseason === season){
@@ -155,7 +145,7 @@ export default function ClubPage(props: { params: Promise<{ id: string }> }) {
       clubYears = club.yearfirst + "-"
     }
 
-    let clubReports = structuredClone(reports)
+    const clubReports = structuredClone(reports)
     for (const key in clubReports){
       if (club.clubid == "SJ" && key == "2007.5"){
         delete clubReports[key]
@@ -166,9 +156,9 @@ export default function ClubPage(props: { params: Promise<{ id: string }> }) {
       }
     }
 
-    let chartData = structuredClone(data).reverse()
+    const chartData = structuredClone(data).reverse()
 
-    for (let record of chartData){
+    for (const record of chartData){
       let bS = 0
       let gC = 0
 
@@ -183,7 +173,7 @@ export default function ClubPage(props: { params: Promise<{ id: string }> }) {
       record.guarComp = gC
     }
 
-    const colors = determineColors(actualTheme, club)
+    const colors = determineColors(actualTheme)
 
     return (
       <div>

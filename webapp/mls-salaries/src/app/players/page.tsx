@@ -3,7 +3,6 @@
 import { PlayerTable } from "@/components/lib/PlayerTable"
 import { playerColumns, TablePlayer } from "@/components/lib/playerTableColumns"
 import { Card, CardContent } from "@/components/ui/card"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { makeSelectPlayerRecordsByYear } from "@/lib/store/playerRecordsSlice"
 import { RootState } from "@/lib/store/store"
 import { isValidClub } from "@/lib/storeUtils"
@@ -15,7 +14,7 @@ import { useSearchParams } from "next/navigation"
 
 export default function Players() {
   const searchParams = useSearchParams()
-  let reportParams = searchParams.get("year")
+  const reportParams = searchParams.get("year")
   const [reportValue, setReportValue] = React.useState(reports[reportParams ?? ""] && reportParams ? reportParams : CURRENT_YEAR)//report params used when params exist and are a valid year
   const year = reports[reportValue].year
   const season = reports[reportValue].season
@@ -25,7 +24,7 @@ export default function Players() {
   const playerRecords = useSelector(selectPlayerRecordsByYear)
   const allClubs = useSelector((state: RootState) => state.clubs.data)
 
-  let data: TablePlayer[] = []
+  const data: TablePlayer[] = []
 
   for (const record of playerRecords){
     let name = ""

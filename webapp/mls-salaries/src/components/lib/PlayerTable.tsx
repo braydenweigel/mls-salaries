@@ -29,7 +29,6 @@ import { ButtonGroup } from "../ui/button-group";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 import SelectNumRows from "./SelectNumRows";
 import { Label } from "../ui/label";
-import { ScrollArea } from "../ui/scroll-area";
 import { TablePlayer } from "./playerTableColumns";
 
 interface DataTableProps<TData extends TablePlayer, TValue>{
@@ -43,7 +42,6 @@ export function PlayerTable<TData extends TablePlayer, TValue>({
 }: DataTableProps<TData, TValue>) {
     const [sorting, setSorting] = React.useState<SortingState>([])
     const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>([])
-    const [pageSize, setPageSize] = React.useState(10)
 
     const table = useReactTable({
         data,
@@ -60,7 +58,7 @@ export function PlayerTable<TData extends TablePlayer, TValue>({
         }
     })
 
-    let allPlayerClubs: string[] = []
+    const allPlayerClubs: string[] = []
     for (const player of data){
         allPlayerClubs.push(player.club)
     }
@@ -78,8 +76,8 @@ export function PlayerTable<TData extends TablePlayer, TValue>({
                     }
                     className="max-w-sm"
                     />
-                    <PositionFilter column={table.getColumn("position")}/>
-                    <ClubFilter column={table.getColumn("club")} clubs={clubs}/>
+                    <PositionFilter column={table.getColumn("position")!}/>
+                    <ClubFilter column={table.getColumn("club")!} clubs={clubs}/>
                 </div>
                 <div className="flex items-center space-x-4">
                     <Label>Rows per page:</Label>
