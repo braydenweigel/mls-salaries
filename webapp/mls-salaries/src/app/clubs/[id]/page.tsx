@@ -108,11 +108,11 @@ export default function ClubPage(props: { params: Promise<{ id: string }> }) {
   if (clubError){
     return <p>Error Loading Club: {clubError}</p>
 
-  } else if (!club){
-    notFound()
-
   } else if (clubLoading || clubRecords.length == 0){
     return <LoadingPlayerPage/>
+
+  } else if (!club){
+    notFound()
 
   }  else {
     let totalBaseSal = 0

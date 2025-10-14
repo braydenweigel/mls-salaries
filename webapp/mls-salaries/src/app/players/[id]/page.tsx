@@ -182,12 +182,12 @@ export default function PlayerPage(props: { params: Promise<{ id: string }> }) {
   if (playerError) {
     return <p>Error Loading Player: {playerError}</p>
 
-  } else if (!player){
-    notFound()
-
   } else if (playerLoading || records.length == 0){
     console.log("Records: ", records)
     return <LoadingPlayerPage/>
+
+  } else if (!player){
+    notFound()
 
   } else {
     const playerClubs = getPlayerClubs(allClubs, records)
