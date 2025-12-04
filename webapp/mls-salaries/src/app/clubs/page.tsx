@@ -16,7 +16,7 @@ function createTableData(clubs: typeof clubsObject, reportValue: string){
   console.log("Report Value: ", reportValue)
   Object.entries(clubs).forEach(([key, club]) => {
     if (Number(reports[reportValue].year) >= club.yearFirst) {
-      if (key == "SJ" && reportValue == "2007"){
+      if (key == "SJ" && reportValue == "2007.5"){
 
       } else if (key == "CHV" && Number(reports[reportValue].year) > 2014) {
 
