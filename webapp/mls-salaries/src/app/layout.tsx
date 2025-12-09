@@ -26,6 +26,10 @@ import { fetchPlayers } from "@/lib/store/playersSlice";
 import { fetchClubs } from "@/lib/store/clubsSlice";
 import { fetchPlayerRecords } from "@/lib/store/playerRecordsSlice";
 import LoadingPlayerPage from "./players/[id]/loading";
+import { DropdownMenu, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
+import { Input } from "@/components/ui/input";
+import { DropdownMenuContent } from "@radix-ui/react-dropdown-menu";
+import { SearchButton } from "@/components/lib/Search";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -63,6 +67,7 @@ export default function RootLayout({
             enableSystem
             disableTransitionOnChange
           >
+        <Provider store={store}>
           <header className="flex fixed w-full top-0 items-start bg-background bg-opacity-100 z-50">
             <NavigationMenu viewport={false} className=" top-0 left-0 pl-4 pt-2">
               <NavigationMenuList>
@@ -100,19 +105,21 @@ export default function RootLayout({
                 </NavigationMenuItem>} */}
               </NavigationMenuList>
             </NavigationMenu>
-            <div className="fixed right-0 top-0 pr-2 pt-2"><ModeToggle/></div>
+            <div className="fixed right-0 top-0 pr-2 pt-2 pb-2 flex items-center gap-2">
+              <SearchButton/>
+              <ModeToggle/>
+            </div>
           </header>
           <main className="min-h-screen mt-12 mx-auto w-full max-w-[90%] lg:max-w-[66%] px-4">
-            <Provider store={store}>
-              <InitData/>
-              <Suspense fallback={<LoadingPlayerPage/>}>
-                {children}
-              </Suspense>
-            </Provider>
+            <InitData/>
+            <Suspense fallback={<LoadingPlayerPage/>}>
+              {children}
+            </Suspense>
           </main>
           <footer className="bottom-0 mx-auto w-full max-w-[90%] lg:max-w-[66%] px-4 py-2">
             <p className="text-muted-foreground text-center">Built by <a href="https://github.com/braydenweigel" target="_blank" className="inline-block"><u>Brayden Weigel</u> &nbsp;<SiGithub className="inline-block"/></a></p>
           </footer>
+        </Provider>
         </ThemeProvider>
       </body>
     </html>
