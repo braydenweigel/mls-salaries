@@ -8,7 +8,7 @@ import { RootState } from "@/lib/store/store"
 import { isValidClub } from "@/lib/storeUtils"
 import { useSelector } from "react-redux"
 import { CURRENT_YEAR, reports } from "@/lib/globals"
-import React from "react"
+import React, { useEffect } from "react"
 import SelectReport from "@/components/lib/SelectReport"
 import { useSearchParams } from "next/navigation"
 
@@ -25,6 +25,10 @@ export default function Players() {
   const allClubs = useSelector((state: RootState) => state.clubs.data)
 
   const data: TablePlayer[] = []
+
+  useEffect(() => {
+    document.title = year + " " + season + " Players - MLS Salaries"
+  },[reportValue])
 
   for (const record of playerRecords){
     let name = ""

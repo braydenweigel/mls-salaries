@@ -162,10 +162,19 @@ export default function PlayerPage(props: { params: Promise<{ id: string }> }) {
   const { data: players, loading: playerLoading, error: playerError } = useSelector((state: RootState) => state.players)
   const player = isValidPlayer(players, id)
 
+  useEffect(() => {
+    if (player) {
+      document.title = player.lastname + " " + player.firstname + " - MLS Salaries"
+    } else {
+      document.title = "Player Not Found - MLS Salaries"
+    }
+  },[player])
+
   const selectPlayerRecordsByPlayerId = makeSelectPlayerRecordsByPlayerId(player?.playerid ?? "");
   const playerRecords = useSelector(selectPlayerRecordsByPlayerId)
 
   const allClubs = useSelector((state: RootState) => state.clubs.data)
+
   
   const records = [...playerRecords].sort((a, b) => {
     if (a.recordyear < b.recordyear) return 1;
@@ -188,6 +197,7 @@ export default function PlayerPage(props: { params: Promise<{ id: string }> }) {
     notFound()
 
   } else {
+
     const playerClubs = getPlayerClubs(allClubs, records)
 
     let clubText = "Last Club: "

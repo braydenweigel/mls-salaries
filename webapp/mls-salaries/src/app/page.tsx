@@ -6,11 +6,15 @@ import { ButtonGroup } from "@/components/ui/button-group";
 import { Field, FieldLabel, FieldSeparator } from "@/components/ui/field";
 import { CURRENT_YEAR, reports } from "@/lib/globals";
 import Link from "next/link";
-import React from "react";
+import React, { useEffect } from "react";
 
 export default function Home() {
   const [reportValuePlayers, setReportValuePlayers] = React.useState(CURRENT_YEAR)
   const [reportValueClubs, setReportValueClubs] = React.useState(CURRENT_YEAR)
+
+  useEffect(() => {
+    document.title = "Home - MLS Salaries"
+  },[])
 
   return (
    <div className="">

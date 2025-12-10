@@ -4,7 +4,7 @@ import SelectReport from "@/components/lib/SelectReport"
 import { Card, CardContent } from "@/components/ui/card"
 import { reports, clubs as clubsObject, CURRENT_YEAR} from "@/lib/globals"
 import { makeSelectPlayerRecordsByYear } from "@/lib/store/playerRecordsSlice"
-import React from "react"
+import React, { useEffect } from "react"
 import { useSelector } from "react-redux"
 import { clubColumns, TableClub} from "@/components/lib/clubTableColumns"
 import { ClubTable } from "@/components/lib/ClubTable"
@@ -48,6 +48,10 @@ export default function Clubs() {
   const playerRecords = useSelector(selectPlayerRecordsByYear)
 
   const clubs = structuredClone(clubsObject)
+
+  useEffect(() => {
+    document.title = year + " " + season + " Clubs - MLS Salaries"
+  },[reportValue])
 
   for (const record of playerRecords){
     clubs[record.club].totalBaseSal += record.basesalary

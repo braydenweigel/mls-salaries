@@ -72,7 +72,7 @@ export default function ClubPage(props: { params: Promise<{ id: string }> }) {
 
   const [reportValue, setReportValue] = React.useState(reportParams ?? defaultReport)
 
-  let year, season
+  let year: string, season: string
   if (reports[reportValue]){
     year = reports[reportValue].year
     season = reports[reportValue].season
@@ -85,6 +85,14 @@ export default function ClubPage(props: { params: Promise<{ id: string }> }) {
 
   const { data: allClubs, loading: clubLoading, error: clubError } = useSelector((state: RootState) => state.clubs)
   const club = allClubs.find((club) => club.clubid == id)
+
+  useEffect(() => {
+    if (club) {
+      document.title = club.clubname + " - " + year + " " + season + " - MLS Salaries"
+    } else {
+      document.title = "Club Not Found - MLS Salaries"
+    }
+  },[club])
 
   const selectPlayerRecordsByClub = makeSelectPlayerRecordsByClub(club?.clubid ?? "");
   const clubRecords = useSelector(selectPlayerRecordsByClub)

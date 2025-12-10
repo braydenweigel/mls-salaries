@@ -2,10 +2,15 @@
 
 import { RootState } from "@/lib/store/store"
 import Link from "next/link"
+import { useEffect } from "react"
 import { useSelector } from "react-redux"
 
 export default function PlayersList(){
     const allPlayers = useSelector((state: RootState) => state.players.data)
+
+    useEffect(() => {
+        document.title = "All Players List - MLS Salaries"
+      },[])
 
     return (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 py-2">
