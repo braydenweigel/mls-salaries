@@ -21,9 +21,9 @@ export function SearchButton() {
 
   return (
     <>
-        <Button variant="outline" size="icon" onClick={() => setOpen(true)}>
-          <Search className="absolute h-[1.2rem] w-[1.2rem] scale-0 rotate-90 transition-all dark:scale-100 dark:rotate-0" />
-          <span className="sr-only">Search</span>
+        <Button variant="outline"  onClick={() => setOpen(true)}>
+          <Search className=" h-[1.2rem] w-[1.2rem] scale-100 transition-all" />
+          <span>Search</span>
         </Button>
 
         <CommandDialog open={open} onOpenChange={setOpen} className="h-2/3">
