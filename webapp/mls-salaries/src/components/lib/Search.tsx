@@ -5,7 +5,6 @@ import { Search } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
 import { CommandDialog, CommandGroup, CommandInput, CommandItem, CommandList, CommandSeparator } from "../ui/command"
-import { CommandEmpty, useCommandState } from "cmdk"
 import { useSelector } from "react-redux"
 import { RootState } from "@/lib/store/store"
 import Link from "next/link"
