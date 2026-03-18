@@ -1,5 +1,4 @@
-import type { Player } from "./store/playersSlice";
-import type { Club } from "./store/clubsSlice";
+import type { Player, Club } from '@/lib/data/types'
 
 export function isValidPlayer(players: Player[], id: string) {
   return players.find((p) => p.playerid === id) || null;

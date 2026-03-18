@@ -1,5 +1,4 @@
 import { PlayerRecord } from "./types";
-import { reports } from "../globals";
 
 export function filterRecordsByPlayerID(records: PlayerRecord[], id: string){
     return records.filter(records => {
