@@ -26,7 +26,7 @@ export default function Players() {
   useEffect(() => {
     document.title = year + " " + season + " Players - MLS Salaries"
     replace(`/players?year=${reportValue}`)
-  },[reportValue])
+  },[reportValue, replace, season, year])
 
   const playerRecords = filterRecordsByReport((records as PlayerRecord[]), year, season)
   const allClubs = clubs as Club[]

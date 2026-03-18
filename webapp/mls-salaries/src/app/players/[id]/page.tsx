@@ -57,7 +57,7 @@ export default function PlayerPage(props: { params: Promise<{ id: string }> }) {
   const playerClubs = getPlayerClubs(allClubs, playerRecords)
 
   //Formatting stuff
-  let clubText = playerRecords[0].recordyear == reports[CURRENT_YEAR].year && playerRecords[0].recordseason == reports[CURRENT_YEAR].season ? "Current Club: " : "Last Club: "
+  const clubText = playerRecords[0].recordyear == reports[CURRENT_YEAR].year && playerRecords[0].recordseason == reports[CURRENT_YEAR].season ? "Current Club: " : "Last Club: "
   const position = records[0].position
   const data = formatData(playerRecords)
 

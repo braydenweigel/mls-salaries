@@ -51,7 +51,7 @@ export default function Clubs() {
 
   useEffect(() => {
     document.title = year + " " + season + " Clubs - MLS Salaries"
-  },[reportValue])
+  },[reportValue, year, season])
 
   for (const record of playerRecords){
     clubs[record.club].totalBaseSal += record.basesalary

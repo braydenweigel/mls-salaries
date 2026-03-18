@@ -92,7 +92,7 @@ export default function ClubPage(props: { params: Promise<{ id: string }> }) {
     } else {
       document.title = "Club Not Found - MLS Salaries"
     }
-  },[club])
+  },[club, year, season])
 
   const selectPlayerRecordsByClub = makeSelectPlayerRecordsByClub(club?.clubid ?? "");
   const clubRecords = useSelector(selectPlayerRecordsByClub)
