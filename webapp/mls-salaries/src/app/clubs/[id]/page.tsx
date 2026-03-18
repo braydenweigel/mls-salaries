@@ -7,21 +7,191 @@ import {
   CardHeader,
   CardTitle 
 } from '@/components/ui/card'
-
-import { useSelector } from "react-redux"
-import { useEffect, useState } from "react"
-import { RootState } from "@/lib/store/store"
+import { useEffect } from "react"
 import React, { use } from "react"
 import { useTheme } from "next-themes"
 import { CURRENT_YEAR, reports } from '@/lib/globals'
 import SelectReport from '@/components/lib/SelectReport'
-import LoadingPlayerPage from '@/app/players/[id]/_components/loading'
-import { makeSelectPlayerRecordsByClub } from '@/lib/store/playerRecordsSlice'
 import { clubPlayerColumns, TableClubPlayers } from '@/app/clubs/[id]/_components/clubPlayerTableColumns'
 import { ClubPlayersTable } from './_components/ClubPlayersTable'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import ClubIDChart from './_components/chart'
-import { notFound, useSearchParams } from 'next/navigation'
+import { notFound, useRouter, useSearchParams } from 'next/navigation'
+import clubs from "@/lib/data/clubs.json"
+import records from "@/lib/data/records.json"
+import { Club, PlayerRecord } from '@/lib/data/types'
+import { filterRecordsByReportAndClub } from '@/lib/data/filters'
+
+
+export default function ClubPage(props: { params: Promise<{ id: string }> }) {
+  const { theme, systemTheme } = useTheme()
+
+  const { id } = use(props.params)
+  const { replace } = useRouter()
+  const searchParams = useSearchParams()
+  let reportParams = searchParams.get("year")
+  const defaultReport = id == "CHV" ? "2014.5" : CURRENT_YEAR
+  const [reportValue, setReportValue] = React.useState(reportParams ?? defaultReport)
+
+  let year: string, season: string
+  if (reports[reportValue]){
+    year = reports[reportValue].year
+    season = reports[reportValue].season
+  } else {
+    year = reports[CURRENT_YEAR].year
+    season = reports[CURRENT_YEAR].season
+    reportParams = defaultReport
+    setReportValue(CURRENT_YEAR)
+  }
+
+  //find club
+  const allClubs = clubs as Club[]
+  const club = allClubs.find((club) => club.clubid == id)
+
+  if (!club){
+    notFound()
+  }
+
+  useEffect(() => {
+    if (club) {
+      document.title = club.clubname + " - " + year + " " + season + " - MLS Salaries"
+      replace(`/clubs/${club.clubid}?year=${reportValue}`)
+    } else {
+      document.title = "Club Not Found - MLS Salaries"
+    }
+  },[club, replace, year, season, reportValue])
+
+  const clubRecords = filterRecordsByReportAndClub((records as PlayerRecord[]), year, season, club.clubid)
+  const { data, totalBaseSal, totalGuarComp } = formatData(clubRecords, year, season, reportValue)
+
+  const clubYears = formatClubYears(club)
+  const clubReports = getClubReports(club)
+  const chartData = formatChartData(data)
+
+  const actualTheme = determineTheme(theme, systemTheme)
+  const colors = determineColors(actualTheme)
+
+  return (
+    <div>
+      <Card className="my-4">
+        <CardHeader>
+          <CardTitle className="text-2xl">{club.clubname}</CardTitle>
+          <CardDescription className="text-base">Years Active: {clubYears}</CardDescription>
+        </CardHeader>
+        <CardContent className="overflow-hidden space-y-2">
+          <SelectReport onReportValueChange={(report) => setReportValue(report)} reports={clubReports} defaultReport={reportParams ?? defaultReport}/>
+          <p>Total Base Salary: ${totalBaseSal.toLocaleString()}</p> 
+          <p>Total Guaranteed Compensation: ${totalGuarComp.toLocaleString()}</p>
+        </CardContent>
+      </Card>
+      <Tabs defaultValue="table">
+      <TabsList>
+          <TabsTrigger value="table">Table</TabsTrigger>
+          <TabsTrigger value="chart">Chart</TabsTrigger>
+        </TabsList>
+        <TabsContent value="table">
+        < Card className="">
+            <CardContent className="overflow-hidden space-y-2">
+              <ClubPlayersTable columns={clubPlayerColumns} data={data} />
+            </CardContent>
+          </Card>
+        </TabsContent>
+        <TabsContent value="chart">
+          <Card className="">
+            <CardContent className="overflow-hidden space-y-2">
+              <ClubIDChart data={chartData} colors={colors}/>
+            </CardContent>
+          </Card>
+        </TabsContent>
+      </Tabs>
+    </div>
+    );
+}
+    
+function formatData(clubRecords: PlayerRecord[], year: string, season: string, reportValue: string){
+  let totalBaseSal = 0
+  let totalGuarComp = 0
+  const data: TableClubPlayers[] = []
+
+  for (const record of clubRecords){
+    if (record.recordyear === year && record.recordseason === season){
+      totalBaseSal += record.basesalary
+      totalGuarComp += record.guaranteedcomp
+
+      let name = ""
+      if (!record.firstname){
+        name = record.lastname
+      } else if (!record.lastname){
+        name = record.firstname
+      } else {
+        name = record.firstname + " " + record.lastname
+      }
+
+      data.push({
+        id: record.playerid,
+        name: name,
+        position: record.position,
+        baseSal: record.basesalary,
+        guarComp: record.guaranteedcomp,
+        reportYear: reportValue
+      })
+    }
+  }
+
+  data.sort((a,b) => b.guarComp - a.guarComp)
+
+  return { 
+    data: data,
+    totalBaseSal: totalBaseSal,
+    totalGuarComp: totalGuarComp
+  }
+}
+
+function formatClubYears(club: Club){
+  if (club.clubid == "SJ"){
+    return "1996-2005, 2008-"
+  } else if (club.clubid == "CHV"){
+    return "2005-2014"
+  } else {
+    return club.yearfirst + "-"
+  }
+}
+
+function formatChartData(data: TableClubPlayers[]){
+  const chartData = structuredClone(data).reverse()
+
+  for (const record of chartData){
+    let bS = 0
+    let gC = 0
+
+    if (!record.baseSal){
+      bS = record.guarComp ?? 0
+    } else {
+      bS = record.baseSal
+      gC = record.guarComp - record.baseSal
+    }
+
+    record.baseSal = bS
+    record.guarComp = gC
+  }
+
+  return chartData
+}
+
+function getClubReports(club: Club){
+  const clubReports = structuredClone(reports)
+  for (const key in clubReports){
+    if (club.clubid == "SJ" && key == "2007.5"){
+      delete clubReports[key]
+    } else if (club.clubid == "CHV" && key > "2014.5"){
+      delete clubReports[key]
+    } else if (Number(key) < Number(club.yearfirst)){
+      delete clubReports[key]
+    }
+  }
+
+  return clubReports
+}
 
 function determineTheme(theme: string | undefined, systemTheme: "light" | "dark" | undefined){
   let actualTheme = "dark"
@@ -58,166 +228,3 @@ function determineColors(theme: string){
     gcColor: gcColor
   }
 }
-
-export default function ClubPage(props: { params: Promise<{ id: string }> }) {
-  const [mounted, setMounted] = useState(false);
-  useEffect(() => setMounted(true), [])
-  const { theme, systemTheme } = useTheme()
-
-  const { id } = use(props.params)
-  const searchParams = useSearchParams()
-  let reportParams = searchParams.get("year")
-  const defaultReport = id == "CHV" ? "2014.5" : CURRENT_YEAR
-
-
-  const [reportValue, setReportValue] = React.useState(reportParams ?? defaultReport)
-
-  let year: string, season: string
-  if (reports[reportValue]){
-    year = reports[reportValue].year
-    season = reports[reportValue].season
-  } else {
-    year = reports[CURRENT_YEAR].year
-    season = reports[CURRENT_YEAR].season
-    reportParams = defaultReport
-    setReportValue(CURRENT_YEAR)
-  }
-
-  const { data: allClubs, loading: clubLoading, error: clubError } = useSelector((state: RootState) => state.clubs)
-  const club = allClubs.find((club) => club.clubid == id)
-
-  useEffect(() => {
-    if (club) {
-      document.title = club.clubname + " - " + year + " " + season + " - MLS Salaries"
-    } else {
-      document.title = "Club Not Found - MLS Salaries"
-    }
-  },[club])
-
-  const selectPlayerRecordsByClub = makeSelectPlayerRecordsByClub(club?.clubid ?? "");
-  const clubRecords = useSelector(selectPlayerRecordsByClub)
-
-  const actualTheme = determineTheme(theme, systemTheme)
-
-  if (!mounted) {
-    return null
-  }
-
-  if (clubError){
-    return <p>Error Loading Club: {clubError}</p>
-
-  } else if (clubLoading || clubRecords.length == 0){
-    return <LoadingPlayerPage/>
-
-  } else if (!club){
-    notFound()
-
-  }  else {
-    let totalBaseSal = 0
-    let totalGuarComp = 0
-    const data: TableClubPlayers[] = []
-
-    for (const record of clubRecords){
-      if (record.recordyear === year && record.recordseason === season){
-        totalBaseSal += record.basesalary
-        totalGuarComp += record.guaranteedcomp
-
-        let name = ""
-        if (!record.firstname){
-          name = record.lastname
-        } else if (!record.lastname){
-          name = record.firstname
-        } else {
-          name = record.firstname + " " + record.lastname
-        }
-
-        data.push({
-          id: record.playerid,
-          name: name,
-          position: record.position,
-          baseSal: record.basesalary,
-          guarComp: record.guaranteedcomp,
-          reportYear: reportValue
-        })
-      }
-    }
-
-    data.sort((a,b) => b.guarComp - a.guarComp)
-
-    let clubYears = ""
-    if (club.clubid == "SJ"){
-      clubYears = "1996-2005, 2008-"
-    } else if (club.clubid == "CHV"){
-      clubYears = "2005-2014"
-    } else {
-      clubYears = club.yearfirst + "-"
-    }
-
-    const clubReports = structuredClone(reports)
-    for (const key in clubReports){
-      if (club.clubid == "SJ" && key == "2007.5"){
-        delete clubReports[key]
-      } else if (club.clubid == "CHV" && key > "2014.5"){
-        delete clubReports[key]
-      } else if (Number(key) < Number(club.yearfirst)){
-        delete clubReports[key]
-      }
-    }
-
-    const chartData = structuredClone(data).reverse()
-
-    for (const record of chartData){
-      let bS = 0
-      let gC = 0
-
-      if (!record.baseSal){
-        bS = record.guarComp ?? 0
-      } else {
-        bS = record.baseSal
-        gC = record.guarComp - record.baseSal
-      }
-
-      record.baseSal = bS
-      record.guarComp = gC
-    }
-
-    const colors = determineColors(actualTheme)
-
-    return (
-      <div>
-       <Card className="my-4">
-         <CardHeader>
-           <CardTitle className="text-2xl">{club.clubname}</CardTitle>
-           <CardDescription className="text-base">Years Active: {clubYears}</CardDescription>
-         </CardHeader>
-         <CardContent className="overflow-hidden space-y-2">
-           <SelectReport onReportValueChange={(report) => setReportValue(report)} reports={clubReports} defaultReport={reportParams ?? defaultReport}/>
-           <p>Total Base Salary: ${totalBaseSal.toLocaleString()}</p> 
-           <p>Total Guaranteed Compensation: ${totalGuarComp.toLocaleString()}</p>
-         </CardContent>
-       </Card>
-       <Tabs defaultValue="table">
-        <TabsList>
-            <TabsTrigger value="table">Table</TabsTrigger>
-            <TabsTrigger value="chart">Chart</TabsTrigger>
-          </TabsList>
-          <TabsContent value="table">
-          < Card className="">
-              <CardContent className="overflow-hidden space-y-2">
-                <ClubPlayersTable columns={clubPlayerColumns} data={data} />
-              </CardContent>
-            </Card>
-          </TabsContent>
-          <TabsContent value="chart">
-            <Card className="">
-              <CardContent className="overflow-hidden space-y-2">
-                <ClubIDChart data={chartData} colors={colors}/>
-              </CardContent>
-            </Card>
-          </TabsContent>
-        </Tabs>
-      </div>
-     );
-  }
-    
-  }

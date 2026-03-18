@@ -9,19 +9,94 @@ import {
 } from '@/components/ui/card'
 import Link from 'next/link'
 import { isValidClub, isValidPlayer} from '@/lib/storeUtils'
-import { useSelector } from "react-redux"
-import { useEffect, useState } from "react"
-import { RootState } from "@/lib/store/store"
+import { useEffect } from "react"
 import React, { use } from "react";
-import { makeSelectPlayerRecordsByPlayerId, PlayerRecord } from '@/lib/store/playerRecordsSlice'
-import { Club } from '@/lib/store/clubsSlice'
 import { useTheme } from "next-themes"
-import LoadingPlayerPage from './_components/loading'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import PlayerIDTable from '@/app/players/[id]/_components/table'
 import { CURRENT_YEAR, reports } from "@/lib/globals"
 import PlayerIDChart from '@/app/players/[id]/_components/chart'
 import { notFound } from 'next/navigation'
+import players from '@/lib/data/players.json'
+import clubs from '@/lib/data/clubs.json'
+import records from "@/lib/data/records.json"
+import type { Player, Club, PlayerRecord } from '@/lib/data/types'
+import { filterRecordsByPlayerID } from '@/lib/data/filters'
+
+
+export default function PlayerPage(props: { params: Promise<{ id: string }> }) {
+  const { theme, systemTheme } = useTheme()
+
+  const { id } = use(props.params)
+  const allPlayers = players as Player[]
+  const player = isValidPlayer(allPlayers, id)
+
+  if (!player) notFound()
+
+  useEffect(() => {
+    if (player) {
+      document.title = player.lastname + " " + player.firstname + " - MLS Salaries"
+    } else {
+      document.title = "Player Not Found - MLS Salaries"
+    }
+  },[player])
+
+  //getting player records
+  const playerRecords = filterRecordsByPlayerID((records as PlayerRecord[]), id)
+  playerRecords.sort((a, b) => {
+    if (a.recordyear !== b.recordyear){
+      return Number(b.recordyear) - Number(a.recordyear)
+    }
+
+    const seasonOrder: Record<string, number> = { "Spring": 0, "Fall": 1 }
+    return seasonOrder[b.recordseason] - seasonOrder[a.recordseason]
+  })
+
+  //getting Club Info
+  const allClubs = clubs as Club[]
+  const playerClubs = getPlayerClubs(allClubs, playerRecords)
+
+  //Formatting stuff
+  const clubText = playerRecords[0].recordyear == reports[CURRENT_YEAR].year && playerRecords[0].recordseason == reports[CURRENT_YEAR].season ? "Current Club: " : "Last Club: "
+  const position = records[0].position
+  const data = formatData(playerRecords)
+
+  //Theme stuff
+  const actualTheme = determineTheme(theme, systemTheme)
+  const colors = determineColors(actualTheme)
+
+  return (
+    <div>
+    <Card className="my-4">
+      <CardHeader>
+        <CardTitle className="text-2xl">{playerRecords[0].firstname} {playerRecords[0].lastname}</CardTitle>
+        <CardDescription className="text-base">{clubText} <Link href={`/clubs/${playerRecords[0].club}`} className="hover:underline">{playerClubs[0].clubname}</Link> &emsp; Position: {position}</CardDescription>
+      </CardHeader>
+    </Card>
+    <Tabs defaultValue="table">
+        <TabsList>
+          <TabsTrigger value="table">Table</TabsTrigger>
+          <TabsTrigger value="chart">Chart</TabsTrigger>
+        </TabsList>
+        <TabsContent value="table">
+          <Card >
+            <CardContent>
+              <PlayerIDTable records={playerRecords} playerClubs={playerClubs} />
+            </CardContent>
+          </Card>
+        </TabsContent>
+        <TabsContent value="chart">
+          <Card>
+            <CardContent>
+              <PlayerIDChart data={data} colors={colors}/>
+            </CardContent>
+          </Card>
+        </TabsContent>
+      </Tabs>
+
+    </div>
+  );
+}
 
 
 function getPlayerClubs(allClubs: Club[], records: PlayerRecord[]){
@@ -122,128 +197,4 @@ function formatData(playerRecords: PlayerRecord[]){
   data.sort((a,b) => Number(a.report) - Number(b.report))
 
   return data
-}
-
-// function adjustHexColor(hex: string, percent: number): string {
-//   // Remove leading "#" if present
-//   hex = hex.replace(/^#/, "");
-
-//   // Parse r, g, b
-//   const num = parseInt(hex, 16);
-//   let r = (num >> 16) & 0xff;
-//   let g = (num >> 8) & 0xff;
-//   let b = num & 0xff;
-
-//   // Apply adjustment
-//   const adjust = (channel: number) =>
-//     Math.min(255, Math.max(0, Math.round(channel * (100 + percent) / 100)));
-
-//   r = adjust(r);
-//   g = adjust(g);
-//   b = adjust(b);
-
-//   // Convert back to hex string
-//   const newHex =
-//     "#" +
-//     (1 << 24 | (r << 16) | (g << 8) | b)
-//       .toString(16)
-//       .slice(1)
-//       .toUpperCase();
-
-//   return newHex;
-// }
-
-export default function PlayerPage(props: { params: Promise<{ id: string }> }) {
-  const [mounted, setMounted] = useState(false);
-  useEffect(() => setMounted(true), [])
-  const { theme, systemTheme } = useTheme()
-
-  const { id } = use(props.params)
-  const { data: players, loading: playerLoading, error: playerError } = useSelector((state: RootState) => state.players)
-  const player = isValidPlayer(players, id)
-
-  useEffect(() => {
-    if (player) {
-      document.title = player.lastname + " " + player.firstname + " - MLS Salaries"
-    } else {
-      document.title = "Player Not Found - MLS Salaries"
-    }
-  },[player])
-
-  const selectPlayerRecordsByPlayerId = makeSelectPlayerRecordsByPlayerId(player?.playerid ?? "");
-  const playerRecords = useSelector(selectPlayerRecordsByPlayerId)
-
-  const allClubs = useSelector((state: RootState) => state.clubs.data)
-
-  
-  const records = [...playerRecords].sort((a, b) => {
-    if (a.recordyear < b.recordyear) return 1;
-    if (a.recordyear > b.recordyear) return -1;
-    return 0;
-  })
-
-  if (!mounted) {
-    return null
-  }
-
-  if (playerError) {
-    return <p>Error Loading Player: {playerError}</p>
-
-  } else if (playerLoading || records.length == 0){
-    console.log("Records: ", records)
-    console.log("Player", player)
-    return <LoadingPlayerPage/>
-
-  } else if (!player){
-    notFound()
-
-  } else {
-
-    const playerClubs = getPlayerClubs(allClubs, records)
-
-    let clubText = "Last Club: "
-    const year = reports[CURRENT_YEAR].year
-    const season = reports[CURRENT_YEAR].season
-    if (records[0].recordyear == year && records[0].recordseason == season){
-      clubText = "Current Club: "
-    } 
-
-    const position = records[0].position
-    const data = formatData(records)
-
-    const actualTheme = determineTheme(theme, systemTheme)
-    const colors = determineColors(actualTheme)
-
-    return (
-      <div>
-      <Card className="my-4">
-        <CardHeader>
-          <CardTitle className="text-2xl">{records[0].firstname} {records[0].lastname}</CardTitle>
-          <CardDescription className="text-base">{clubText} <Link href={`/clubs/${records[0].club}`} className="hover:underline">{playerClubs[0].clubname}</Link> &emsp; Position: {position}</CardDescription>
-        </CardHeader>
-      </Card>
-      <Tabs defaultValue="table">
-          <TabsList>
-            <TabsTrigger value="table">Table</TabsTrigger>
-            <TabsTrigger value="chart">Chart</TabsTrigger>
-          </TabsList>
-          <TabsContent value="table">
-            <Card >
-              <CardContent>
-                <PlayerIDTable records={records} playerClubs={playerClubs} />
-              </CardContent>
-            </Card>
-          </TabsContent>
-          <TabsContent value="chart">
-            <Card>
-              <CardContent>
-                <PlayerIDChart data={data} colors={colors}/>
-              </CardContent>
-            </Card>
-          </TabsContent>
-        </Tabs>
-
-      </div>
-    );
-  }
 }

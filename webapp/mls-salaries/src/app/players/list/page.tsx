@@ -1,12 +1,16 @@
 "use client"
 
-import { RootState } from "@/lib/store/store"
 import Link from "next/link"
 import { useEffect } from "react"
-import { useSelector } from "react-redux"
+import players from "@/lib/data/players.json"
+import type { Player } from "@/lib/data/types"
 
 export default function PlayersList(){
-    const allPlayers = useSelector((state: RootState) => state.players.data)
+    const allPlayers = [...players].sort(
+        (a, b) =>
+            a.firstname.localeCompare(b.firstname) ||
+            a.lastname.localeCompare(b.lastname)
+    ) as Player[]
 
     useEffect(() => {
         document.title = "All Players List - MLS Salaries"

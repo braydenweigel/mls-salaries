@@ -1,12 +1,12 @@
 "use client"
 
-import { RootState } from "@/lib/store/store"
 import Link from "next/link"
 import { useEffect } from "react"
-import { useSelector } from "react-redux"
+import clubs from "@/lib/data/clubs.json"
+import type { Club } from "@/lib/data/types"
 
 export default function ClubsList(){
-    const allClubs = useSelector((state: RootState) => state.clubs.data)
+    const allClubs = clubs as Club[]
 
     useEffect(() => {
         document.title = "All Clubs List - MLS Salaries"

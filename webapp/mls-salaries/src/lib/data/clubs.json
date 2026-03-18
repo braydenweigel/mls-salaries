@@ -1,0 +1,258 @@
+[
+  {
+    "clubname": "Atlanta United",
+    "clubid": "ATL",
+    "yearfirst": "2017",
+    "yearfinal": "0",
+    "colorprimary": "#992121",
+    "colorsecondary": "#992121"
+  },
+  {
+    "clubname": "Austin FC",
+    "clubid": "ATX",
+    "yearfirst": "2021",
+    "yearfinal": "0",
+    "colorprimary": "#00b13E",
+    "colorsecondary": "#00b13E"
+  },
+  {
+    "clubname": "Chicago Fire",
+    "clubid": "CHI",
+    "yearfirst": "1998",
+    "yearfinal": "0",
+    "colorprimary": "#75c5de",
+    "colorsecondary": "#FE0000"
+  },
+  {
+    "clubname": "Chivas USA",
+    "clubid": "CHV",
+    "yearfirst": "2005",
+    "yearfinal": "2014",
+    "colorprimary": "#e31b22",
+    "colorsecondary": "#e31b22"
+  },
+  {
+    "clubname": "FC Cincinnati",
+    "clubid": "CIN",
+    "yearfirst": "2019",
+    "yearfinal": "0",
+    "colorprimary": "#fe5104",
+    "colorsecondary": "#041e43"
+  },
+  {
+    "clubname": "Columbus Crew",
+    "clubid": "CLB",
+    "yearfirst": "1996",
+    "yearfinal": "0",
+    "colorprimary": "#FFDD00",
+    "colorsecondary": "#000000"
+  },
+  {
+    "clubname": "Charlotte FC",
+    "clubid": "CLT",
+    "yearfirst": "2022",
+    "yearfinal": "0",
+    "colorprimary": "#0185d0",
+    "colorsecondary": "#0185d0"
+  },
+  {
+    "clubname": "Colorado Rapids",
+    "clubid": "COL",
+    "yearfirst": "1996",
+    "yearfinal": "0",
+    "colorprimary": "#8a2432",
+    "colorsecondary": "#8cb7ea"
+  },
+  {
+    "clubname": "FC Dallas",
+    "clubid": "DAL",
+    "yearfirst": "1996",
+    "yearfinal": "0",
+    "colorprimary": "#c5093b",
+    "colorsecondary": "#041f54"
+  },
+  {
+    "clubname": "DC United",
+    "clubid": "DC",
+    "yearfirst": "1996",
+    "yearfinal": "0",
+    "colorprimary": "#e1032c",
+    "colorsecondary": "#000000"
+  },
+  {
+    "clubname": "Houston Dynamo",
+    "clubid": "HOU",
+    "yearfirst": "2006",
+    "yearfinal": "0",
+    "colorprimary": "#FF6900",
+    "colorsecondary": "#000000"
+  },
+  {
+    "clubname": "Sporting Kansas City",
+    "clubid": "KC",
+    "yearfirst": "1996",
+    "yearfinal": "0",
+    "colorprimary": "#a6c6ed",
+    "colorsecondary": "#0d223f"
+  },
+  {
+    "clubname": "LA Galaxy",
+    "clubid": "LA",
+    "yearfirst": "1996",
+    "yearfinal": "0",
+    "colorprimary": "#FCD321",
+    "colorsecondary": "#12294b"
+  },
+  {
+    "clubname": "LAFC",
+    "clubid": "LAFC",
+    "yearfirst": "2018",
+    "yearfinal": "0",
+    "colorprimary": "#a99968",
+    "colorsecondary": "#000000"
+  },
+  {
+    "clubname": "Inter Miami",
+    "clubid": "MIA",
+    "yearfirst": "2020",
+    "yearfinal": "0",
+    "colorprimary": "#f7b7cf",
+    "colorsecondary": "#202020"
+  },
+  {
+    "clubname": "MLS Pool",
+    "clubid": "MLS",
+    "yearfirst": "0",
+    "yearfinal": "0",
+    "colorprimary": "#FFFFFF",
+    "colorsecondary": "#000000"
+  },
+  {
+    "clubname": "Minnesota United",
+    "clubid": "MNUFC",
+    "yearfirst": "2017",
+    "yearfinal": "0",
+    "colorprimary": "#9acee3",
+    "colorsecondary": "#232323"
+  },
+  {
+    "clubname": "CF Montreal",
+    "clubid": "MTL",
+    "yearfirst": "2012",
+    "yearfinal": "0",
+    "colorprimary": "#003da7",
+    "colorsecondary": "#003da7"
+  },
+  {
+    "clubname": "New England Revolution",
+    "clubid": "NE",
+    "yearfirst": "1996",
+    "yearfinal": "0",
+    "colorprimary": "#d60b28",
+    "colorsecondary": "#0c2140"
+  },
+  {
+    "clubname": "Nashville SC",
+    "clubid": "NSH",
+    "yearfirst": "2020",
+    "yearfinal": "0",
+    "colorprimary": "#ece938",
+    "colorsecondary": "#101044"
+  },
+  {
+    "clubname": "New York City FC",
+    "clubid": "NYC",
+    "yearfirst": "2015",
+    "yearfinal": "0",
+    "colorprimary": "#9fd2ff",
+    "colorsecondary": "#000228"
+  },
+  {
+    "clubname": "Orlando City SC",
+    "clubid": "ORL",
+    "yearfirst": "2015",
+    "yearfinal": "0",
+    "colorprimary": "#ebd57d",
+    "colorsecondary": "#62279f"
+  },
+  {
+    "clubname": "Philadelphia Union",
+    "clubid": "PHI",
+    "yearfirst": "2010",
+    "yearfinal": "0",
+    "colorprimary": "#d7cc9e",
+    "colorsecondary": "#051c2c"
+  },
+  {
+    "clubname": "Portland Timbers",
+    "clubid": "POR",
+    "yearfirst": "2011",
+    "yearfinal": "0",
+    "colorprimary": "#c99839",
+    "colorsecondary": "#014711"
+  },
+  {
+    "clubname": "New York Red Bulls",
+    "clubid": "RBNY",
+    "yearfirst": "1996",
+    "yearfinal": "0",
+    "colorprimary": "#d91c3a",
+    "colorsecondary": "#d91c3a"
+  },
+  {
+    "clubname": "Real Salt Lake",
+    "clubid": "RSL",
+    "yearfirst": "2005",
+    "yearfinal": "0",
+    "colorprimary": "#ae0933",
+    "colorsecondary": "#011e62"
+  },
+  {
+    "clubname": "San Diego FC",
+    "clubid": "SD",
+    "yearfirst": "2025",
+    "yearfinal": "0",
+    "colorprimary": "#4392bd",
+    "colorsecondary": "#011329"
+  },
+  {
+    "clubname": "Seattle Sounders FC",
+    "clubid": "SEA",
+    "yearfirst": "2009",
+    "yearfinal": "0",
+    "colorprimary": "#0231a3",
+    "colorsecondary": "#2ec84e"
+  },
+  {
+    "clubname": "San Jose Earthquakes",
+    "clubid": "SJ",
+    "yearfirst": "1996",
+    "yearfinal": "0",
+    "colorprimary": "#0153b7",
+    "colorsecondary": "#000000"
+  },
+  {
+    "clubname": "St. Louis City SC",
+    "clubid": "STL",
+    "yearfirst": "2023",
+    "yearfinal": "0",
+    "colorprimary": "#eb1458",
+    "colorsecondary": "#0f1843"
+  },
+  {
+    "clubname": "Toronto FC",
+    "clubid": "TOR",
+    "yearfirst": "2007",
+    "yearfinal": "0",
+    "colorprimary": "#b01229",
+    "colorsecondary": "#b01229"
+  },
+  {
+    "clubname": "Vancouver Whitecaps",
+    "clubid": "VAN",
+    "yearfirst": "2011",
+    "yearfinal": "0",
+    "colorprimary": "#8ebde7",
+    "colorsecondary": "#1f2c4c"
+  }
+]
