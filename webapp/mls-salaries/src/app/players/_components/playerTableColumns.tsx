@@ -65,7 +65,7 @@ export const playerColumns: ColumnDef<TablePlayer>[] = [
           )
         },
         cell: ({ row }) => {
-            const value = row.getValue<number>("baseSal")
+            const value = row.getValue<number>("baseSal") ?? row.getValue<number>("guarComp")
             return `$${value.toLocaleString()}`
         }
 
