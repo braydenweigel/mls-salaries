@@ -1,7 +1,7 @@
 "use client"
 
-import { PlayerTable } from "@/components/lib/PlayerTable"
-import { playerColumns, TablePlayer } from "@/components/lib/playerTableColumns"
+import { PlayerTable } from "./_components/PlayerTable"
+import { playerColumns, TablePlayer } from "@/app/players/_components/playerTableColumns"
 import { Card, CardContent } from "@/components/ui/card"
 import { makeSelectPlayerRecordsByYear } from "@/lib/store/playerRecordsSlice"
 import { RootState } from "@/lib/store/store"

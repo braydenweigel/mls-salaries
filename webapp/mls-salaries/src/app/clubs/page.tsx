@@ -6,8 +6,8 @@ import { reports, clubs as clubsObject, CURRENT_YEAR} from "@/lib/globals"
 import { makeSelectPlayerRecordsByYear } from "@/lib/store/playerRecordsSlice"
 import React, { useEffect } from "react"
 import { useSelector } from "react-redux"
-import { clubColumns, TableClub} from "@/components/lib/clubTableColumns"
-import { ClubTable } from "@/components/lib/ClubTable"
+import { clubColumns, TableClub} from "@/app/clubs/_components/clubTableColumns"
+import { ClubTable } from "./_components/ClubTable"
 import { useSearchParams } from "next/navigation"
 
 function createTableData(clubs: typeof clubsObject, reportValue: string){

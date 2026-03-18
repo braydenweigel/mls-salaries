@@ -3,21 +3,19 @@
 import { ColumnDef } from "@tanstack/react-table"
 import { ArrowUpDown, Info } from "lucide-react";
 import Link from "next/link";
-import { Button } from "../ui/button";
-import { Tooltip, TooltipContent, TooltipTrigger } from "../ui/tooltip";
+import { Button } from "../../../../components/ui/button";
+import { Tooltip, TooltipTrigger, TooltipContent } from "../../../../components/ui/tooltip";
 
-export type TablePlayer = {
+export type TableClubPlayers = {
     id: string;
     name: string;
-    club: string;
-    clubid: string;
     position: string;
     baseSal: number;
     guarComp: number;
     reportYear: string;
 }
 
-export const playerColumns: ColumnDef<TablePlayer>[] = [
+export const clubPlayerColumns: ColumnDef<TableClubPlayers>[] = [
     {
         accessorKey: "name",
         header: "Name",
@@ -28,20 +26,6 @@ export const playerColumns: ColumnDef<TablePlayer>[] = [
             )
         }
         
-    },
-    {
-        accessorKey: "club",
-        header: "Club",
-        cell: ({ row }) => {
-            const player = row.original
-            return (
-                <Link href={`/clubs/${player.clubid}?year=${player.reportYear}`} className="hover:underline">{player.club}</Link>
-            )
-        },
-        filterFn: (row, club, filterValue: string[]) => {
-            if (!filterValue?.length) return true
-            return filterValue.includes(row.getValue(club))
-        }
     },
     {
         accessorKey: "position",
@@ -66,7 +50,8 @@ export const playerColumns: ColumnDef<TablePlayer>[] = [
         },
         cell: ({ row }) => {
             const value = row.getValue<number>("baseSal")
-            return `$${value.toLocaleString()}`
+            const backup = row.getValue<number>("guarComp")
+            return `$${(value ?? backup).toLocaleString()}`
         }
 
     },
@@ -89,7 +74,7 @@ export const playerColumns: ColumnDef<TablePlayer>[] = [
               >
                 Guaranteed Comp
                 <ArrowUpDown className="ml-1 h-4 w-4" />
-            </Button>
+              </Button>
             </div>
           )
         },

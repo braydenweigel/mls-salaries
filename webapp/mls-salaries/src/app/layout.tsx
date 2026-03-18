@@ -25,7 +25,7 @@ import { Suspense, useEffect } from "react";
 import { fetchPlayers } from "@/lib/store/playersSlice";
 import { fetchClubs } from "@/lib/store/clubsSlice";
 import { fetchPlayerRecords } from "@/lib/store/playerRecordsSlice";
-import LoadingPlayerPage from "./players/[id]/loading";
+import LoadingPlayerPage from "./players/[id]/_components/loading";
 import { SearchButton } from "@/components/lib/Search";
 
 const geistSans = Geist({
