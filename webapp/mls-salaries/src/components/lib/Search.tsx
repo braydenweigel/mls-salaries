@@ -5,25 +5,28 @@ import { Search } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
 import { CommandDialog, CommandGroup, CommandInput, CommandItem, CommandList, CommandSeparator } from "../ui/command"
-import { useSelector } from "react-redux"
-import { RootState } from "@/lib/store/store"
 import Link from "next/link"
+import players from '@/lib/data/players.json'
+import clubs from '@/lib/data/clubs.json'
+import type { Player, Club } from "@/lib/data/types"
 
 
 export function SearchButton() {
     const [open, setOpen] = React.useState(false)
 
 
-    const allClubs = useSelector((state: RootState) => state.clubs.data)
-    const allPlayers = useSelector((state: RootState) => state.players.data)
+    const allClubs = clubs as Club[]
+    const allPlayers = [...players].sort(
+        (a, b) =>
+            a.firstname.localeCompare(b.firstname) ||
+            a.lastname.localeCompare(b.lastname)
+    ) as Player[]
     
-  
-
-  return (
+    return (
     <>
         <Button variant="outline"  onClick={() => setOpen(true)}>
-          <Search className=" h-[1.2rem] w-[1.2rem] scale-100 transition-all" />
-          <span>Search</span>
+            <Search className=" h-[1.2rem] w-[1.2rem] scale-100 transition-all" />
+            <span>Search</span>
         </Button>
 
         <CommandDialog open={open} onOpenChange={setOpen} className="h-2/3">
@@ -48,5 +51,5 @@ export function SearchButton() {
             </CommandList>
         </CommandDialog>
     </>
-  )
+    )
 }

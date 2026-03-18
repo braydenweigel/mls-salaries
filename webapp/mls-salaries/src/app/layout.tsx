@@ -19,12 +19,7 @@ import {
 // } from "@/components/ui/dropdown-menu"
 import { ThemeProvider } from "@/components/theme-provider"
 import { ModeToggle } from "@/components/lib/mode-toggle";
-import { Provider, useDispatch } from "react-redux";
-import { AppDispatch, store } from "@/lib/store/store";
-import { Suspense, useEffect } from "react";
-import { fetchPlayers } from "@/lib/store/playersSlice";
-import { fetchClubs } from "@/lib/store/clubsSlice";
-import { fetchPlayerRecords } from "@/lib/store/playerRecordsSlice";
+import { Suspense } from "react";
 import LoadingPlayerPage from "./players/[id]/_components/loading";
 import { SearchButton } from "@/components/lib/Search";
 
@@ -38,17 +33,6 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
-
-function InitData() {
-  const dispatch = useDispatch<AppDispatch>()
-  useEffect(() => {
-    dispatch(fetchPlayers())
-    dispatch(fetchClubs())
-    dispatch(fetchPlayerRecords())
-  }, [dispatch])
-
-  return null
-}
 
 export default function RootLayout({
   children,
@@ -64,7 +48,6 @@ export default function RootLayout({
             enableSystem
             disableTransitionOnChange
           >
-        <Provider store={store}>
           <header className="flex fixed w-full top-0 items-start bg-background bg-opacity-100 z-50">
             <NavigationMenu viewport={false} className=" top-0 left-0 pl-4 pt-2">
               <NavigationMenuList>
@@ -108,7 +91,6 @@ export default function RootLayout({
             </div>
           </header>
           <main className="min-h-screen mt-12 mx-auto w-full max-w-[90%] lg:max-w-[66%] px-4">
-            <InitData/>
             <Suspense fallback={<LoadingPlayerPage/>}>
               {children}
             </Suspense>
@@ -117,7 +99,6 @@ export default function RootLayout({
             <div><Link href="/players/list" className="hover:underline">All Players List</Link> • <Link href="/clubs/list" className="hover:underline">All Clubs List</Link> •&nbsp;</div>
             <p className="">Built by <a href="https://github.com/braydenweigel" target="_blank" className="inline-block"><u>Brayden Weigel</u> &nbsp;<SiGithub className="inline-block"/></a></p>
           </footer>
-        </Provider>
         </ThemeProvider>
       </body>
     </html>
