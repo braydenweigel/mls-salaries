@@ -2,8 +2,7 @@
 
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { Tooltip, TooltipTrigger, TooltipContent } from "@/components/ui/tooltip"
-import { Club } from "@/lib/store/clubsSlice"
-import { PlayerRecord } from "@/lib/store/playerRecordsSlice"
+import { Club, PlayerRecord } from "@/lib/data/types"
 import { Info } from "lucide-react"
 import Link from 'next/link'
 
