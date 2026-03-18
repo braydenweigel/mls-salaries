@@ -19,10 +19,10 @@ import {
     TableHeader,
     TableRow
 } from "@/components/ui/table"
-import { Button } from "../ui/button";
+import { Button } from "@/components/ui/button";
 import React from "react";
-import { Input } from "../ui/input";
-import { PositionFilter } from "./PositionFilter";
+import { Input } from "@/components/ui/input";
+import { PositionFilter } from "@/components/lib/PositionFilter";
 
 interface DataTableProps<TData, TValue>{
     columns: ColumnDef<TData, TValue>[];

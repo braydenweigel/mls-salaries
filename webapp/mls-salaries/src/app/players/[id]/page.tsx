@@ -16,11 +16,11 @@ import React, { use } from "react";
 import { makeSelectPlayerRecordsByPlayerId, PlayerRecord } from '@/lib/store/playerRecordsSlice'
 import { Club } from '@/lib/store/clubsSlice'
 import { useTheme } from "next-themes"
-import LoadingPlayerPage from './loading'
+import LoadingPlayerPage from './_components/loading'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
-import PlayerIDTable from '@/app/players/[id]/table'
+import PlayerIDTable from '@/app/players/[id]/_components/table'
 import { CURRENT_YEAR, reports } from "@/lib/globals"
-import PlayerIDChart from '@/app/players/[id]/chart'
+import PlayerIDChart from '@/app/players/[id]/_components/chart'
 import { notFound } from 'next/navigation'
 
 
@@ -191,6 +191,7 @@ export default function PlayerPage(props: { params: Promise<{ id: string }> }) {
 
   } else if (playerLoading || records.length == 0){
     console.log("Records: ", records)
+    console.log("Player", player)
     return <LoadingPlayerPage/>
 
   } else if (!player){

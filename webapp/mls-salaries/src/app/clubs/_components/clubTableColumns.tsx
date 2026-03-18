@@ -3,8 +3,8 @@
 import { ColumnDef } from "@tanstack/react-table"
 import { ArrowUpDown, Info } from "lucide-react"
 import Link from "next/link"
-import { Button } from "../ui/button"
-import { Tooltip, TooltipContent, TooltipTrigger } from "../ui/tooltip"
+import { Button } from "../../../components/ui/button"
+import { Tooltip, TooltipContent, TooltipTrigger } from "../../../components/ui/tooltip"
 
 export type TableClub = {
     clubName: string;

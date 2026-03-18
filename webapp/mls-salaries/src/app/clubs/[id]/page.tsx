@@ -15,12 +15,12 @@ import React, { use } from "react"
 import { useTheme } from "next-themes"
 import { CURRENT_YEAR, reports } from '@/lib/globals'
 import SelectReport from '@/components/lib/SelectReport'
-import LoadingPlayerPage from '@/app/players/[id]/loading'
+import LoadingPlayerPage from '@/app/players/[id]/_components/loading'
 import { makeSelectPlayerRecordsByClub } from '@/lib/store/playerRecordsSlice'
-import { clubPlayerColumns, TableClubPlayers } from '@/components/lib/clubPlayerTableColumns'
-import { ClubPlayersTable } from '@/components/lib/ClubPlayersTable'
+import { clubPlayerColumns, TableClubPlayers } from '@/app/clubs/[id]/_components/clubPlayerTableColumns'
+import { ClubPlayersTable } from './_components/ClubPlayersTable'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
-import ClubIDChart from './chart'
+import ClubIDChart from './_components/chart'
 import { notFound, useSearchParams } from 'next/navigation'
 
 function determineTheme(theme: string | undefined, systemTheme: "light" | "dark" | undefined){

@@ -19,9 +19,9 @@ import {
     TableHeader,
     TableRow
 } from "@/components/ui/table"
-import { Button } from "../ui/button";
+import { Button } from "@/components/ui/button";
 import React from "react";
-import { ClubFilter } from "./ClubFilter";
+import { ClubFilter } from "@/components/lib/ClubFilter"; 
 import { TableClub } from "./clubTableColumns";
 
 interface DataTableProps<TData extends TableClub, TValue>{

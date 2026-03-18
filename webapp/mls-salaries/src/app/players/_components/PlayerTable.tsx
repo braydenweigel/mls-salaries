@@ -20,15 +20,15 @@ import {
     TableHeader,
     TableRow
 } from "@/components/ui/table"
-import { Button } from "../ui/button";
+import { Button } from "@/components/ui/button";
 import React from "react";
-import { Input } from "../ui/input";
-import { PositionFilter } from "./PositionFilter";
-import { ClubFilter } from "./ClubFilter";
-import { ButtonGroup } from "../ui/button-group";
+import { Input } from "@/components/ui/input";
+import { PositionFilter } from "@/components/lib/PositionFilter";
+import { ClubFilter } from "@/components/lib/ClubFilter";
+import { ButtonGroup } from "@/components/ui/button-group";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 import SelectNumRows from "./SelectNumRows";
-import { Label } from "../ui/label";
+import { Label } from "@/components/ui/label";
 import { TablePlayer } from "./playerTableColumns";
 
 interface DataTableProps<TData extends TablePlayer, TValue>{
