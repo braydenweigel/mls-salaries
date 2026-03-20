@@ -3,6 +3,7 @@
 import { ChartConfig, ChartContainer, ChartLegend, ChartLegendContent, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart"
 import { Bar, BarChart, XAxis} from "recharts"
 import { reports} from "@/lib/globals"
+import React from "react"
 
 interface Props {
     data: {
@@ -33,6 +34,7 @@ export default function PlayerIDChart({
           color: colors.gcColor,
         },
     } 
+    const isMobile = useIsMobile()
 
     return (
         <ChartContainer config={chartConfig}>
@@ -41,7 +43,7 @@ export default function PlayerIDChart({
                     dataKey="report"
                     tickLine={false}
                     axisLine={false}
-                    tickFormatter={(key) => {return (reports[key].year + " " + reports[key].season)}}
+                    tickFormatter={(key) => {{return (isMobile ? "" : reports[key].year + " " + reports[key].season)}}}
                 />
                 <Bar 
                     dataKey="baseSalary"
@@ -73,6 +75,22 @@ export default function PlayerIDChart({
             </BarChart>
         </ChartContainer>
     )
+}
+
+function useIsMobile() {
+  const [isMobile, setIsMobile] = React.useState(false);
+
+  React.useEffect(() => {
+    const media = window.matchMedia("(max-width: 768px)");
+    setIsMobile(media.matches);
+
+    const listener = () => setIsMobile(media.matches);
+    media.addEventListener("change", listener);
+
+    return () => media.removeEventListener("change", listener);
+  }, []);
+
+  return isMobile;
 }
 
 

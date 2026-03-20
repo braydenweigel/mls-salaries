@@ -4,6 +4,7 @@ import {
     ColumnDef,
     ColumnFiltersState,
     SortingState,
+    VisibilityState,
     flexRender,
     getCoreRowModel,
     getFilteredRowModel,
@@ -35,6 +36,7 @@ export function ClubTable<TData extends TableClub, TValue>({
 }: DataTableProps<TData, TValue>) {
     const [sorting, setSorting] = React.useState<SortingState>([])
     const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>([])
+    const [columnVisibility, setColumnVisibility] = React.useState<VisibilityState>({totalBaseSal: true})
     const isMobile = useIsMobile()
 
     const table = useReactTable({
@@ -45,11 +47,19 @@ export function ClubTable<TData extends TableClub, TValue>({
         getSortedRowModel: getSortedRowModel(),
         onColumnFiltersChange: setColumnFilters,
         getFilteredRowModel: getFilteredRowModel(),
+        onColumnVisibilityChange: setColumnVisibility,
         state: {
             sorting,
-            columnFilters
-        }
+            columnFilters,
+            columnVisibility
+        },
     })
+
+     React.useEffect(() => {
+        setColumnVisibility({
+            totalBaseSal: !isMobile
+        })
+    }, [isMobile])
 
     const clubs: string[] = []
     for (const club of data){
@@ -68,49 +78,18 @@ export function ClubTable<TData extends TableClub, TValue>({
                     <TableHeader>
                         {table.getHeaderGroups().map((headerGroup) => (
                             <TableRow key={headerGroup.id}>
-                                {isMobile ? 
-                                    <><TableHead key={headerGroup.headers[0].id} className="sticky top-0 z-10">
-                                        {headerGroup.headers[0].isPlaceholder
-                                        ? null
-                                        : flexRender(
-                                            headerGroup.headers[0].column.columnDef.header,
-                                            headerGroup.headers[0].getContext()
-                                        )}
-                                    </TableHead>
-                                    <TableHead key={headerGroup.headers[2].id} className="sticky top-0 z-10">
-                                        {headerGroup.headers[2].isPlaceholder
-                                        ? null
-                                        : flexRender(
-                                            headerGroup.headers[2].column.columnDef.header,
-                                            headerGroup.headers[2].getContext()
-                                        )}
-                                    </TableHead></>
-                                    :
-                                    <><TableHead key={headerGroup.headers[0].id} className="sticky top-0 z-10 min-w-0">
-                                        {headerGroup.headers[0].isPlaceholder
-                                        ? null
-                                        : flexRender(
-                                            headerGroup.headers[0].column.columnDef.header,
-                                            headerGroup.headers[0].getContext()
-                                        )}
-                                    </TableHead>
-                                    <TableHead key={headerGroup.headers[1].id} className="sticky top-0 z-10 min-w-0">
-                                        {headerGroup.headers[1].isPlaceholder
-                                        ? null
-                                        : flexRender(
-                                            headerGroup.headers[1].column.columnDef.header,
-                                            headerGroup.headers[1].getContext()
-                                        )}
-                                    </TableHead>
-                                    <TableHead key={headerGroup.headers[2].id} className="sticky top-0 z-10 min-w-0">
-                                        {headerGroup.headers[2].isPlaceholder
-                                        ? null
-                                        : flexRender(
-                                            headerGroup.headers[2].column.columnDef.header,
-                                            headerGroup.headers[2].getContext()
-                                        )}
-                                    </TableHead></>
-                                }
+                                {headerGroup.headers.map((header) => {
+                                    return (
+                                        <TableHead key={header.id} className="sticky top-0 z-10">
+                                            {header.isPlaceholder
+                                            ? null
+                                            : flexRender(
+                                                header.column.columnDef.header,
+                                                header.getContext()
+                                                )}
+                                        </TableHead>
+                                    )
+                                })}
                             </TableRow>
                             ))}
                         </TableHeader>
@@ -121,28 +100,11 @@ export function ClubTable<TData extends TableClub, TValue>({
                                 key={row.id}
                                 data-state={row.getIsSelected() && "selected"}
                             >
-                                {isMobile ? 
-                                    <>
-                                        <TableCell key={row.getVisibleCells().at(0)?.id} className=" min-w-0">
-                                            {flexRender(row.getVisibleCells().at(0)?.column.columnDef.cell, row.getVisibleCells().at(0)!.getContext())}
-                                        </TableCell>
-                                        <TableCell key={row.getVisibleCells().at(2)?.id} className=" min-w-0">
-                                            {flexRender(row.getVisibleCells().at(2)?.column.columnDef.cell, row.getVisibleCells().at(2)!.getContext())}
-                                        </TableCell>
-                                    </>
-                                    :
-                                    <>
-                                        <TableCell key={row.getVisibleCells().at(0)?.id} className=" min-w-0">
-                                            {flexRender(row.getVisibleCells().at(0)?.column.columnDef.cell, row.getVisibleCells().at(0)!.getContext())}
-                                        </TableCell>
-                                        <TableCell key={row.getVisibleCells().at(1)?.id} className=" min-w-0">
-                                            {flexRender(row.getVisibleCells().at(1)?.column.columnDef.cell, row.getVisibleCells().at(1)!.getContext())}
-                                        </TableCell>
-                                        <TableCell key={row.getVisibleCells().at(2)?.id} className=" min-w-0">
-                                            {flexRender(row.getVisibleCells().at(2)?.column.columnDef.cell, row.getVisibleCells().at(2)!.getContext())}
-                                        </TableCell>
-                                    </>
-                                }                               
+                               {row.getVisibleCells().map((cell) => (
+                                    <TableCell key={cell.id}>
+                                        {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                                    </TableCell>
+                                ))}
                             </TableRow>
                             ))
                         ) : (
