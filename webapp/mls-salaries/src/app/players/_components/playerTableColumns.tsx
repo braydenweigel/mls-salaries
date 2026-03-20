@@ -50,6 +50,10 @@ export const playerColumns: ColumnDef<TablePlayer>[] = [
         filterFn: (row, position, filterValue: string[]) => {
             if (!filterValue?.length) return true
             return filterValue.includes(row.getValue(position))
+        },
+        cell: ({ row }) => {
+            const value = row.getValue<string>("position")
+            return <div className="text-left">{value.toLocaleString()}</div>
         }
         
     },
@@ -60,15 +64,16 @@ export const playerColumns: ColumnDef<TablePlayer>[] = [
             <Button
               variant="ghost"
               onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+              className=""
             >
               Base Salary
-              <ArrowUpDown className="ml-2 h-4 w-4" />
+              <ArrowUpDown/>
             </Button>
           )
         },
         cell: ({ row }) => {
             const value = row.getValue<number>("baseSal") ?? row.getValue<number>("guarComp")
-            return <div className="text-center">${value.toLocaleString()}</div>
+            return <div className="text-right pr-8">${value.toLocaleString()}</div>
         }
 
     },
@@ -77,20 +82,12 @@ export const playerColumns: ColumnDef<TablePlayer>[] = [
         header: ({ column }) => {
           return (
             <div className="flex items-center">
-                <Tooltip>
-                    <TooltipTrigger>
-                        < Info className="h-4 w-4"/>
-                    </TooltipTrigger>
-                    <TooltipContent>
-                        <p>Base Salary plus annualized signing</p><p>and guaranteed bonuses.</p>
-                    </TooltipContent>
-                </Tooltip>
                 <Button
                 variant="ghost"
                 onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
                 >
                     Guaranteed Comp
-                    <ArrowUpDown className="ml-1 h-4 w-4" />
+                    <ArrowUpDown/>
                 </Button>
             </div>
           )

@@ -43,7 +43,6 @@ export function PlayerTable<TData extends TablePlayer, TValue>({
 }: DataTableProps<TData, TValue>) {
     const [sorting, setSorting] = React.useState<SortingState>([])
     const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>([])
-    const [columnVisibility, setColumnVisibility] = React.useState<VisibilityState>({club: true, position: true, baseSal: true})
     const isMobile = useIsMobile()
 
     const table = useReactTable({
@@ -55,22 +54,12 @@ export function PlayerTable<TData extends TablePlayer, TValue>({
         getSortedRowModel: getSortedRowModel(),
         onColumnFiltersChange: setColumnFilters,
         getFilteredRowModel: getFilteredRowModel(),
-        onColumnVisibilityChange: setColumnVisibility,
         state: {
             sorting,
             columnFilters,
-            columnVisibility
         },
 
     })
-
-    React.useEffect(() => {
-        setColumnVisibility({
-            club: !isMobile,
-            position: !isMobile,
-            baseSal: !isMobile
-        })
-    }, [isMobile])
 
     const allPlayerClubs: string[] = []
     for (const player of data){
@@ -99,18 +88,66 @@ export function PlayerTable<TData extends TablePlayer, TValue>({
                     <TableHeader>
                         {table.getHeaderGroups().map((headerGroup) => (
                             <TableRow key={headerGroup.id}>
-                            {headerGroup.headers.map((header) => {
-                                return (
-                                <TableHead key={header.id} className="sticky top-0 z-10 min-w-0">
-                                    {header.isPlaceholder
-                                    ? null
-                                    : flexRender(
-                                        header.column.columnDef.header,
-                                        header.getContext()
+                                {isMobile ? 
+                                    <><TableHead key={headerGroup.headers[0].id} className="sticky top-0 z-10">
+                                        {headerGroup.headers[0].isPlaceholder
+                                        ? null
+                                        : flexRender(
+                                            headerGroup.headers[0].column.columnDef.header,
+                                            headerGroup.headers[0].getContext()
                                         )}
-                                </TableHead>
-                                )
-                            })}
+                                    </TableHead>
+                                    <TableHead key={headerGroup.headers[4].id} className="sticky top-0 z-10">
+                                        {headerGroup.headers[4].isPlaceholder
+                                        ? null
+                                        : flexRender(
+                                            headerGroup.headers[4].column.columnDef.header,
+                                            headerGroup.headers[4].getContext()
+                                        )}
+                                    </TableHead></>
+                                    :
+                                    <><TableHead key={headerGroup.headers[0].id} className="sticky top-0 z-10 min-w-0">
+                                        {headerGroup.headers[0].isPlaceholder
+                                        ? null
+                                        : flexRender(
+                                            headerGroup.headers[0].column.columnDef.header,
+                                            headerGroup.headers[0].getContext()
+                                        )}
+                                    </TableHead>
+                                    <TableHead key={headerGroup.headers[1].id} className="sticky top-0 z-10 min-w-0">
+                                        {headerGroup.headers[1].isPlaceholder
+                                        ? null
+                                        : flexRender(
+                                            headerGroup.headers[1].column.columnDef.header,
+                                            headerGroup.headers[1].getContext()
+                                        )}
+                                    </TableHead>
+                                    <TableHead key={headerGroup.headers[2].id} className="sticky top-0 z-10 min-w-0">
+                                        {headerGroup.headers[2].isPlaceholder
+                                        ? null
+                                        : flexRender(
+                                            headerGroup.headers[2].column.columnDef.header,
+                                            headerGroup.headers[2].getContext()
+                                        )}
+                                    </TableHead>
+                                    <TableHead key={headerGroup.headers[3].id} className="sticky top-0 z-10 min-w-0">
+                                        {headerGroup.headers[3].isPlaceholder
+                                        ? null
+                                        : flexRender(
+                                            headerGroup.headers[3].column.columnDef.header,
+                                            headerGroup.headers[3].getContext()
+                                        )}
+                                    </TableHead>
+                                    <TableHead key={headerGroup.headers[4].id} className="sticky top-0 z-10 min-w-0">
+                                        {headerGroup.headers[4].isPlaceholder
+                                        ? null
+                                        : flexRender(
+                                            headerGroup.headers[4].column.columnDef.header,
+                                            headerGroup.headers[4].getContext()
+                                        )}
+                                    </TableHead></>
+                                }
+                                
                             </TableRow>
                             ))}
                         </TableHeader>
@@ -121,11 +158,34 @@ export function PlayerTable<TData extends TablePlayer, TValue>({
                                 key={row.id}
                                 data-state={row.getIsSelected() && "selected"}
                             >
-                                {row.getVisibleCells().map((cell) => (
-                                <TableCell key={cell.id} className=" min-w-0">
-                                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                                </TableCell>
-                                ))}
+                                {isMobile ? 
+                                    <>
+                                        <TableCell key={row.getVisibleCells().at(0)?.id} className=" min-w-0">
+                                            {flexRender(row.getVisibleCells().at(0)?.column.columnDef.cell, row.getVisibleCells().at(0)!.getContext())}
+                                        </TableCell>
+                                        <TableCell key={row.getVisibleCells().at(4)?.id} className=" min-w-0">
+                                            {flexRender(row.getVisibleCells().at(4)?.column.columnDef.cell, row.getVisibleCells().at(4)!.getContext())}
+                                        </TableCell>
+                                    </>
+                                    :
+                                    <>
+                                        <TableCell key={row.getVisibleCells().at(0)?.id} className=" min-w-0">
+                                            {flexRender(row.getVisibleCells().at(0)?.column.columnDef.cell, row.getVisibleCells().at(0)!.getContext())}
+                                        </TableCell>
+                                        <TableCell key={row.getVisibleCells().at(1)?.id} className=" min-w-0">
+                                            {flexRender(row.getVisibleCells().at(1)?.column.columnDef.cell, row.getVisibleCells().at(1)!.getContext())}
+                                        </TableCell>
+                                        <TableCell key={row.getVisibleCells().at(2)?.id} className=" min-w-0">
+                                            {flexRender(row.getVisibleCells().at(2)?.column.columnDef.cell, row.getVisibleCells().at(2)!.getContext())}
+                                        </TableCell>
+                                        <TableCell key={row.getVisibleCells().at(3)?.id} className=" min-w-0">
+                                            {flexRender(row.getVisibleCells().at(3)?.column.columnDef.cell, row.getVisibleCells().at(3)!.getContext())}
+                                        </TableCell>
+                                        <TableCell key={row.getVisibleCells().at(4)?.id} className=" min-w-0">
+                                            {flexRender(row.getVisibleCells().at(4)?.column.columnDef.cell, row.getVisibleCells().at(4)!.getContext())}
+                                        </TableCell>
+                                    </>
+                                }
                             </TableRow>
                             ))
                         ) : (
@@ -143,23 +203,23 @@ export function PlayerTable<TData extends TablePlayer, TValue>({
                 <div className="grid grid-cols-1 gap-4 space-x-2 py-4">
                     <ButtonGroup className="">
                         <Button
-                        variant="outline"
-                        size="sm"
-                        onClick={() => table.previousPage()}
-                        disabled={!table.getCanPreviousPage()}
-                        >
-                        <ArrowLeft/>Previous
-                        </Button>
-                        <Button
-                        variant="outline"
-                        size="sm"
-                        onClick={() => table.nextPage()}
-                        disabled={!table.getCanNextPage()}
-                        >
-                        Next<ArrowRight/>
+                            variant="outline"
+                            size="sm"
+                            onClick={() => table.previousPage()}
+                            disabled={!table.getCanPreviousPage()}
+                            >
+                            <ArrowLeft/>Previous
+                            </Button>
+                            <Button
+                            variant="outline"
+                            size="sm"
+                            onClick={() => table.nextPage()}
+                            disabled={!table.getCanNextPage()}
+                            >
+                            Next<ArrowRight/>
                         </Button>
                     </ButtonGroup>
-                    <div className="flex items-center space-x-4">
+                    <div className="flex items-center space-x-4 ">
                         <Label>Rows per page:</Label>
                         <SelectNumRows pageSize={table.getState().pagination.pageSize} dataSize={data.length} onPageSizeChange={(size) => table.setPageSize(size)}/>
                     </div>

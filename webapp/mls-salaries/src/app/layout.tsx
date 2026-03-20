@@ -90,12 +90,12 @@ export default function RootLayout({
               <ModeToggle/>
             </div>
           </header>
-          <main className="min-h-screen mt-12 mx-auto w-full max-w-[90%] lg:max-w-[66%] px-4">
+          <main className="min-h-screen mt-12 mx-auto w-full max-w-[96%] lg:max-w-[66%] px-4">
             <Suspense fallback={<LoadingPlayerPage/>}>
               {children}
             </Suspense>
           </main>
-          <footer className="flex justify-center bottom-0 mx-auto w-full max-w-[90%] md:max-w-[66%] px-4 py-2 text-muted-foreground text-center">
+          <footer className="flex justify-center bottom-0 mx-auto w-full max-w-[96%] md:max-w-[66%] px-4 py-2 text-muted-foreground text-center">
             <div><Link href="/players/list" className="hover:underline">All Players List</Link> • <Link href="/clubs/list" className="hover:underline">All Clubs List</Link> •&nbsp;</div>
             <p className="">Built by <a href="https://github.com/braydenweigel" target="_blank" className="inline-block"><u>Brayden Weigel</u> &nbsp;<SiGithub className="inline-block"/></a></p>
           </footer>
