@@ -35,6 +35,7 @@ export function ClubTable<TData extends TableClub, TValue>({
 }: DataTableProps<TData, TValue>) {
     const [sorting, setSorting] = React.useState<SortingState>([])
     const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>([])
+    const isMobile = useIsMobile()
 
     const table = useReactTable({
         data,
@@ -67,18 +68,49 @@ export function ClubTable<TData extends TableClub, TValue>({
                     <TableHeader>
                         {table.getHeaderGroups().map((headerGroup) => (
                             <TableRow key={headerGroup.id}>
-                            {headerGroup.headers.map((header) => {
-                                return (
-                                <TableHead key={header.id} className="sticky top-0 z-10">
-                                    {header.isPlaceholder
-                                    ? null
-                                    : flexRender(
-                                        header.column.columnDef.header,
-                                        header.getContext()
+                                {isMobile ? 
+                                    <><TableHead key={headerGroup.headers[0].id} className="sticky top-0 z-10">
+                                        {headerGroup.headers[0].isPlaceholder
+                                        ? null
+                                        : flexRender(
+                                            headerGroup.headers[0].column.columnDef.header,
+                                            headerGroup.headers[0].getContext()
                                         )}
-                                </TableHead>
-                                )
-                            })}
+                                    </TableHead>
+                                    <TableHead key={headerGroup.headers[2].id} className="sticky top-0 z-10">
+                                        {headerGroup.headers[2].isPlaceholder
+                                        ? null
+                                        : flexRender(
+                                            headerGroup.headers[2].column.columnDef.header,
+                                            headerGroup.headers[2].getContext()
+                                        )}
+                                    </TableHead></>
+                                    :
+                                    <><TableHead key={headerGroup.headers[0].id} className="sticky top-0 z-10 min-w-0">
+                                        {headerGroup.headers[0].isPlaceholder
+                                        ? null
+                                        : flexRender(
+                                            headerGroup.headers[0].column.columnDef.header,
+                                            headerGroup.headers[0].getContext()
+                                        )}
+                                    </TableHead>
+                                    <TableHead key={headerGroup.headers[1].id} className="sticky top-0 z-10 min-w-0">
+                                        {headerGroup.headers[1].isPlaceholder
+                                        ? null
+                                        : flexRender(
+                                            headerGroup.headers[1].column.columnDef.header,
+                                            headerGroup.headers[1].getContext()
+                                        )}
+                                    </TableHead>
+                                    <TableHead key={headerGroup.headers[2].id} className="sticky top-0 z-10 min-w-0">
+                                        {headerGroup.headers[2].isPlaceholder
+                                        ? null
+                                        : flexRender(
+                                            headerGroup.headers[2].column.columnDef.header,
+                                            headerGroup.headers[2].getContext()
+                                        )}
+                                    </TableHead></>
+                                }
                             </TableRow>
                             ))}
                         </TableHeader>
@@ -89,11 +121,28 @@ export function ClubTable<TData extends TableClub, TValue>({
                                 key={row.id}
                                 data-state={row.getIsSelected() && "selected"}
                             >
-                                {row.getVisibleCells().map((cell) => (
-                                <TableCell key={cell.id}>
-                                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                                </TableCell>
-                                ))}
+                                {isMobile ? 
+                                    <>
+                                        <TableCell key={row.getVisibleCells().at(0)?.id} className=" min-w-0">
+                                            {flexRender(row.getVisibleCells().at(0)?.column.columnDef.cell, row.getVisibleCells().at(0)!.getContext())}
+                                        </TableCell>
+                                        <TableCell key={row.getVisibleCells().at(2)?.id} className=" min-w-0">
+                                            {flexRender(row.getVisibleCells().at(2)?.column.columnDef.cell, row.getVisibleCells().at(2)!.getContext())}
+                                        </TableCell>
+                                    </>
+                                    :
+                                    <>
+                                        <TableCell key={row.getVisibleCells().at(0)?.id} className=" min-w-0">
+                                            {flexRender(row.getVisibleCells().at(0)?.column.columnDef.cell, row.getVisibleCells().at(0)!.getContext())}
+                                        </TableCell>
+                                        <TableCell key={row.getVisibleCells().at(1)?.id} className=" min-w-0">
+                                            {flexRender(row.getVisibleCells().at(1)?.column.columnDef.cell, row.getVisibleCells().at(1)!.getContext())}
+                                        </TableCell>
+                                        <TableCell key={row.getVisibleCells().at(2)?.id} className=" min-w-0">
+                                            {flexRender(row.getVisibleCells().at(2)?.column.columnDef.cell, row.getVisibleCells().at(2)!.getContext())}
+                                        </TableCell>
+                                    </>
+                                }                               
                             </TableRow>
                             ))
                         ) : (
@@ -111,4 +160,20 @@ export function ClubTable<TData extends TableClub, TValue>({
             </div>
         </div>
     )
+}
+
+function useIsMobile() {
+  const [isMobile, setIsMobile] = React.useState(false);
+
+  React.useEffect(() => {
+    const media = window.matchMedia("(max-width: 768px)");
+    setIsMobile(media.matches);
+
+    const listener = () => setIsMobile(media.matches);
+    media.addEventListener("change", listener);
+
+    return () => media.removeEventListener("change", listener);
+  }, []);
+
+  return isMobile;
 }
