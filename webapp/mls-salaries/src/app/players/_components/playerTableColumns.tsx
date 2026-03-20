@@ -26,6 +26,7 @@ export const playerColumns: ColumnDef<TablePlayer>[] = [
             return (
                 <Link href={`/players/${player.id}`} className="hover:underline">{player.name}</Link>
             )
+            
         }
         
     },
@@ -50,6 +51,7 @@ export const playerColumns: ColumnDef<TablePlayer>[] = [
             if (!filterValue?.length) return true
             return filterValue.includes(row.getValue(position))
         }
+        
     },
     {
         accessorKey: "baseSal",
@@ -66,7 +68,7 @@ export const playerColumns: ColumnDef<TablePlayer>[] = [
         },
         cell: ({ row }) => {
             const value = row.getValue<number>("baseSal") ?? row.getValue<number>("guarComp")
-            return `$${value.toLocaleString()}`
+            return <div className="text-center">${value.toLocaleString()}</div>
         }
 
     },
@@ -75,27 +77,27 @@ export const playerColumns: ColumnDef<TablePlayer>[] = [
         header: ({ column }) => {
           return (
             <div className="flex items-center">
-              <Tooltip>
-                <TooltipTrigger>
-                  < Info className="mr-1 h-4 w-4"/>
-                </TooltipTrigger>
-                <TooltipContent>
-                  <p>Base Salary plus annualized signing</p><p>and guaranteed bonuses.</p>
-                </TooltipContent>
-              </Tooltip>
-              <Button
-              variant="ghost"
-              onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-              >
-                Guaranteed Comp
-                <ArrowUpDown className="ml-1 h-4 w-4" />
-            </Button>
+                <Tooltip>
+                    <TooltipTrigger>
+                        < Info className="h-4 w-4"/>
+                    </TooltipTrigger>
+                    <TooltipContent>
+                        <p>Base Salary plus annualized signing</p><p>and guaranteed bonuses.</p>
+                    </TooltipContent>
+                </Tooltip>
+                <Button
+                variant="ghost"
+                onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+                >
+                    Guaranteed Comp
+                    <ArrowUpDown className="ml-1 h-4 w-4" />
+                </Button>
             </div>
           )
         },
         cell: ({ row }) => {
             const value = row.getValue<number>("guarComp")
-            return `$${value.toLocaleString()}`
+            return <div className="text-right">${value.toLocaleString()}</div>
         }
     },
 ]
