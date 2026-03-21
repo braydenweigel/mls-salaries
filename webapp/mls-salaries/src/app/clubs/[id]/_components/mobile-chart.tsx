@@ -18,7 +18,7 @@ interface Props {
 
 }
 
-export default function ClubIDChart({
+export default function MobileClubIDChart({
     data,
     colors
 }: Props){
@@ -34,36 +34,34 @@ export default function ClubIDChart({
     } 
 
     return (
-        <ChartContainer config={chartConfig} className="">
-            <BarChart data={data}>
-                <XAxis 
+        <ChartContainer config={chartConfig} className="h-[55vh] w-full">
+            <BarChart data={data} layout="vertical" margin={{left: 20}} height={800}>
+                <YAxis 
+                    type="category"
                     dataKey="name"
                     tickLine={false}
                     axisLine={false}
-                    interval={0} // ensures all ticks show
-                    angle={-45}
-                    textAnchor="end"
-                    height={120} // add more height so labels fit
-                    tick={{ fontSize: 12 }}
-                    
+                    hide
                 />
-                <YAxis
+                <XAxis
                     type="number"
                     tickLine={false}
                     axisLine={false}
-                    width={80}
                     tickFormatter={(value: number) => {return `$${value.toLocaleString()}`}}
+                    
                 />
 
                 <Bar 
                     dataKey="baseSal"
                     stackId="a"
                     fill={colors.bsColor}
+                    barSize={20}
                 />
                 <Bar 
                     dataKey="guarComp"
                     stackId="a"
                     fill={colors.gcColor}
+                    barSize={20}
 
                 />
                 <ChartTooltip 

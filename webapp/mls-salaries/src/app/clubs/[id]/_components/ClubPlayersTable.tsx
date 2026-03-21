@@ -4,6 +4,7 @@ import {
     ColumnDef,
     ColumnFiltersState,
     SortingState,
+    VisibilityState,
     flexRender,
     getCoreRowModel,
     getFilteredRowModel,
@@ -35,6 +36,8 @@ export function ClubPlayersTable<TData, TValue>({
 }: DataTableProps<TData, TValue>) {
     const [sorting, setSorting] = React.useState<SortingState>([])
     const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>([])
+    const [columnVisibility, setColumnVisibility] = React.useState<VisibilityState>({position: true, baseSal: true})
+    const isMobile = useIsMobile()
 
     const table = useReactTable({
         data,
@@ -44,11 +47,20 @@ export function ClubPlayersTable<TData, TValue>({
         getSortedRowModel: getSortedRowModel(),
         onColumnFiltersChange: setColumnFilters,
         getFilteredRowModel: getFilteredRowModel(),
+        onColumnVisibilityChange: setColumnVisibility,
         state: {
             sorting,
-            columnFilters
-        }
+            columnFilters,
+            columnVisibility
+        },
     })
+
+    React.useEffect(() => {
+        setColumnVisibility({
+            position: !isMobile,
+            baseSal: !isMobile
+        })
+    }, [isMobile])
 
     return (
         <div className="w-full table-fixed">
@@ -114,4 +126,20 @@ export function ClubPlayersTable<TData, TValue>({
             </div>
         </div>
     )
+}
+
+function useIsMobile() {
+  const [isMobile, setIsMobile] = React.useState(false);
+
+  React.useEffect(() => {
+    const media = window.matchMedia("(max-width: 768px)");
+    setIsMobile(media.matches);
+
+    const listener = () => setIsMobile(media.matches);
+    media.addEventListener("change", listener);
+
+    return () => media.removeEventListener("change", listener);
+  }, []);
+
+  return isMobile;
 }

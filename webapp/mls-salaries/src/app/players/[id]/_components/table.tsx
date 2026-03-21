@@ -1,10 +1,9 @@
 "use client"
 
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
-import { Tooltip, TooltipTrigger, TooltipContent } from "@/components/ui/tooltip"
 import { Club, PlayerRecord } from "@/lib/data/types"
-import { Info } from "lucide-react"
 import Link from 'next/link'
+import React from "react"
 
 interface Props {
     records: PlayerRecord[]
@@ -15,6 +14,7 @@ export default function PlayerIDTable({
     records,
     playerClubs
 }: Props){
+    const isMobile = useIsMobile()
     
     return (
         <Table className="mx-auto px-4">
@@ -22,21 +22,9 @@ export default function PlayerIDTable({
                 <TableRow>
                     <TableHead className="w-[120px]">Year</TableHead>
                     <TableHead>Club</TableHead>
-                    <TableHead>Position</TableHead>
-                    <TableHead className="text-right">Base Salary</TableHead>
-                    <TableHead className="text-right">
-                        <div className="flex items-center place-self-end">
-                            <Tooltip>
-                                <TooltipTrigger>
-                                    <Info className="mr-1 h-4 w-4"/>
-                                </TooltipTrigger>
-                                <TooltipContent>
-                                    <p>Base Salary plus annualized signing</p><p>and guaranteed bonuses.</p>
-                                </TooltipContent>
-                            </Tooltip>
-                            Guaranteed Comp
-                        </div>
-                    </TableHead>
+                    {isMobile ? null : <TableHead>Position</TableHead>}
+                    {isMobile ? null : <TableHead className="text-right">Base Salary</TableHead>}
+                    <TableHead className="text-right">Guaranteed Comp</TableHead>
                 </TableRow>
             </TableHeader>
             <TableBody>
@@ -44,10 +32,10 @@ export default function PlayerIDTable({
                 <TableRow key={record.id}>
                 <TableCell>{record.recordyear}</TableCell>
                 <TableCell><Link href={`/clubs/${record.club}?year=${(record.recordyear.toString()) + (record.recordseason == "Fall" ? ".5" : "")}`} className="hover:underline">{playerClubs[index].clubname}</Link></TableCell>
-                <TableCell>{record.position}</TableCell>
-                <TableCell className="text-right">
+                {isMobile ? null : <TableCell>{record.position}</TableCell>}
+                {isMobile ? null : <TableCell className="text-right">
                     ${record.basesalary ? record.basesalary.toLocaleString() : record.guaranteedcomp.toLocaleString()}
-                </TableCell>
+                </TableCell>}
                 <TableCell className="text-right">
                     ${record.guaranteedcomp.toLocaleString()}
                 </TableCell>
@@ -56,4 +44,20 @@ export default function PlayerIDTable({
             </TableBody>
         </Table>
     )
+}
+
+function useIsMobile() {
+  const [isMobile, setIsMobile] = React.useState(false);
+
+  React.useEffect(() => {
+    const media = window.matchMedia("(max-width: 768px)");
+    setIsMobile(media.matches);
+
+    const listener = () => setIsMobile(media.matches);
+    media.addEventListener("change", listener);
+
+    return () => media.removeEventListener("change", listener);
+  }, []);
+
+  return isMobile;
 }

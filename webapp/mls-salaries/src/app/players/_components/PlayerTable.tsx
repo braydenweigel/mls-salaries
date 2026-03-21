@@ -9,7 +9,8 @@ import {
     getPaginationRowModel,
     getFilteredRowModel,
     getSortedRowModel,
-    useReactTable
+    useReactTable,
+    VisibilityState, 
 } from "@tanstack/react-table"
 
 import {
@@ -42,6 +43,8 @@ export function PlayerTable<TData extends TablePlayer, TValue>({
 }: DataTableProps<TData, TValue>) {
     const [sorting, setSorting] = React.useState<SortingState>([])
     const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>([])
+    const [columnVisibility, setColumnVisibility] = React.useState<VisibilityState>({club: true, position: true, baseSal: true})
+    const isMobile = useIsMobile()
 
     const table = useReactTable({
         data,
@@ -52,11 +55,22 @@ export function PlayerTable<TData extends TablePlayer, TValue>({
         getSortedRowModel: getSortedRowModel(),
         onColumnFiltersChange: setColumnFilters,
         getFilteredRowModel: getFilteredRowModel(),
+        onColumnVisibilityChange: setColumnVisibility,
         state: {
             sorting,
-            columnFilters
-        }
+            columnFilters,
+            columnVisibility
+        },
+
     })
+
+    React.useEffect(() => {
+        setColumnVisibility({
+            club: !isMobile,
+            position: !isMobile,
+            baseSal: !isMobile
+        })
+    }, [isMobile])
 
     const allPlayerClubs: string[] = []
     for (const player of data){
@@ -65,42 +79,38 @@ export function PlayerTable<TData extends TablePlayer, TValue>({
     const clubs = [...new Set(allPlayerClubs)]//remove duplicates
 
     return (
-        <div className="w-full table-fixed">
-            <div className="flex items-center w-full py-4 justify-between">
-                <div className="flex items-center space-x-4">
-                    <Input
+        <div className="w-full">
+            <div className="grid grid-cols-1 md:grid-cols-2 items-center w-fit gap-2 py-2">
+                <div className="flex items-center space-x-2">
+                    <PositionFilter column={table.getColumn("position")!}/>
+                    <ClubFilter column={table.getColumn("club")!} clubs={clubs}/>
+                </div>
+                <Input
                     placeholder="Filter players..."
                     value={(table.getColumn("name")?.getFilterValue() as string) ?? ""}
                     onChange={(event) =>
                         table.getColumn("name")?.setFilterValue(event.target.value)
                     }
                     className="max-w-sm"
-                    />
-                    <PositionFilter column={table.getColumn("position")!}/>
-                    <ClubFilter column={table.getColumn("club")!} clubs={clubs}/>
-                </div>
-                <div className="flex items-center space-x-4">
-                    <Label>Rows per page:</Label>
-                    <SelectNumRows pageSize={table.getState().pagination.pageSize} dataSize={data.length} onPageSizeChange={(size) => table.setPageSize(size)}/>
-                </div>
+                />
             </div>
-            <div className="max-h-[55vh] overflow-auto w-full">
-                <Table>
+            <div className="max-h-[55vh] overflow-y-auto w-full overflow-x-hidden">
+                <Table className="table-fixed">
                     <TableHeader>
                         {table.getHeaderGroups().map((headerGroup) => (
                             <TableRow key={headerGroup.id}>
-                            {headerGroup.headers.map((header) => {
+                                {headerGroup.headers.map((header) => {
                                 return (
-                                <TableHead key={header.id} className="sticky top-0 z-10">
-                                    {header.isPlaceholder
-                                    ? null
-                                    : flexRender(
-                                        header.column.columnDef.header,
-                                        header.getContext()
-                                        )}
-                                </TableHead>
-                                )
-                            })}
+                                    <TableHead key={header.id} className="sticky top-0 z-10 min-w-0">
+                                        {header.isPlaceholder
+                                        ? null
+                                        : flexRender(
+                                            header.column.columnDef.header,
+                                            header.getContext()
+                                            )}
+                                    </TableHead>
+                                    )
+                                })}
                             </TableRow>
                             ))}
                         </TableHeader>
@@ -111,11 +121,11 @@ export function PlayerTable<TData extends TablePlayer, TValue>({
                                 key={row.id}
                                 data-state={row.getIsSelected() && "selected"}
                             >
-                                {row.getVisibleCells().map((cell) => (
-                                <TableCell key={cell.id}>
+                               {row.getVisibleCells().map((cell) => (
+                                <TableCell key={cell.id} className=" min-w-0">
                                     {flexRender(cell.column.columnDef.cell, cell.getContext())}
                                 </TableCell>
-                                ))}
+                                ))} 
                             </TableRow>
                             ))
                         ) : (
@@ -130,27 +140,47 @@ export function PlayerTable<TData extends TablePlayer, TValue>({
             </div>
             <div className="flex justify-between w-full space-x-2 py-4">
                 <Button variant="destructive" size="sm" className="" onClick={() => table.resetColumnFilters()}>Reset</Button>
-                <div className="flex justify-between space-x-2 py-4">
+                <div className="grid grid-cols-1 gap-4 space-x-2 py-4">
                     <ButtonGroup className="">
                         <Button
-                        variant="outline"
-                        size="sm"
-                        onClick={() => table.previousPage()}
-                        disabled={!table.getCanPreviousPage()}
-                        >
-                        <ArrowLeft/>Previous
-                        </Button>
-                        <Button
-                        variant="outline"
-                        size="sm"
-                        onClick={() => table.nextPage()}
-                        disabled={!table.getCanNextPage()}
-                        >
-                        Next<ArrowRight/>
+                            variant="outline"
+                            size="sm"
+                            onClick={() => table.previousPage()}
+                            disabled={!table.getCanPreviousPage()}
+                            >
+                            <ArrowLeft/>Previous
+                            </Button>
+                            <Button
+                            variant="outline"
+                            size="sm"
+                            onClick={() => table.nextPage()}
+                            disabled={!table.getCanNextPage()}
+                            >
+                            Next<ArrowRight/>
                         </Button>
                     </ButtonGroup>
+                    <div className="flex items-center space-x-4 ">
+                        <Label>Rows per page:</Label>
+                        <SelectNumRows pageSize={table.getState().pagination.pageSize} dataSize={data.length} onPageSizeChange={(size) => table.setPageSize(size)}/>
+                    </div>
                 </div>
             </div>
         </div>
     )
+}
+
+function useIsMobile() {
+  const [isMobile, setIsMobile] = React.useState(false);
+
+  React.useEffect(() => {
+    const media = window.matchMedia("(max-width: 768px)");
+    setIsMobile(media.matches);
+
+    const listener = () => setIsMobile(media.matches);
+    media.addEventListener("change", listener);
+
+    return () => media.removeEventListener("change", listener);
+  }, []);
+
+  return isMobile;
 }

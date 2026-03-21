@@ -14,17 +14,18 @@ import { CURRENT_YEAR, reports } from '@/lib/globals'
 import SelectReport from '@/components/lib/SelectReport'
 import { clubPlayerColumns, TableClubPlayers } from '@/app/clubs/[id]/_components/clubPlayerTableColumns'
 import { ClubPlayersTable } from './_components/ClubPlayersTable'
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import ClubIDChart from './_components/chart'
 import { notFound, useRouter, useSearchParams } from 'next/navigation'
 import clubs from "@/lib/data/clubs.json"
 import records from "@/lib/data/records.json"
 import { Club, PlayerRecord } from '@/lib/data/types'
 import { filterRecordsByReportAndClub } from '@/lib/data/filters'
+import MobileClubIDChart from './_components/mobile-chart'
 
 
 export default function ClubPage(props: { params: Promise<{ id: string }> }) {
   const { theme, systemTheme } = useTheme()
+  const isMobile = useIsMobile()
 
   const { id } = use(props.params)
   const { replace } = useRouter()
@@ -84,26 +85,23 @@ export default function ClubPage(props: { params: Promise<{ id: string }> }) {
           <p>Total Guaranteed Compensation: ${totalGuarComp.toLocaleString()}</p>
         </CardContent>
       </Card>
-      <Tabs defaultValue="table">
-      <TabsList>
-          <TabsTrigger value="table">Table</TabsTrigger>
-          <TabsTrigger value="chart">Chart</TabsTrigger>
-        </TabsList>
-        <TabsContent value="table">
-        < Card className="">
+      <Card className="my-4">
+        <CardContent className="overflow-hidden space-y-2">
+          <ClubPlayersTable columns={clubPlayerColumns} data={data} />
+        </CardContent>
+      </Card>
+      {isMobile ? 
+          <Card className="">
             <CardContent className="overflow-hidden space-y-2">
-              <ClubPlayersTable columns={clubPlayerColumns} data={data} />
+              <MobileClubIDChart data={chartData.toReversed()} colors={colors}/>
             </CardContent>
           </Card>
-        </TabsContent>
-        <TabsContent value="chart">
-          <Card className="">
+        : <Card className="">
             <CardContent className="overflow-hidden space-y-2">
               <ClubIDChart data={chartData} colors={colors}/>
             </CardContent>
           </Card>
-        </TabsContent>
-      </Tabs>
+      }
     </div>
     );
 }
@@ -227,4 +225,20 @@ function determineColors(theme: string){
     bsColor: bsColor,
     gcColor: gcColor
   }
+}
+
+function useIsMobile() {
+  const [isMobile, setIsMobile] = React.useState(false);
+
+  React.useEffect(() => {
+    const media = window.matchMedia("(max-width: 768px)");
+    setIsMobile(media.matches);
+
+    const listener = () => setIsMobile(media.matches);
+    media.addEventListener("change", listener);
+
+    return () => media.removeEventListener("change", listener);
+  }, []);
+
+  return isMobile;
 }

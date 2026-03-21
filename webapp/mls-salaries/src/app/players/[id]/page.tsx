@@ -12,7 +12,6 @@ import { isValidClub, isValidPlayer} from '@/lib/storeUtils'
 import { useEffect } from "react"
 import React, { use } from "react";
 import { useTheme } from "next-themes"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import PlayerIDTable from '@/app/players/[id]/_components/table'
 import { CURRENT_YEAR, reports } from "@/lib/globals"
 import PlayerIDChart from '@/app/players/[id]/_components/chart'
@@ -58,7 +57,7 @@ export default function PlayerPage(props: { params: Promise<{ id: string }> }) {
 
   //Formatting stuff
   const clubText = playerRecords[0].recordyear == reports[CURRENT_YEAR].year && playerRecords[0].recordseason == reports[CURRENT_YEAR].season ? "Current Club: " : "Last Club: "
-  const position = records[0].position
+  const position = playerRecords[0].position
   const data = formatData(playerRecords)
 
   //Theme stuff
@@ -70,29 +69,19 @@ export default function PlayerPage(props: { params: Promise<{ id: string }> }) {
     <Card className="my-4">
       <CardHeader>
         <CardTitle className="text-2xl">{playerRecords[0].firstname} {playerRecords[0].lastname}</CardTitle>
-        <CardDescription className="text-base">{clubText} <Link href={`/clubs/${playerRecords[0].club}`} className="hover:underline">{playerClubs[0].clubname}</Link> &emsp; Position: {position}</CardDescription>
+        <CardDescription className="text-base"><div>{clubText} <Link href={`/clubs/${playerRecords[0].club}`} className="hover:underline">{playerClubs[0].clubname}</Link></div><div>Position: {position}</div></CardDescription>
       </CardHeader>
     </Card>
-    <Tabs defaultValue="table">
-        <TabsList>
-          <TabsTrigger value="table">Table</TabsTrigger>
-          <TabsTrigger value="chart">Chart</TabsTrigger>
-        </TabsList>
-        <TabsContent value="table">
-          <Card >
-            <CardContent>
-              <PlayerIDTable records={playerRecords} playerClubs={playerClubs} />
-            </CardContent>
-          </Card>
-        </TabsContent>
-        <TabsContent value="chart">
-          <Card>
-            <CardContent>
-              <PlayerIDChart data={data} colors={colors}/>
-            </CardContent>
-          </Card>
-        </TabsContent>
-      </Tabs>
+    <Card className="my-4">
+      <CardContent>
+        <PlayerIDTable records={playerRecords} playerClubs={playerClubs} />
+      </CardContent>
+    </Card>
+    <Card>
+      <CardContent>
+        <PlayerIDChart data={data} colors={colors}/>
+      </CardContent>
+    </Card>
 
     </div>
   );
