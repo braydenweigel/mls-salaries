@@ -138,9 +138,9 @@ export function PlayerTable<TData extends TablePlayer, TValue>({
                         </TableBody>
                 </Table>
             </div>
-            <div className="flex justify-between w-full space-x-2 py-4">
+            <div className="flex justify-between items-start w-full space-x-2 py-4">
                 <Button variant="destructive" size="sm" className="" onClick={() => table.resetColumnFilters()}>Reset</Button>
-                <div className="grid grid-cols-1 gap-4 space-x-2 py-4">
+                <div className="flex flex-col items-end gap-4">
                     <ButtonGroup className="">
                         <Button
                             variant="outline"
@@ -159,8 +159,8 @@ export function PlayerTable<TData extends TablePlayer, TValue>({
                             Next<ArrowRight/>
                         </Button>
                     </ButtonGroup>
-                    <div className="flex items-center space-x-4 ">
-                        <Label>Rows per page:</Label>
+                    <div className="flex items-center">
+                        <Label>Rows per page: &emsp;</Label>
                         <SelectNumRows pageSize={table.getState().pagination.pageSize} dataSize={data.length} onPageSizeChange={(size) => table.setPageSize(size)}/>
                     </div>
                 </div>
