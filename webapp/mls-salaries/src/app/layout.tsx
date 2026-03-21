@@ -22,6 +22,9 @@ import { ModeToggle } from "@/components/lib/mode-toggle";
 import { Suspense } from "react";
 import LoadingPlayerPage from "./players/[id]/_components/loading";
 import { SearchButton } from "@/components/lib/Search";
+import NavigationBar from "@/components/lib/nav-bar";
+import React from "react";
+import NavigationSideBar from "@/components/lib/nav-sidebar";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -39,6 +42,7 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const isMobile = useIsMobile()
   return (
     <html lang="en" suppressHydrationWarning>
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
@@ -49,48 +53,13 @@ export default function RootLayout({
             disableTransitionOnChange
           >
           <header className="flex fixed w-full top-0 items-start bg-background bg-opacity-100 z-50">
-            <NavigationMenu viewport={false} className=" top-0 left-0 pl-4 pt-2">
-              <NavigationMenuList>
-                <NavigationMenuItem>
-                  <NavigationMenuLink asChild className={navigationMenuTriggerStyle()}>
-                    <Link href="/">Home</Link>
-                  </NavigationMenuLink>
-                </NavigationMenuItem>
-                <NavigationMenuItem>
-                  <NavigationMenuLink asChild className={navigationMenuTriggerStyle()}>
-                    <Link href="/players">Players</Link>
-                  </NavigationMenuLink>
-                </NavigationMenuItem>
-                <NavigationMenuItem>
-                  <NavigationMenuLink asChild className={navigationMenuTriggerStyle()}>
-                    <Link href="/clubs">Clubs</Link>
-                  </NavigationMenuLink>
-                </NavigationMenuItem>
-                {/* {<NavigationMenuItem>
-                  <DropdownMenu>
-                    <DropdownMenuTrigger
-                      className={navigationMenuTriggerStyle()}
-                    >
-                      Compare
-                    </DropdownMenuTrigger>
-                    <DropdownMenuContent>
-                      <DropdownMenuItem asChild>
-                        <Link href="/players/compare">Players</Link>
-                      </DropdownMenuItem>
-                      <DropdownMenuItem asChild>
-                        <Link href="/clubs/compare">Clubs</Link>
-                      </DropdownMenuItem>
-                    </DropdownMenuContent>
-                  </DropdownMenu>
-                </NavigationMenuItem>} */}
-              </NavigationMenuList>
-            </NavigationMenu>
+            {isMobile ? <NavigationSideBar/> : <NavigationBar/>}
             <div className="fixed right-0 top-0 pr-2 pt-2 pb-2 flex items-center gap-2">
               <SearchButton/>
               <ModeToggle/>
-            </div>
+          </div>
           </header>
-          <main className="min-h-screen mt-12 mx-auto w-full max-w-[96%] lg:max-w-[66%] px-4">
+          <main className="min-h-screen mt-16 mx-auto w-full max-w-[96%] lg:max-w-[66%] px-4">
             <Suspense fallback={<LoadingPlayerPage/>}>
               {children}
             </Suspense>
@@ -103,4 +72,20 @@ export default function RootLayout({
       </body>
     </html>
   );
+}
+
+function useIsMobile() {
+  const [isMobile, setIsMobile] = React.useState(false);
+
+  React.useEffect(() => {
+    const media = window.matchMedia("(max-width: 768px)");
+    setIsMobile(media.matches);
+
+    const listener = () => setIsMobile(media.matches);
+    media.addEventListener("change", listener);
+
+    return () => media.removeEventListener("change", listener);
+  }, []);
+
+  return isMobile;
 }
