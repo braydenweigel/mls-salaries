@@ -12,7 +12,6 @@ import { isValidClub, isValidPlayer} from '@/lib/storeUtils'
 import { useEffect } from "react"
 import React, { use } from "react";
 import { useTheme } from "next-themes"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import PlayerIDTable from '@/app/players/[id]/_components/table'
 import { CURRENT_YEAR, reports } from "@/lib/globals"
 import PlayerIDChart from '@/app/players/[id]/_components/chart'

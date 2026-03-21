@@ -43,7 +43,9 @@ export default function PlayerIDChart({
                     dataKey="report"
                     tickLine={false}
                     axisLine={false}
+                    interval={0} // ensures all ticks show
                     tickFormatter={(key) => {{return (isMobile ? "" : reports[key].year + " " + reports[key].season)}}}
+                    tick={{ fontSize: 10 }}
                 />
                 <Bar 
                     dataKey="baseSalary"

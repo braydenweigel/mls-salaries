@@ -1,10 +1,9 @@
 "use client"
 
 import { ColumnDef } from "@tanstack/react-table"
-import { ArrowUpDown, Info } from "lucide-react";
+import { ArrowUpDown } from "lucide-react";
 import Link from "next/link";
 import { Button } from "../../../../components/ui/button";
-import { Tooltip, TooltipTrigger, TooltipContent } from "../../../../components/ui/tooltip";
 
 export type TableClubPlayers = {
     id: string;
@@ -51,7 +50,7 @@ export const clubPlayerColumns: ColumnDef<TableClubPlayers>[] = [
         cell: ({ row }) => {
             const value = row.getValue<number>("baseSal")
             const backup = row.getValue<number>("guarComp")
-            return `$${(value ?? backup).toLocaleString()}`
+            return <div className="text-center">${(value ?? backup).toLocaleString()}</div>
         }
 
     },
@@ -60,14 +59,6 @@ export const clubPlayerColumns: ColumnDef<TableClubPlayers>[] = [
         header: ({ column }) => {
           return (
             <div className="flex items-center">
-              <Tooltip>
-                <TooltipTrigger>
-                  < Info className="mr-1 h-4 w-4"/>
-                </TooltipTrigger>
-                <TooltipContent>
-                  <p>Base Salary plus annualized signing</p><p>and guaranteed bonuses.</p>
-                </TooltipContent>
-              </Tooltip>
               <Button
               variant="ghost"
               onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
@@ -80,7 +71,7 @@ export const clubPlayerColumns: ColumnDef<TableClubPlayers>[] = [
         },
         cell: ({ row }) => {
             const value = row.getValue<number>("guarComp")
-            return `$${value.toLocaleString()}`
+            return <div className="text-center">${value.toLocaleString()}</div>
         }
     },
 ]

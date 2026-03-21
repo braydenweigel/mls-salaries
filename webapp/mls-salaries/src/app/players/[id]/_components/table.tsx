@@ -1,9 +1,7 @@
 "use client"
 
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
-import { Tooltip, TooltipTrigger, TooltipContent } from "@/components/ui/tooltip"
 import { Club, PlayerRecord } from "@/lib/data/types"
-import { Info } from "lucide-react"
 import Link from 'next/link'
 import React from "react"
 

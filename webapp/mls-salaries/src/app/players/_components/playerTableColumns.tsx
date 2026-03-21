@@ -1,10 +1,9 @@
 "use client"
 
 import { ColumnDef } from "@tanstack/react-table"
-import { ArrowUpDown, Info } from "lucide-react";
+import { ArrowUpDown } from "lucide-react";
 import Link from "next/link";
 import { Button } from "../../../components/ui/button";
-import { Tooltip, TooltipContent, TooltipTrigger } from "../../../components/ui/tooltip";
 
 export type TablePlayer = {
     id: string;
