@@ -33,7 +33,7 @@ export default function Players() {
   const data: TablePlayer[] = setTableData(playerRecords, allClubs, reportValue)
 
   return (
-    <Card className="h-[90vh]">
+    <Card className="h-fit">
       <CardContent className="">
         <SelectReport onReportValueChange={(report) => setReportValue(report)} reports={reports} defaultReport={defaultReport}/>
         <div>
