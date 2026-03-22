@@ -77,7 +77,7 @@ export default function PlayerPage(props: { params: Promise<{ id: string }> }) {
         <PlayerIDTable records={playerRecords} playerClubs={playerClubs} />
       </CardContent>
     </Card>
-    <Card>
+    <Card className="hidden md:block">
       <CardContent>
         <PlayerIDChart data={data} colors={colors}/>
       </CardContent>

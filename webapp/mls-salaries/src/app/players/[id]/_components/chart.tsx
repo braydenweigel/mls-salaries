@@ -1,7 +1,7 @@
 "use client"
 
 import { ChartConfig, ChartContainer, ChartLegend, ChartLegendContent, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart"
-import { Bar, BarChart, XAxis} from "recharts"
+import { Bar, BarChart, XAxis, YAxis} from "recharts"
 import { reports} from "@/lib/globals"
 import React from "react"
 
@@ -45,6 +45,14 @@ export default function PlayerIDChart({
                     axisLine={false}
                     interval={0} // ensures all ticks show
                     tickFormatter={(key) => {{return (isMobile ? "" : reports[key].year + " " + reports[key].season)}}}
+                    tick={{ fontSize: 10 }}
+                />
+                <YAxis
+                    type="number"
+                    tickLine={false}
+                    axisLine={false}
+                    width={70}
+                    tickFormatter={(value: number) => {return `$${value.toLocaleString()}`}}
                     tick={{ fontSize: 10 }}
                 />
                 <Bar 

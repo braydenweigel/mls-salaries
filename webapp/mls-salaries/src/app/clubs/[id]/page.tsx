@@ -90,18 +90,12 @@ export default function ClubPage(props: { params: Promise<{ id: string }> }) {
           <ClubPlayersTable columns={clubPlayerColumns} data={data} />
         </CardContent>
       </Card>
-      {isMobile ? 
-          <Card className="">
-            <CardContent className="overflow-hidden space-y-2">
-              <MobileClubIDChart data={chartData.toReversed()} colors={colors}/>
-            </CardContent>
-          </Card>
-        : <Card className="">
-            <CardContent className="overflow-hidden space-y-2">
-              <ClubIDChart data={chartData} colors={colors}/>
-            </CardContent>
-          </Card>
-      }
+      <Card className="hidden md:block">
+        <CardContent className="overflow-hidden space-y-2">
+          <ClubIDChart data={chartData} colors={colors}/>
+        </CardContent>
+      </Card>
+      
     </div>
     );
 }
