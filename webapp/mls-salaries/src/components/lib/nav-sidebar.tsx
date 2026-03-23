@@ -11,7 +11,7 @@ export default function NavigationSideBar(){
     const pathname = usePathname()
 
     useEffect(() => {
-    setOpen(false)
+        setOpen(false)
     }, [pathname])
 
     return (
