@@ -1,7 +1,6 @@
 import Link from "next/link";
 import { NavigationMenu, NavigationMenuItem, NavigationMenuLink, NavigationMenuList, navigationMenuTriggerStyle } from "../ui/navigation-menu";
-import { ModeToggle } from "./mode-toggle";
-import { SearchButton } from "./Search";
+
 
 export default function NavigationBar(){
 

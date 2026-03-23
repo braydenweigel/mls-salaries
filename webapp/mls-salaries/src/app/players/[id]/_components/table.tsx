@@ -17,7 +17,7 @@ export default function PlayerIDTable({
     const isMobile = useIsMobile()
     
     return (
-        <Table className="mx-auto px-4">
+        <Table className="">
             <TableHeader>
                 <TableRow>
                     <TableHead className="w-[120px]">Year</TableHead>
@@ -30,7 +30,10 @@ export default function PlayerIDTable({
             <TableBody>
             {records.map((record, index) => (
                 <TableRow key={record.id}>
-                <TableCell>{record.recordyear}</TableCell>
+                <TableCell>{isMobile ? 
+                    record.recordseason.slice(0,2) + " " + record.recordyear.slice(2,4)
+                    : record.recordseason + " " + record.recordyear
+                }</TableCell>
                 <TableCell><Link href={`/clubs/${record.club}?year=${(record.recordyear.toString()) + (record.recordseason == "Fall" ? ".5" : "")}`} className="hover:underline">{playerClubs[index].clubname}</Link></TableCell>
                 {isMobile ? null : <TableCell>{record.position}</TableCell>}
                 {isMobile ? null : <TableCell className="text-right">
