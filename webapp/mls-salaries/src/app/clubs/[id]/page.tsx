@@ -20,7 +20,6 @@ import clubs from "@/lib/data/clubs.json"
 import records from "@/lib/data/records.json"
 import { Club, PlayerRecord } from '@/lib/data/types'
 import { filterRecordsByReportAndClub } from '@/lib/data/filters'
-import MobileClubIDChart from './_components/mobile-chart'
 
 
 export default function ClubPage(props: { params: Promise<{ id: string }> }) {
@@ -81,8 +80,14 @@ export default function ClubPage(props: { params: Promise<{ id: string }> }) {
         </CardHeader>
         <CardContent className="overflow-hidden space-y-2">
           <SelectReport onReportValueChange={(report) => setReportValue(report)} reports={clubReports} defaultReport={reportParams ?? defaultReport}/>
-          <p>Total Base Salary: ${totalBaseSal.toLocaleString()}</p> 
-          <p>Total Guaranteed Compensation: ${totalGuarComp.toLocaleString()}</p>
+          <div className="md:hidden">
+            <p>Total Base Salary: </p><p className="mb-2">${totalBaseSal.toLocaleString()}</p>
+            <p>Total Guaranteed Compensation: </p><p>${totalGuarComp.toLocaleString()}</p>
+          </div>
+          <div className="hidden md:block">
+            <p>Total Base Salary: ${totalBaseSal.toLocaleString()}</p>
+            <p>Total Guaranteed Compensation: ${totalGuarComp.toLocaleString()}</p>
+          </div>
         </CardContent>
       </Card>
       <Card className="my-4">
@@ -90,18 +95,12 @@ export default function ClubPage(props: { params: Promise<{ id: string }> }) {
           <ClubPlayersTable columns={clubPlayerColumns} data={data} />
         </CardContent>
       </Card>
-      {isMobile ? 
-          <Card className="">
-            <CardContent className="overflow-hidden space-y-2">
-              <MobileClubIDChart data={chartData.toReversed()} colors={colors}/>
-            </CardContent>
-          </Card>
-        : <Card className="">
-            <CardContent className="overflow-hidden space-y-2">
-              <ClubIDChart data={chartData} colors={colors}/>
-            </CardContent>
-          </Card>
-      }
+      <Card className="hidden md:block">
+        <CardContent className="overflow-hidden space-y-2">
+          <ClubIDChart data={chartData} colors={colors}/>
+        </CardContent>
+      </Card>
+      
     </div>
     );
 }
