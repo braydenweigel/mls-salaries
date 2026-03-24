@@ -1,32 +1,23 @@
-"use client"
-
-import SelectReport from "@/components/lib/SelectReport";
-import { Button } from "@/components/ui/button";
-import { ButtonGroup } from "@/components/ui/button-group";
+import { ClubReportsSelector, PlayerReportSelector } from "@/components/lib/report-selectors";
 import { Field, FieldLabel, FieldSeparator } from "@/components/ui/field";
-import { CURRENT_YEAR, reports } from "@/lib/globals";
+import { Metadata } from "next";
 import Link from "next/link";
-import React, { useEffect } from "react";
+import React from "react";
+
+export const metadata: Metadata = {
+    title: "Home - MLS Salaries"
+}
 
 export default function Home() {
-  const [reportValuePlayers, setReportValuePlayers] = React.useState(CURRENT_YEAR)
-  const [reportValueClubs, setReportValueClubs] = React.useState(CURRENT_YEAR)
-
-  useEffect(() => {
-    document.title = "Home - MLS Salaries"
-  },[])
-
   return (
    <div className="">
-    <h1 className="text-center text-4xl font-extrabold">View MLS salaries from 2007 - 2025</h1>
+    <h1 className="text-center text-4xl font-extrabold">Welcome to mlssalaries.fyi</h1>
+    <h1 className="text-center text-xl font-semibold">View MLS salaries from 2007 - 2025</h1>
     <div className="mt-6 space-x-2 content-center">
       <div className="justify-between">
         <Field>
           <FieldLabel className="text-xl font-semibold">Player salaries by year</FieldLabel>
-          <ButtonGroup>
-            <SelectReport onReportValueChange={(report) => setReportValuePlayers(report)} reports={reports} defaultReport={CURRENT_YEAR}/>
-            <Button asChild><Link href={`/players?year=${reportValuePlayers}`}>Go</Link></Button>
-          </ButtonGroup>
+          <PlayerReportSelector/>
         </Field>
         <div className="mt-2">
           <h4 className="text-lg font-medium">View an individual player&apos;s salaries:</h4>
@@ -41,10 +32,7 @@ export default function Home() {
       <div className="justify-between">
         <Field>
           <FieldLabel className="text-xl font-semibold">Club salaries by year</FieldLabel>
-          <ButtonGroup>
-            <SelectReport onReportValueChange={(report) => setReportValueClubs(report)} reports={reports} defaultReport={CURRENT_YEAR}/>
-            <Button asChild><Link href={`/clubs?year=${reportValueClubs}`}>Go</Link></Button>
-          </ButtonGroup>
+          <ClubReportsSelector/>
         </Field>
         <div className="mt-2">
           <h4 className="text-lg font-medium">View an individual club&apos;s salaries:</h4>

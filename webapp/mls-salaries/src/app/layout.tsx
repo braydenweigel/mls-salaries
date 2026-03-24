@@ -1,5 +1,3 @@
-'use client'
-
 import { Geist, Geist_Mono } from "next/font/google";
 import Link from "next/link"
 import "./globals.css";
@@ -34,7 +32,6 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const isMobile = useIsMobile()
   return (
     <html lang="en" suppressHydrationWarning>
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
@@ -45,7 +42,8 @@ export default function RootLayout({
             disableTransitionOnChange
           >
           <header className="flex fixed w-full top-0 items-start bg-background bg-opacity-100 z-50">
-            {isMobile ? <NavigationSideBar/> : <NavigationBar/>}
+            <NavigationSideBar/>
+            <NavigationBar/>
             <div className="fixed right-0 top-0 pr-2 pt-2 pb-2 flex items-center gap-2">
               <SearchButton/>
               <ModeToggle/>
@@ -63,20 +61,4 @@ export default function RootLayout({
       </body>
     </html>
   );
-}
-
-function useIsMobile() {
-  const [isMobile, setIsMobile] = React.useState(false);
-
-  React.useEffect(() => {
-    const media = window.matchMedia("(max-width: 768px)");
-    setIsMobile(media.matches);
-
-    const listener = () => setIsMobile(media.matches);
-    media.addEventListener("change", listener);
-
-    return () => media.removeEventListener("change", listener);
-  }, []);
-
-  return isMobile;
 }

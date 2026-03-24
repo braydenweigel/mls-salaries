@@ -5,7 +5,7 @@ import { NavigationMenu, NavigationMenuItem, NavigationMenuLink, NavigationMenuL
 export default function NavigationBar(){
 
     return (
-        <NavigationMenu viewport={false} className=" top-0 left-0 pl-4 pt-2">
+        <NavigationMenu viewport={false} className="hidden md:inline top-0 left-0 pl-4 pt-2">
             <NavigationMenuList>
             <NavigationMenuItem>
                 <NavigationMenuLink asChild className={navigationMenuTriggerStyle()}>

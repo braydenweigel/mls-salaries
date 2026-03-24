@@ -1,3 +1,5 @@
+"use client"
+
 import Link from "next/link";
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "../ui/sheet";
 import { Menu } from "lucide-react";
@@ -15,9 +17,9 @@ export default function NavigationSideBar(){
     }, [pathname])
 
     return (
-       <Sheet open={open} onOpenChange={setOpen} >
-        <SheetTrigger asChild><Button variant="outline" onClick={() => setOpen(true)} className="ml-2 mt-2"><Menu/>Menu</Button></SheetTrigger>
-        <SheetContent side="left" className="w-[45%]">
+       <Sheet open={open} onOpenChange={setOpen}>
+        <SheetTrigger asChild><Button variant="outline" onClick={() => setOpen(true)} className="md:hidden ml-2 mt-2"><Menu/>Menu</Button></SheetTrigger>
+        <SheetContent side="left" className=" w-[45%]">
             <SheetHeader><SheetTitle>mlssalaries.fyi</SheetTitle></SheetHeader>
             <div className="ml-4 -mt-4 flex flex-col gap-1">
                 <Link href="/">Home</Link>
