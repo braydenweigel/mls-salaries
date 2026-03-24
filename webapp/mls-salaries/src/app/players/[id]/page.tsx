@@ -1,5 +1,3 @@
-"use client"
-
 import { 
   Card,
   CardContent,
@@ -9,9 +7,8 @@ import {
 } from '@/components/ui/card'
 import Link from 'next/link'
 import { isValidClub, isValidPlayer} from '@/lib/storeUtils'
-import { useEffect } from "react"
-import React, { use } from "react";
-import { useTheme } from "next-themes"
+import { cache } from "react"
+import React from "react";
 import PlayerIDTable from '@/app/players/[id]/_components/table'
 import { CURRENT_YEAR, reports } from "@/lib/globals"
 import PlayerIDChart from '@/app/players/[id]/_components/chart'
@@ -22,26 +19,26 @@ import records from "@/lib/data/records.json"
 import type { Player, Club, PlayerRecord } from '@/lib/data/types'
 import { filterRecordsByPlayerID } from '@/lib/data/filters'
 
+export async function generateMetadata({ params }: { params: Promise<{ id: string }> }) {
+  const { id } = await params
+  const player = getPlayer(id)
 
-export default function PlayerPage(props: { params: Promise<{ id: string }> }) {
-  const { theme, systemTheme } = useTheme()
+  return (player ? 
+    {title: player.lastname + " " + player.firstname + " - MLS Salaries"} 
+    : {title: "Player Not Found - MLS Salaries"}
+  )
+  
+}
 
-  const { id } = use(props.params)
-  const allPlayers = players as Player[]
-  const player = isValidPlayer(allPlayers, id)
+export default async function PlayerPage({ params }: { params: Promise<{ id: string }> }) {
+
+  const { id } = await params
+  const player = getPlayer(id)
 
   if (!player) notFound()
 
-  useEffect(() => {
-    if (player) {
-      document.title = player.lastname + " " + player.firstname + " - MLS Salaries"
-    } else {
-      document.title = "Player Not Found - MLS Salaries"
-    }
-  },[player])
-
   //getting player records
-  const playerRecords = filterRecordsByPlayerID((records as PlayerRecord[]), id)
+  const playerRecords = filterRecordsByPlayerID((records as PlayerRecord[]), player.playerid)
   playerRecords.sort((a, b) => {
     if (a.recordyear !== b.recordyear){
       return Number(b.recordyear) - Number(a.recordyear)
@@ -60,10 +57,6 @@ export default function PlayerPage(props: { params: Promise<{ id: string }> }) {
   const position = playerRecords[0].position
   const data = formatData(playerRecords)
 
-  //Theme stuff
-  const actualTheme = determineTheme(theme, systemTheme)
-  const colors = determineColors(actualTheme)
-
   return (
     <div>
     <Card className="my-4">
@@ -79,7 +72,7 @@ export default function PlayerPage(props: { params: Promise<{ id: string }> }) {
     </Card>
     <Card className="hidden md:block">
       <CardContent>
-        <PlayerIDChart data={data} colors={colors}/>
+        <PlayerIDChart data={data}/>
       </CardContent>
     </Card>
 
@@ -87,6 +80,10 @@ export default function PlayerPage(props: { params: Promise<{ id: string }> }) {
   );
 }
 
+const getPlayer = cache((id: string) => {
+  const allPlayers = players as Player[]
+  return isValidPlayer(allPlayers, id)
+})
 
 function getPlayerClubs(allClubs: Club[], records: PlayerRecord[]){
   const playerClubs: Club[] = []
@@ -97,42 +94,6 @@ function getPlayerClubs(allClubs: Club[], records: PlayerRecord[]){
   }
 
   return playerClubs
-}
-
-function determineTheme(theme: string | undefined, systemTheme: "light" | "dark" | undefined){
-  let actualTheme = "dark"
-  if (theme === "dark"){
-    actualTheme = "dark"
-  } else if (theme === "light"){
-    actualTheme = "light"
-  } else if (theme === "system"){
-    if (systemTheme === "dark"){
-      actualTheme = "dark"
-    } else if (systemTheme === "light"){
-      actualTheme = "light"
-    }
-  }
-
-  return actualTheme
-}
-
-function determineColors(theme: string){
-  // const clubColor = theme === "dark" ? club.colorprimary : club.colorsecondary
-
-  let bsColor = "#FFFFFF"
-  let gcColor = "#FFFFFF"
-  if (theme === "dark"){
-    bsColor = "#A0A0A0"
-    gcColor = "#C0C0C0"
-  } else {
-    bsColor = "#303030"
-    gcColor = "#606060"
-  }
-
-  return {
-    bsColor: bsColor,
-    gcColor: gcColor
-  }
 }
 
 function formatData(playerRecords: PlayerRecord[]){

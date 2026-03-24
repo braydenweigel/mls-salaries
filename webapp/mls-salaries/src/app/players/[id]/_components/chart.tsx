@@ -2,7 +2,7 @@
 
 import { ChartConfig, ChartContainer, ChartLegend, ChartLegendContent, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart"
 import { Bar, BarChart, XAxis, YAxis} from "recharts"
-import { reports} from "@/lib/globals"
+import { reports } from "@/lib/globals"
 import React from "react"
 
 interface Props {
@@ -13,29 +13,21 @@ interface Props {
         club: string,
         position: string
     }[]
-    colors: {
-        bsColor: string,
-        gcColor: string
-    }
-
 }
 
 export default function PlayerIDChart({
     data,
-    colors
 }: Props){
     const chartConfig: ChartConfig = {
         baseSalary: {
           label: "Base Salary",
-          color: colors.bsColor,
+          color: "#0284c7",
         },
         guaranteedComp: {
           label: "Guaranteed Compensation",
-          color: colors.gcColor,
+          color: "#0ea5e9",
         },
     } 
-    const isMobile = useIsMobile()
-
     return (
         <ChartContainer config={chartConfig}>
             <BarChart data={data}>
@@ -44,7 +36,7 @@ export default function PlayerIDChart({
                     tickLine={false}
                     axisLine={false}
                     interval={0} // ensures all ticks show
-                    tickFormatter={(key) => {{return (isMobile ? "" : reports[key].year + " " + reports[key].season)}}}
+                    tickFormatter={(key) => {{return (reports[key].year + " " + reports[key].season)}}}
                     tick={{ fontSize: 10 }}
                 />
                 <YAxis
@@ -58,12 +50,12 @@ export default function PlayerIDChart({
                 <Bar 
                     dataKey="baseSalary"
                     stackId="a"
-                    fill={colors.bsColor}
+                    fill={"#0284c7"}
                 />
                 <Bar 
                     dataKey="guaranteedComp"
                     stackId="a"
-                    fill={colors.gcColor}
+                    fill={"#0ea5e9"}
                 />
                 <ChartTooltip 
                     cursor={false}
@@ -85,22 +77,6 @@ export default function PlayerIDChart({
             </BarChart>
         </ChartContainer>
     )
-}
-
-function useIsMobile() {
-  const [isMobile, setIsMobile] = React.useState(false);
-
-  React.useEffect(() => {
-    const media = window.matchMedia("(max-width: 768px)");
-    setIsMobile(media.matches);
-
-    const listener = () => setIsMobile(media.matches);
-    media.addEventListener("change", listener);
-
-    return () => media.removeEventListener("change", listener);
-  }, []);
-
-  return isMobile;
 }
 
 

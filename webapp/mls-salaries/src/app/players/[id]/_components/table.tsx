@@ -1,5 +1,3 @@
-"use client"
-
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { Club, PlayerRecord } from "@/lib/data/types"
 import Link from 'next/link'
@@ -14,31 +12,27 @@ export default function PlayerIDTable({
     records,
     playerClubs
 }: Props){
-    const isMobile = useIsMobile()
-    
     return (
         <Table className="">
             <TableHeader>
                 <TableRow>
                     <TableHead className="w-[120px]">Year</TableHead>
-                    <TableHead>Club</TableHead>
-                    {isMobile ? null : <TableHead>Position</TableHead>}
-                    {isMobile ? null : <TableHead className="text-right">Base Salary</TableHead>}
+                    <TableHead className="">Club</TableHead>
+                    <TableHead className="hidden md:table-cell">Position</TableHead>
+                    <TableHead className="text-right hidden md:table-cell">Base Salary</TableHead>
                     <TableHead className="text-right">Guaranteed Comp</TableHead>
                 </TableRow>
             </TableHeader>
             <TableBody>
             {records.map((record, index) => (
                 <TableRow key={record.id}>
-                <TableCell>{isMobile ? 
-                    record.recordseason.slice(0,2) + " " + record.recordyear.slice(2,4)
-                    : record.recordseason + " " + record.recordyear
-                }</TableCell>
+                <TableCell className="table-cell md:hidden">{record.recordseason.slice(0,2) + " " + record.recordyear.slice(2,4)}</TableCell>
+                <TableCell className="hidden md:table-cell">{record.recordseason + " " + record.recordyear}</TableCell>
                 <TableCell><Link href={`/clubs/${record.club}?year=${(record.recordyear.toString()) + (record.recordseason == "Fall" ? ".5" : "")}`} className="hover:underline">{playerClubs[index].clubname}</Link></TableCell>
-                {isMobile ? null : <TableCell>{record.position}</TableCell>}
-                {isMobile ? null : <TableCell className="text-right">
+                <TableCell className="hidden md:table-cell">{record.position}</TableCell>
+                <TableCell className="text-right hidden md:table-cell">
                     ${record.basesalary ? record.basesalary.toLocaleString() : record.guaranteedcomp.toLocaleString()}
-                </TableCell>}
+                </TableCell>
                 <TableCell className="text-right">
                     ${record.guaranteedcomp.toLocaleString()}
                 </TableCell>
@@ -47,20 +41,4 @@ export default function PlayerIDTable({
             </TableBody>
         </Table>
     )
-}
-
-function useIsMobile() {
-  const [isMobile, setIsMobile] = React.useState(false);
-
-  React.useEffect(() => {
-    const media = window.matchMedia("(max-width: 768px)");
-    setIsMobile(media.matches);
-
-    const listener = () => setIsMobile(media.matches);
-    media.addEventListener("change", listener);
-
-    return () => media.removeEventListener("change", listener);
-  }, []);
-
-  return isMobile;
 }
