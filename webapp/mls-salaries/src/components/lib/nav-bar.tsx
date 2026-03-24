@@ -8,19 +8,19 @@ export default function NavigationBar(){
         <NavigationMenu viewport={false} className="hidden md:inline top-0 left-0 pl-4 pt-2">
             <NavigationMenuList>
             <NavigationMenuItem>
-                <NavigationMenuLink asChild className={navigationMenuTriggerStyle()}>
-                <Link href="/">Home</Link>
-                </NavigationMenuLink>
+                <Link href="/" className={navigationMenuTriggerStyle()}>
+                    Home
+                </Link>
             </NavigationMenuItem>
             <NavigationMenuItem>
-                <NavigationMenuLink asChild className={navigationMenuTriggerStyle()}>
-                <Link href="/players">Players</Link>
-                </NavigationMenuLink>
+                <Link href="/players" className={navigationMenuTriggerStyle()}>
+                    Players
+                </Link>
             </NavigationMenuItem>
             <NavigationMenuItem>
-                <NavigationMenuLink asChild className={navigationMenuTriggerStyle()}>
-                <Link href="/clubs">Clubs</Link>
-                </NavigationMenuLink>
+                <Link href="/clubs" className={navigationMenuTriggerStyle()}>
+                    Clubs
+                </Link>
             </NavigationMenuItem>
             {/* {<NavigationMenuItem>
                 <DropdownMenu>
