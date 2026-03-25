@@ -23,8 +23,6 @@ import { filterRecordsByReportAndClub } from '@/lib/data/filters'
 
 
 export default function ClubPage(props: { params: Promise<{ id: string }> }) {
-  const { theme, systemTheme } = useTheme()
-
   const { id } = use(props.params)
   const { replace } = useRouter()
   const searchParams = useSearchParams()
