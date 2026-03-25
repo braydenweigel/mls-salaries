@@ -12,8 +12,8 @@ interface Props {
         guarComp: number
     }[]
     colors: {
-        bsColor: string,
-        gcColor: string
+        primary: string,
+        secondary: string
     }
 
 }
@@ -25,11 +25,11 @@ export default function ClubIDChart({
     const chartConfig: ChartConfig = {
         baseSal: {
           label: "Base Salary",
-          color: colors.bsColor,
+          color: colors.primary,
         },
         guarComp: {
           label: "Guaranteed Compensation",
-          color: colors.gcColor,
+          color: colors.secondary,
         },
     } 
 
@@ -58,12 +58,13 @@ export default function ClubIDChart({
                 <Bar 
                     dataKey="baseSal"
                     stackId="a"
-                    fill={colors.bsColor}
+                    fill={colors.primary}
                 />
                 <Bar 
                     dataKey="guarComp"
                     stackId="a"
-                    fill={colors.gcColor}
+                    fill={colors.primary}
+                    fillOpacity={0.7}
 
                 />
                 <ChartTooltip 

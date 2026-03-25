@@ -12,20 +12,25 @@ interface Props {
         guaranteedComp: number,
         club: string,
         position: string
-    }[]
+    }[],
+    colors: {
+        primary: string,
+        secondary: string
+    }
 }
 
 export default function PlayerIDChart({
     data,
+    colors
 }: Props){
     const chartConfig: ChartConfig = {
         baseSalary: {
           label: "Base Salary",
-          color: "#0284c7",
+          color: colors.primary,
         },
         guaranteedComp: {
           label: "Guaranteed Compensation",
-          color: "#0ea5e9",
+          color: colors.primary + "B3",
         },
     } 
     return (
@@ -50,12 +55,13 @@ export default function PlayerIDChart({
                 <Bar 
                     dataKey="baseSalary"
                     stackId="a"
-                    fill={"#0284c7"}
+                    fill={colors.primary}
                 />
                 <Bar 
                     dataKey="guaranteedComp"
                     stackId="a"
-                    fill={"#0ea5e9"}
+                    fill={colors.primary}
+                    fillOpacity={0.7}
                 />
                 <ChartTooltip 
                     cursor={false}

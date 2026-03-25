@@ -67,8 +67,10 @@ export default function ClubPage(props: { params: Promise<{ id: string }> }) {
   const clubReports = getClubReports(club)
   const chartData = formatChartData(data)
 
-  const actualTheme = determineTheme(theme, systemTheme)
-  const colors = determineColors(actualTheme)
+  const colors = {
+    primary: club.colorprimary,
+    secondary: club.colorsecondary
+  }
 
   return (
     <div>
@@ -187,40 +189,4 @@ function getClubReports(club: Club){
   }
 
   return clubReports
-}
-
-function determineTheme(theme: string | undefined, systemTheme: "light" | "dark" | undefined){
-  let actualTheme = "dark"
-  if (theme === "dark"){
-    actualTheme = "dark"
-  } else if (theme === "light"){
-    actualTheme = "light"
-  } else if (theme === "system"){
-    if (systemTheme === "dark"){
-      actualTheme = "dark"
-    } else if (systemTheme === "light"){
-      actualTheme = "light"
-    }
-  }
-
-  return actualTheme
-}
-
-function determineColors(theme: string){
-  //const clubColor = theme === "dark" ? club.colorprimary : club.colorsecondary
-
-  let bsColor = "#FFFFFF"
-  let gcColor = "#FFFFFF"
-  if (theme === "dark"){
-    bsColor = "#A0A0A0"
-    gcColor = "#C0C0C0"
-  } else {
-    bsColor = "#303030"
-    gcColor = "#606060"
-  }
-
-  return {
-    bsColor: bsColor,
-    gcColor: gcColor
-  }
 }
