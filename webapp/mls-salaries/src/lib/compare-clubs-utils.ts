@@ -6,6 +6,7 @@ import records from "@/lib/data/records.json"
 import { formatData } from "@/app/clubs/[id]/page";
 
 export function addClubToList(clubList: ClubList, reportValue: string, club: Club): ClubList{
+
     //get club info
     const year = reports[reportValue].year
     const season = reports[reportValue].season

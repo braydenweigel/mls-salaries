@@ -16,23 +16,29 @@ type CompareClubsHeaderProps = {
 }
 
 export default function CompareClubsHeader({clubList, setClubList, club, id}: CompareClubsHeaderProps){
-    const clubReports = getClubReports(club.club)
+    const [clubReports, setClubReports] = useState(getClubReports(club.club))
     const [reportValue, setReportValue] = useState(club.reportValue)
+
+    useEffect(() => {
+        setClubReports(getClubReports(club.club))
+        setReportValue(club.reportValue)
+    }, [club])
 
     useEffect(() => {
         setClubList(updateClubReportValue(clubList, reportValue, club.club, id))
     }, [reportValue])
+
 
     const handleClubDelete = () => {
         setClubList(removeClubFromList(clubList, id))
     }
 
     return (
-        <div className="flex flex-col min-w-1/5 max-w-full h-fit">
-            <div className="flex flex-col px-4 pb-2">
-                <div className="flex justify-between w-full items-center mb-2">
-                    <p className="font-semibold my-2">{club.club.clubname}</p>
-                    <Button variant="outline" size="icon-sm" style={{borderColor: "var(--destructive)"}} className="self-end" onClick={handleClubDelete}><X color="var(--destructive)"/></Button>
+        <div className="flex flex-col max-w-full " style={{minWidth: `${100 / clubList.numClubs}%`}}>
+            <div className="flex flex-col px-4 py-2 items-center  h-full" >
+                <div className="flex justify-between w-[180px] items-start mb-2 h-12">
+                    <p className="font-semibold">{club.club.clubname}</p>
+                    <Button variant="outline" size="icon-sm" style={{borderColor: "var(--destructive)"}} onClick={handleClubDelete}><X color="var(--destructive)"/></Button>
                 </div>
                 <SelectReport reports={clubReports} defaultReport={reportValue} onReportValueChange={(report) => setReportValue(report)} />
             </div>

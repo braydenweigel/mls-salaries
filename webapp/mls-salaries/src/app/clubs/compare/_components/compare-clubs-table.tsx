@@ -1,6 +1,4 @@
-import { Table, TableBody, TableCell, TableRow } from "@/components/ui/table"
 import { ClubList } from "../page"
-import { table } from "console"
 
 type CompareClubsTableProps = {
     clubList: ClubList

@@ -48,7 +48,7 @@ export default function CompareClubs() {
       {clubList.numClubs > 0 ? <Card className="flex flex-col w-full min-h-0 h-[70vh]">
         <div className="flex flex-row w-full justify-around border-b-1 pb-2">
           {clubList.data.map((club) => (
-            club.club ? <CompareClubsHeader key={club.stackID} clubList={clubList} setClubList={setClubList} club={club.club} id={club.stackID}/> : null
+            club.club ? <CompareClubsHeader key={club.stackID + club.club.reportValue + club.club.club.clubname} clubList={clubList} setClubList={setClubList} club={club.club} id={club.stackID}/> : null
           ))}
         </div>
         <CompareClubsTable clubList={clubList}/>
