@@ -7,6 +7,7 @@ import { Card } from "@/components/ui/card";
 import AddClubsDialog from "./_components/add-clubs-dialog";
 import CompareClubsHeader from "./_components/compare-clubs-header";
 import CompareClubsTable from "./_components/compare-clubs-table";
+import CompareClubsChart from "./_components/compare-clubs-chart";
 
 export type ClubData = {
   club: Club,
@@ -54,7 +55,7 @@ export default function CompareClubs() {
         <CompareClubsTable clubList={clubList}/>
       </Card> : null}
       {clubList.numClubs > 0 ? <Card>
-
+        <CompareClubsChart clubList={clubList}/>
       </Card> : null }
     </div>
   );
