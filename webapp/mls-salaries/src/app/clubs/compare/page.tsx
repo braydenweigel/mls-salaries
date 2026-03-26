@@ -1,16 +1,11 @@
 "use client"
 
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Club, PlayerRecord } from "@/lib/data/types";
-import clubs from "@/lib/data/clubs.json"
-import { useEffect, useState } from "react";
-import { Plus } from "lucide-react";
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import SelectReport from "@/components/lib/SelectReport";
-import { CURRENT_YEAR, reports } from "@/lib/globals";
 import { Card } from "@/components/ui/card";
 import AddClubsDialog from "./_components/add-clubs-dialog";
+import CompareClubsHeader from "./_components/compare-clubs-header";
 
 export type ClubData = {
   club: Club,
@@ -24,8 +19,7 @@ export type ClubList = {
   data: [{stackID: "a", club: ClubData | null},
   {stackID: "b", club: ClubData | null},
   {stackID: "c", club: ClubData | null},
-  {stackID: "d", club: ClubData | null},
-  {stackID: "e", club: ClubData | null}],
+  {stackID: "d", club: ClubData | null}],
   numClubs: number
 }
 
@@ -33,8 +27,7 @@ export const initialClubList: ClubList = {
   data: [{stackID: "a", club: null},
   {stackID: "b", club: null},
   {stackID: "c", club: null},
-  {stackID: "d", club: null},
-  {stackID: "e", club: null}],
+  {stackID: "d", club: null}],
   numClubs: 0
 }
 
@@ -51,11 +44,13 @@ export default function CompareClubs() {
         <AddClubsDialog clubList={clubList} setClubList={setClubList}/>
         <Button variant="destructive" onClick={handleReset}>Reset</Button>
       </div>
-      <Card>
-        {clubList.data.map((club) => (
-          <p key={club.stackID}>{club.club ? club.club?.club.clubname + " " + club.club?.reportValue : ""}</p>
-        ))}
-      </Card>
+      {clubList.numClubs > 0 ? <Card className="flex flex-col w-full min-h-0 h-[60vh]">
+        <div className="flex flex-row w-full justify-around border-b-1 pb-2">
+          {clubList.data.map((club) => (
+            club.club ? <CompareClubsHeader key={club.stackID} clubList={clubList} setClubList={setClubList} club={club.club} id={club.stackID}/> : null
+          ))}
+        </div>
+      </Card> : null}
       <Card></Card>
     </div>
   );

@@ -6,8 +6,6 @@ import { Club } from "@/lib/data/types"
 import { Button } from "@/components/ui/button"
 import { Plus } from "lucide-react"
 import { Input } from "@/components/ui/input"
-import { CURRENT_YEAR, reports } from "@/lib/globals"
-import SelectReport from "@/components/lib/SelectReport"
 import AddClubsItem from "./add-clubs-item"
 
 type AddClubsDialogProps = {
@@ -65,7 +63,7 @@ export default function AddClubsDialog({clubList, setClubList}: AddClubsDialogPr
                   </div> 
                   : <p className="text-muted-foreground text-center my-auto">No results</p>
                 }
-                <Button variant="destructive" onClick={handleReset} className="w-fit">Reset</Button>
+                <Button variant="destructive" onClick={handleReset} className="w-fit" size="sm">Reset</Button>
             </DialogContent>
         </Dialog>
     )

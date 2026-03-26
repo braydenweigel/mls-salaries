@@ -9,7 +9,6 @@ import {
 } from '@/components/ui/card'
 import { useEffect } from "react"
 import React, { use } from "react"
-import { useTheme } from "next-themes"
 import { CURRENT_YEAR, reports } from '@/lib/globals'
 import SelectReport from '@/components/lib/SelectReport'
 import { clubPlayerColumns, TableClubPlayers } from '@/app/clubs/[id]/_components/clubPlayerTableColumns'
@@ -104,7 +103,7 @@ export default function ClubPage(props: { params: Promise<{ id: string }> }) {
     );
 }
     
-function formatData(clubRecords: PlayerRecord[], year: string, season: string, reportValue: string){
+export function formatData(clubRecords: PlayerRecord[], year: string, season: string, reportValue: string){
   let totalBaseSal = 0
   let totalGuarComp = 0
   const data: TableClubPlayers[] = []
