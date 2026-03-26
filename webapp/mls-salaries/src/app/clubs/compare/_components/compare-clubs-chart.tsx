@@ -1,6 +1,6 @@
 import { PlayerRecord } from "@/lib/data/types"
 import { ClubList } from "../page"
-import { ChartConfig, ChartContainer, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart"
+import { ChartConfig, ChartContainer, ChartLegend, ChartLegendContent, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart"
 import { Bar, BarChart, XAxis, YAxis } from "recharts"
 
 type CompareClubsChartProps = {
@@ -49,7 +49,7 @@ export default function CompareClubsChart({clubList}: CompareClubsChartProps){
 
     return (
         <ChartContainer config={chartConfig} className="px-4">
-            <BarChart data={data} barGap={0} barCategoryGap={0}>
+            <BarChart data={data} barGap={0}>
                 <XAxis
                     tick={false}
                 />
@@ -76,7 +76,8 @@ export default function CompareClubsChart({clubList}: CompareClubsChartProps){
                             />
                         </>
                 ))}
-                <ChartTooltip cursor={false} content={<ChartTooltipContent/>}/>
+                <ChartTooltip cursor={false} content={<CustomTooltip/>}/>
+                <ChartLegend content={<CustomLegend clubs={clubList.data}/>}/>
             </BarChart>
         </ChartContainer>
     )
@@ -122,4 +123,68 @@ function formatChartData(clubList: ClubList){
     }
 
     return chartData.toReversed()
+}
+
+const CustomTooltip = ({ active, payload }: any) => {
+  if (!active || !payload?.length) return null
+
+  return (
+    <div className="bg-background border rounded-md p-2 shadow">
+      {payload.map((entry: any, index: number) => {
+        const dataKey: string = entry.dataKey
+
+        // extract suffix (a, b, c, d)
+        const suffix = dataKey.split("_")[1]
+
+        const row = entry.payload
+
+        const name = row[`name_${suffix}`]
+        const base = row[`baseSal_${suffix}`] ?? 0
+        const guar = row[`guarComp_${suffix}`] ?? 0
+
+        const total = base + guar
+
+        // Only show once per player (avoid duplicate base/guar entries)
+        if (!dataKey.startsWith("guarComp")) return null
+
+        return (
+          <div key={index} className="flex items-center gap-2">
+            {/* color box */}
+            <div
+              className="w-3 h-3 rounded-xs"
+              style={{ backgroundColor: entry.color }}
+            />
+
+            <span>
+              {name}: ${total.toLocaleString()}
+            </span>
+          </div>
+        )
+      })}
+    </div>
+  )
+}
+
+const CustomLegend = ({ clubs }: any) => {
+  return (
+    <div className="flex flex-wrap gap-4 justify-center">
+      {clubs.map((club: any) =>
+        club.club ? (
+          <div
+            key={club.stackID}
+            className="flex items-center gap-2"
+          >
+            {/* color box */}
+            <div
+              className="w-3 h-3 rounded-xs"
+              style={{ backgroundColor: club.club.club.colorprimary }}
+            />
+
+            {/* club name */}
+            <span>{club.club.club.clubname}</span>
+          </div>
+        ) : null
+      )}
+    </div>
+  )
 }

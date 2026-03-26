@@ -54,7 +54,7 @@ export default function CompareClubs() {
         </div>
         <CompareClubsTable clubList={clubList}/>
       </Card> : null}
-      {clubList.numClubs > 0 ? <Card>
+      {clubList.numClubs > 0 ? <Card className="hidden md:block">
         <CompareClubsChart clubList={clubList}/>
       </Card> : null }
     </div>
