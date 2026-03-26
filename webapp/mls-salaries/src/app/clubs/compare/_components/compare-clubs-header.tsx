@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import React, { useEffect, useState } from "react"
 import { ClubData, ClubList } from "../page"
 import { Club } from "@/lib/data/types"
 import { Button } from "@/components/ui/button"
@@ -8,19 +8,20 @@ import SelectReport from "@/components/lib/SelectReport"
 import { removeClubFromList, updateClubReportValue } from "@/lib/compare-clubs-utils"
 
 
-type CompareClubsItemProps = {
+type CompareClubsHeaderProps = {
     clubList: ClubList
     setClubList: React.Dispatch<React.SetStateAction<ClubList>>
     club: ClubData
     id: "a" | "b" | "c" | "d"
 }
 
-export default function CompareClubsHeader({clubList, setClubList, club, id}: CompareClubsItemProps){
+export default function CompareClubsHeader({clubList, setClubList, club, id}: CompareClubsHeaderProps){
     const clubReports = getClubReports(club.club)
+    const [reportValue, setReportValue] = useState(club.reportValue)
 
-    const handleReportValueChange = (report: string) => {
-        setClubList(updateClubReportValue(clubList, report, club.club, id))
-    }
+    useEffect(() => {
+        setClubList(updateClubReportValue(clubList, reportValue, club.club, id))
+    }, [reportValue])
 
     const handleClubDelete = () => {
         setClubList(removeClubFromList(clubList, id))
@@ -33,7 +34,7 @@ export default function CompareClubsHeader({clubList, setClubList, club, id}: Co
                     <p className="font-semibold my-2">{club.club.clubname}</p>
                     <Button variant="outline" size="icon-sm" style={{borderColor: "var(--destructive)"}} className="self-end" onClick={handleClubDelete}><X color="var(--destructive)"/></Button>
                 </div>
-                <SelectReport reports={clubReports} defaultReport={club.reportValue} onReportValueChange={(report) => handleReportValueChange(report)}/>
+                <SelectReport reports={clubReports} defaultReport={reportValue} onReportValueChange={(report) => setReportValue(report)} />
             </div>
         </div>
     )
