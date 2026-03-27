@@ -25,6 +25,7 @@ export type ClubList = {
   numClubs: number
 }
 
+
 export const initialClubList: ClubList = {
   data: [{stackID: "a", club: null},
   {stackID: "b", club: null},
@@ -46,17 +47,18 @@ export default function CompareClubs() {
         <AddClubsDialog clubList={clubList} setClubList={setClubList}/>
         <Button variant="destructive" onClick={handleReset}>Reset</Button>
       </div>
-      {clubList.numClubs > 0 ? <Card className="flex flex-col w-full min-h-0 h-[70vh]">
+      {clubList.numClubs > 0 &&
+      <Card className="flex flex-col w-full min-h-0 h-[70vh] overflow-x-hidden">
         <div className="flex flex-row w-full justify-around border-b-1 pb-2">
           {clubList.data.map((club) => (
             club.club ? <CompareClubsHeader key={club.stackID + club.club.reportValue + club.club.club.clubname} clubList={clubList} setClubList={setClubList} club={club.club} id={club.stackID}/> : null
           ))}
         </div>
         <CompareClubsTable clubList={clubList}/>
-      </Card> : null}
-      {clubList.numClubs > 0 ? <Card className="hidden md:block">
+      </Card>}
+      {clubList.numClubs > 0 && <Card className="hidden md:block">
         <CompareClubsChart clubList={clubList}/>
-      </Card> : null }
+      </Card>}
     </div>
   );
   }

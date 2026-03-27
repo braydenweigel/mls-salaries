@@ -34,7 +34,7 @@ export default function CompareClubsHeader({clubList, setClubList, club, id}: Co
     }
 
     return (
-        <div className="flex flex-col max-w-full " style={{minWidth: `${100 / clubList.numClubs}%`}}>
+        <div className="flex flex-col max-w-full min-w-[50%] md:min-w-0" style={{minWidth: `${100 / clubList.numClubs}%`}}>
             <div className="flex flex-col px-4 py-2 items-center  h-full" >
                 <div className="flex justify-between w-[180px] items-start mb-2 h-12">
                     <p className="font-semibold">{club.club.clubname}</p>

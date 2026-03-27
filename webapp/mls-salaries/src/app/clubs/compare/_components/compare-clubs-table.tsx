@@ -1,3 +1,4 @@
+import Link from "next/link"
 import { ClubList } from "../page"
 
 type CompareClubsTableProps = {
@@ -17,18 +18,18 @@ export default function CompareClubsTable({clubList}: CompareClubsTableProps){
     const tableData = formatTableData(clubList)
 
     return (
-        <div className="flex flex-col overflow-y-scroll md:overflow-x-hidden w-full"> 
+        <div className="flex flex-col overflow-y-scroll overflow-x-hidden w-full "> 
             {tableData.map((row, index) => (
                 <div key={index} className="flex w-full justify-around border-b-1 pb-2 hover:bg-muted/50">
                     {row.row.map((player, index) => (
-                        <div key={player ? (player.id + index) : index} className="flex flex-col max-w-full" style={{minWidth: `${100 / clubList.numClubs}%`}}>
-                            {player ? 
+                        <div key={player ? (player.id + index) : index} className="flex flex-col max-w-full min-w-[50%] md:min-w-0" style={{minWidth: `${100 / clubList.numClubs}%`}}>
+                            {player &&
                                 <>
-                                    <p className="text-center text-sm">{player.name}</p>
+                                    <Link key={player.id} href={`/players/${player.id}`}><p className="text-center text-sm hover:underline">{player.name}</p></Link>
                                     <p className="text-center text-md font">${player.guaranteedComp.toLocaleString()}</p>
                                     <p className="text-center text-xs">${player.baseSalary.toLocaleString()}</p>
                                 </>
-                            : null}
+                            }
                         </div>
                     ))}
                 </div>
