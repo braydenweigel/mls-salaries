@@ -1,7 +1,6 @@
-import { PlayerRecord } from "@/lib/data/types"
-import { ClubList } from "../page"
-import { ChartConfig, ChartContainer, ChartLegend, ChartLegendContent, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart"
-import { Bar, BarChart, XAxis, YAxis } from "recharts"
+import { ClubData, ClubList } from "../page"
+import { ChartConfig, ChartContainer, ChartLegend, ChartTooltip, } from "@/components/ui/chart"
+import { Bar, BarChart, TooltipProps, XAxis, YAxis } from "recharts"
 
 type CompareClubsChartProps = {
     clubList: ClubList
@@ -100,7 +99,7 @@ function formatChartData(clubList: ClubList){
     const chartData: CompareClubsChartData[] = []
 
     for (let i = 0; i < maxPlayers; i++){
-        let row: CompareClubsChartData = structuredClone(emptyRow)
+        const row: CompareClubsChartData = structuredClone(emptyRow)
         for (const club of clubList.data){
             if (club.club && club.club.players[i]){
                 row[`name_${club.stackID}`] = club.club.players[i].firstname + " " + club.club.players[i].lastname
@@ -125,24 +124,34 @@ function formatChartData(clubList: ClubList){
     return chartData.toReversed()
 }
 
-const CustomTooltip = ({ active, payload }: any) => {
+type CustomTooltipEntry = {
+  dataKey?: string
+  color?: string
+  payload?: CompareClubsChartData
+}
+
+const CustomTooltip = ({ active, payload }: TooltipProps<number, string>) => {
   if (!active || !payload?.length) return null
 
   return (
     <div className="bg-background border rounded-md p-2 shadow">
-      {payload.map((entry: any, index: number) => {
-        const dataKey: string = entry.dataKey
+      {payload.map((entry, index) => {
+        const e = entry as CustomTooltipEntry
+
+        const dataKey = e.dataKey
+        if (!dataKey) return null
 
         // extract suffix (a, b, c, d)
         const suffix = dataKey.split("_")[1]
 
-        const row = entry.payload
+        const row = e.payload
+        if (!row) return null
 
-        const name = row[`name_${suffix}`]
-        const base = row[`baseSal_${suffix}`] ?? 0
-        const guar = row[`guarComp_${suffix}`] ?? 0
+        const name = row[`name_${suffix}` as keyof CompareClubsChartData] as string | null
+        const base = row[`baseSal_${suffix}` as keyof CompareClubsChartData] as number | null
+        const guar = row[`guarComp_${suffix}` as keyof CompareClubsChartData] as number | null
 
-        const total = base + guar
+        const total = (base ?? 0) + (guar ?? 0) 
 
         // Only show once per player (avoid duplicate base/guar entries)
         if (!dataKey.startsWith("guarComp")) return null
@@ -155,9 +164,9 @@ const CustomTooltip = ({ active, payload }: any) => {
               style={{ backgroundColor: entry.color }}
             />
 
-            <span>
-              {name}: ${total.toLocaleString()}
-            </span>
+            <div className="flex flex-row w-full justify-between">
+              <p>{name}:&nbsp;</p> <p> ${total.toLocaleString()}</p>
+            </div>
           </div>
         )
       })}
@@ -165,10 +174,19 @@ const CustomTooltip = ({ active, payload }: any) => {
   )
 }
 
-const CustomLegend = ({ clubs }: any) => {
+type ClubEntry = {
+  stackID: string
+  club: ClubData | null
+}
+
+type CustomLegendProps = {
+  clubs: ClubEntry[]
+}
+
+const CustomLegend = ({ clubs }: CustomLegendProps) => {
   return (
     <div className="flex flex-wrap gap-4 justify-center">
-      {clubs.map((club: any) =>
+      {clubs.map((club: { stackID: string, club: ClubData | null}) =>
         club.club ? (
           <div
             key={club.stackID}
