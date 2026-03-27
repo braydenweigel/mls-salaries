@@ -57,6 +57,11 @@ export default async function PlayerPage({ params }: { params: Promise<{ id: str
   const position = playerRecords[0].position
   const data = formatData(playerRecords)
 
+  const colors = {
+    primary: playerClubs[0].colorprimary,
+    secondary: playerClubs[0].colorsecondary
+  }
+
   return (
     <div>
     <Card className="my-4">
@@ -72,7 +77,7 @@ export default async function PlayerPage({ params }: { params: Promise<{ id: str
     </Card>
     <Card className="hidden md:block">
       <CardContent>
-        <PlayerIDChart data={data}/>
+        <PlayerIDChart data={data} colors={colors}/>
       </CardContent>
     </Card>
 

@@ -9,7 +9,6 @@ import {
 } from '@/components/ui/card'
 import { useEffect } from "react"
 import React, { use } from "react"
-import { useTheme } from "next-themes"
 import { CURRENT_YEAR, reports } from '@/lib/globals'
 import SelectReport from '@/components/lib/SelectReport'
 import { clubPlayerColumns, TableClubPlayers } from '@/app/clubs/[id]/_components/clubPlayerTableColumns'
@@ -23,8 +22,6 @@ import { filterRecordsByReportAndClub } from '@/lib/data/filters'
 
 
 export default function ClubPage(props: { params: Promise<{ id: string }> }) {
-  const { theme, systemTheme } = useTheme()
-
   const { id } = use(props.params)
   const { replace } = useRouter()
   const searchParams = useSearchParams()
@@ -67,8 +64,10 @@ export default function ClubPage(props: { params: Promise<{ id: string }> }) {
   const clubReports = getClubReports(club)
   const chartData = formatChartData(data)
 
-  const actualTheme = determineTheme(theme, systemTheme)
-  const colors = determineColors(actualTheme)
+  const colors = {
+    primary: club.colorprimary,
+    secondary: club.colorsecondary
+  }
 
   return (
     <div>
@@ -104,7 +103,7 @@ export default function ClubPage(props: { params: Promise<{ id: string }> }) {
     );
 }
     
-function formatData(clubRecords: PlayerRecord[], year: string, season: string, reportValue: string){
+export function formatData(clubRecords: PlayerRecord[], year: string, season: string, reportValue: string){
   let totalBaseSal = 0
   let totalGuarComp = 0
   const data: TableClubPlayers[] = []
@@ -187,40 +186,4 @@ function getClubReports(club: Club){
   }
 
   return clubReports
-}
-
-function determineTheme(theme: string | undefined, systemTheme: "light" | "dark" | undefined){
-  let actualTheme = "dark"
-  if (theme === "dark"){
-    actualTheme = "dark"
-  } else if (theme === "light"){
-    actualTheme = "light"
-  } else if (theme === "system"){
-    if (systemTheme === "dark"){
-      actualTheme = "dark"
-    } else if (systemTheme === "light"){
-      actualTheme = "light"
-    }
-  }
-
-  return actualTheme
-}
-
-function determineColors(theme: string){
-  //const clubColor = theme === "dark" ? club.colorprimary : club.colorsecondary
-
-  let bsColor = "#FFFFFF"
-  let gcColor = "#FFFFFF"
-  if (theme === "dark"){
-    bsColor = "#A0A0A0"
-    gcColor = "#C0C0C0"
-  } else {
-    bsColor = "#303030"
-    gcColor = "#606060"
-  }
-
-  return {
-    bsColor: bsColor,
-    gcColor: gcColor
-  }
 }
