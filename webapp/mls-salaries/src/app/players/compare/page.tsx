@@ -8,6 +8,7 @@ import AddPlayersDialog from "./_components/add-players-dialog";
 import { Card } from "@/components/ui/card";
 import ComparePlayersHeader from "./_components/compare-players-table";
 import ComparePlayersTable from "./_components/compare-players-table";
+import ComparePlayersChart from "./_components/compare-players-chart";
 
 export type PlayerData = {
   player: Player,
@@ -50,6 +51,9 @@ export default function ComparePlayers() {
       {playerList.numPlayers > 0 &&
       <Card className="flex flex-col w-full min-h-0 max-h-[70vh] overflow-x-hidden px-4">
         <ComparePlayersTable playerList={playerList} setPlayerList={setPlayerList}/>
+      </Card>}
+      {playerList.numPlayers > 0 && <Card className="hidden md:block">
+        <ComparePlayersChart playerList={playerList}/>
       </Card>}
       
     </div>
