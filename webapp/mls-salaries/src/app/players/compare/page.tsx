@@ -5,10 +5,13 @@ import { Player, PlayerRecord } from "@/lib/data/types";
 import { CURRENT_YEAR } from "@/lib/globals";
 import { useState } from "react";
 import AddPlayersDialog from "./_components/add-players-dialog";
+import { Card } from "@/components/ui/card";
+import ComparePlayersHeader from "./_components/compare-players-table";
+import ComparePlayersTable from "./_components/compare-players-table";
 
 export type PlayerData = {
   player: Player,
-  records: (PlayerRecord | null)[]
+  records: PlayerRecord[]
 }
 
 export type PlayerList = {
@@ -44,6 +47,10 @@ export default function ComparePlayers() {
         <AddPlayersDialog playerList={playerList} setPlayerList={setPlayerList}/>
         <Button variant="destructive" onClick={handleReset}>Reset</Button>
       </div>
+      {playerList.numPlayers > 0 &&
+      <Card className="flex flex-col w-full min-h-0 max-h-[70vh] overflow-x-hidden px-4">
+        <ComparePlayersTable playerList={playerList} setPlayerList={setPlayerList}/>
+      </Card>}
       
     </div>
     
