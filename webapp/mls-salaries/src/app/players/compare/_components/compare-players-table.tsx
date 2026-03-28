@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button"
 import { X } from "lucide-react"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { reports } from "@/lib/globals"
+import { removePlayerFromList } from "@/lib/compare-players-utils"
 
 
 
@@ -64,7 +65,7 @@ export default function ComparePlayersTable({playerList, setPlayerList}: Compare
 function ComparePlayersHeader({playerList, setPlayerList, player, id}: ComparePlayersHeaderProps){
 
     const handlePlayerDelete = () => {
-        // setClubList(removeClubFromList(clubList, id))
+       setPlayerList(removePlayerFromList(playerList, id))
     }
 
     return (
@@ -84,13 +85,13 @@ function ComparePlayersRow({playerList, reportValue}: ComparePlayersRowProps){
     return (
         <TableRow key={reportValue}>
             <TableCell>{report.year} {report.season}</TableCell>
-            {playerList.data.map((p) => {
+            {playerList.data.map((p, index) => {
                 if (!p.player) return null
 
                 const match = p.player.records.find((record) => record.recordyear === report.year && record.recordseason === report.season)
                 
                 return (
-                    <TableCell key={p.player.player.playerid}>
+                    <TableCell key={p.player.player.playerid + reportValue + index}>
                         {match ? 
                             <div className="flex flex-col">
                                 <p className="text-center text-md font">${match.guaranteedcomp.toLocaleString()}</p>

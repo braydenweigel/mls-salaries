@@ -1,4 +1,4 @@
-import { PlayerData, PlayerList } from "@/app/players/compare/page";
+import { initialPlayerList, PlayerData, PlayerList } from "@/app/players/compare/page";
 import { Player, PlayerRecord } from "./data/types";
 import { filterRecordsByPlayerID } from "./data/filters";
 import records from "@/lib/data/records.json"
@@ -10,7 +10,7 @@ export function addPlayerToList(playerList: PlayerList, player: Player){
     let newMax = playerList.max
 
     const reportsList = Object.keys(reports).sort((a, b) => Number(a) - Number(b))
-        
+
     for (const key of reportsList){//create array of player.records
         const report = reports[key]
         const match = playerRecords.find((record) => record.recordyear === report.year && record.recordseason === report.season)
@@ -28,6 +28,7 @@ export function addPlayerToList(playerList: PlayerList, player: Player){
         player: player,
         records: playerRecords
     }
+    console.log(newPlayer)
 
     const newList = structuredClone(playerList)
     newList.data[newList.numPlayers].player = newPlayer
@@ -37,4 +38,28 @@ export function addPlayerToList(playerList: PlayerList, player: Player){
 
     return newList
 
+}
+
+export function removePlayerFromList(playerList: PlayerList, id: "a" | "b" | "c" | "d"){
+    //get index of player and remove
+    const index = playerList.data.findIndex(player => player.stackID === id)
+    const tempList = structuredClone(playerList)
+    tempList.data[index].player = null
+
+    //get remaining clubs and repopulate list
+    const players: PlayerData[] = []
+    for (const player of tempList.data){
+        if (player.player){
+            players.push(structuredClone(player.player))
+        }
+    }
+
+    let newList = structuredClone(initialPlayerList)
+    for (let i = 0; i < players.length; i++){
+        newList = addPlayerToList(newList, players[i].player)
+
+    }
+    newList.numPlayers = players.length
+
+    return newList
 }
