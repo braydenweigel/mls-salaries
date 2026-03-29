@@ -6,7 +6,6 @@ import { CURRENT_YEAR } from "@/lib/globals";
 import { useState } from "react";
 import AddPlayersDialog from "./_components/add-players-dialog";
 import { Card } from "@/components/ui/card";
-import ComparePlayersHeader from "./_components/compare-players-table";
 import ComparePlayersTable from "./_components/compare-players-table";
 import ComparePlayersChart from "./_components/compare-players-chart";
 

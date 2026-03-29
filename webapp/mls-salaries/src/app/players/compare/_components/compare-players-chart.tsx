@@ -58,7 +58,7 @@ export default function ComparePlayersChart({playerList}: ComparePlayersChartPro
 
     return (
     <ChartContainer config={chartConfig} className="px-4">
-        <BarChart data={data}>
+        <BarChart data={data} barGap={0}>
             <XAxis 
                 dataKey="report"
                 tickLine={false}

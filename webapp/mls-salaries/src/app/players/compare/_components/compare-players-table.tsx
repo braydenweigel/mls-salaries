@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react"
+import React from "react"
 import { PlayerData, PlayerList } from "../page"
 import { Button } from "@/components/ui/button"
 import { X } from "lucide-react"
@@ -70,8 +70,8 @@ function ComparePlayersHeader({playerList, setPlayerList, player, id}: ComparePl
 
     return (
         <TableHead className="max-w-full min-w-[50%] md:min-w-0 pb-2" style={{minWidth: `${100 / (playerList.numPlayers + 1)}%`}}>
-            <div className="flex justify-around items-center ">
-                <p className="font-semibold">{player.player.lastname} {player.player.firstname}</p>
+            <div className="flex justify-around items-center w-[180px] justify-self-center">
+                <p className="font-semibold text-wrap">{player.player.lastname} {player.player.firstname}</p>
                 <Button variant="outline" size="icon-sm" style={{borderColor: "var(--destructive)"}} onClick={handlePlayerDelete}><X color="var(--destructive)"/></Button>
             </div>
         </TableHead>

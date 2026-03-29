@@ -6,7 +6,6 @@ import { Player } from "@/lib/data/types"
 import { Button } from "@/components/ui/button"
 import { Plus } from "lucide-react"
 import { Input } from "@/components/ui/input"
-import AddPlayerssItem from "./add-players-item"
 import AddPlayersItem from "./add-players-item"
 
 type AddPlayersDialogProps = {
