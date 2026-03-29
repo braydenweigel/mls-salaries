@@ -56,7 +56,7 @@ export default function AddClubsDialog({clubList, setClubList}: AddClubsDialogPr
                         }}
                     />
                 </DialogHeader>
-                {filteredClubs.length > 0 ? <div className="flex flex-col overflow-y-scroll max-h-[60vh]">
+                {filteredClubs.length > 0 ? <div className="flex flex-col overflow-y-auto h-[60vh]">
                     {filteredClubs.map((club) => (
                         <AddClubsItem key={club.clubid} club={club} clubList={clubList} setClubList={setClubList}/>
                     ))}

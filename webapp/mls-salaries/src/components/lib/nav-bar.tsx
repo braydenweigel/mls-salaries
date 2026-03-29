@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { NavigationMenu, NavigationMenuItem, NavigationMenuList, navigationMenuTriggerStyle } from "../ui/navigation-menu";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "../ui/dropdown-menu";
 
 
 export default function NavigationBar(){
@@ -22,7 +23,7 @@ export default function NavigationBar(){
                     Clubs
                 </Link>
             </NavigationMenuItem>
-            {/* {<NavigationMenuItem>
+            <NavigationMenuItem>
                 <DropdownMenu>
                 <DropdownMenuTrigger
                     className={navigationMenuTriggerStyle()}
@@ -38,7 +39,7 @@ export default function NavigationBar(){
                     </DropdownMenuItem>
                 </DropdownMenuContent>
                 </DropdownMenu>
-            </NavigationMenuItem>} */}
+            </NavigationMenuItem>
             </NavigationMenuList>
         </NavigationMenu>
     )
