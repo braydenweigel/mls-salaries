@@ -1,9 +1,10 @@
 "use client"
 
 import { ChartConfig, ChartContainer, ChartLegend, ChartLegendContent, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart"
-import { Bar, BarChart, XAxis, YAxis} from "recharts"
+import { Area, AreaChart, Bar, BarChart, XAxis, YAxis} from "recharts"
 import { reports } from "@/lib/globals"
 import React from "react"
+import { report } from "process"
 
 interface Props {
     data: {
@@ -33,16 +34,21 @@ export default function PlayerIDChart({
           color: colors.primary + "B3",
         },
     } 
+
+    const ticks = data.map(d => d.report)
+
     return (
         <ChartContainer config={chartConfig}>
-            <BarChart data={data}>
+            <AreaChart data={data} margin={{ right: 16}}>
                 <XAxis 
                     dataKey="report"
+                    type="number"
+                    domain={['dataMin', 'dataMax']}
                     tickLine={false}
                     axisLine={false}
                     interval={0} // ensures all ticks show
-                    tickFormatter={(key) => {{return (reports[key].year + " " + reports[key].season)}}}
-                    tick={{ fontSize: 10 }}
+                    ticks={ticks}
+                    tick={<CustomTick />}
                 />
                 <YAxis
                     type="number"
@@ -52,16 +58,21 @@ export default function PlayerIDChart({
                     tickFormatter={(value: number) => {return `$${value.toLocaleString()}`}}
                     tick={{ fontSize: 10 }}
                 />
-                <Bar 
+                <Area 
                     dataKey="baseSalary"
-                    stackId="a"
+                    type="linear"
                     fill={colors.primary}
-                />
-                <Bar 
-                    dataKey="guaranteedComp"
+                    fillOpacity={1}
+                    stroke={colors.secondary}
                     stackId="a"
+                />
+                <Area 
+                    dataKey="guaranteedComp"
+                    type="linear"
                     fill={colors.primary}
                     fillOpacity={0.7}
+                    stroke={colors.secondary}
+                    stackId="a"
                 />
                 <ChartTooltip 
                     cursor={false}
@@ -80,9 +91,24 @@ export default function PlayerIDChart({
                     }
                 />
                 <ChartLegend content={<ChartLegendContent/>}/>
-            </BarChart>
+            </AreaChart>
         </ChartContainer>
     )
+}
+
+const CustomTick = ({ x, y, payload }: any) => {
+  const report = reports[String(payload.value)]
+
+  if (!report) return null
+
+  return (
+    <g transform={`translate(${x},${y})`}>
+      <text textAnchor="middle">
+        <tspan x="0" dy="0.4em">{report.year}</tspan>
+        <tspan x="0" dy="1.2em">{report.season}</tspan>
+      </text>
+    </g>
+  )
 }
 
 
