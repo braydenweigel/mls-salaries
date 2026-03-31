@@ -1,6 +1,6 @@
 import { ChartConfig, ChartContainer, ChartLegend, ChartTooltip } from "@/components/ui/chart"
 import { PlayerData, PlayerList } from "../page"
-import { Bar, BarChart, TooltipProps, XAxis, YAxis } from "recharts"
+import { Area, AreaChart, TextProps, TooltipProps, XAxis, YAxis } from "recharts"
 import { reports } from "@/lib/globals"
 
 type ComparePlayersChartProps = {
@@ -55,17 +55,25 @@ export default function ComparePlayersChart({playerList}: ComparePlayersChartPro
     } 
 
     const data = formatChartData(playerList)
+    const ticks: string[] = []
+    data.map(d => {
+        if (reports[d.report].season === "Fall"){
+            ticks.push(d.report)
+        } 
+    })
 
     return (
     <ChartContainer config={chartConfig} className="px-4">
-        <BarChart data={data} barGap={0}>
+        <AreaChart data={data} margin={{ right: 16}}>
             <XAxis 
                 dataKey="report"
+                type="number"
+                domain={['dataMin', 'dataMax']}
                 tickLine={false}
                 axisLine={false}
                 interval={0} // ensures all ticks show
-                tickFormatter={(key) => {{return (reports[key].year + " " + reports[key].season)}}}
-                tick={{ fontSize: 10 }}
+                ticks={ticks}
+                tick={<CustomTick/>}
             />
             <YAxis 
                 type="number"
@@ -77,22 +85,25 @@ export default function ComparePlayersChart({playerList}: ComparePlayersChartPro
             {playerList.data.map((player, index) => (
                 player.player && 
                     <>
-                        <Bar
+                        <Area
                             dataKey={`baseSal_${player.stackID}`}
-                            stackId={player.stackID}
+                            type="linear"
+                            stroke={colors[index]}
                             fill={colors[index]}
+                            fillOpacity={0.03}
                         />
-                        <Bar
+                        <Area
                             dataKey={`guarComp_${player.stackID}`}
-                            stackId={player.stackID}
+                            type="linear"
+                            stroke={colors[index]}
                             fill={colors[index]}
-                            fillOpacity={0.7}
+                            fillOpacity={0.03}
                         />
                     </>
             ))}
             <ChartTooltip cursor={false} content={<CustomTooltip/>}/>
             <ChartLegend content={<CustomLegend players={playerList.data}/>}/>
-        </BarChart>
+        </AreaChart>
     </ChartContainer>
     )
 }
@@ -132,7 +143,7 @@ function formatChartData(playerList: PlayerList){
                         }
 
                         row[`baseSal_${player.stackID}`] = bS
-                        row[`guarComp_${player.stackID}`] = gC
+                        row[`guarComp_${player.stackID}`] = gC + bS
 
                     }
                 }
@@ -155,6 +166,18 @@ const CustomTooltip = ({ active, payload }: TooltipProps<number, string>) => {
 
   return (
     <div className="bg-background border rounded-md p-2 shadow">
+      {payload?.[0]?.payload && (() => {
+        const reportKey = payload[0].payload.report
+        const reportInfo = reports[reportKey]
+
+        if (!reportInfo) return null
+
+        return (
+          <div className="font-semibold mb-1">
+            {reportInfo.year} {reportInfo.season}
+          </div>
+        )
+      })()}
       {payload.map((entry, index) => {
         const e = entry as CustomTooltipEntry
 
@@ -171,7 +194,7 @@ const CustomTooltip = ({ active, payload }: TooltipProps<number, string>) => {
         const base = row[`baseSal_${suffix}` as keyof ComparePlayersChartData] as number | null
         const guar = row[`guarComp_${suffix}` as keyof ComparePlayersChartData] as number | null
 
-        const total = (base ?? 0) + (guar ?? 0) 
+        const total = guar ?? base ?? 0
 
         // Only show once per player (avoid duplicate base/guar entries)
         if (!dataKey.startsWith("guarComp")) return null
@@ -224,5 +247,29 @@ const CustomLegend = ({ players }: CustomLegendProps) => {
         ) : null
       )}
     </div>
+  )
+}
+
+type CustomTickProps = TextProps & {
+  x?: number
+  y?: number
+  payload?: {
+    value: string | number
+  }
+}
+
+const CustomTick = ({ x, y, payload }: CustomTickProps) => {
+  if (!payload) return null
+  const report = reports[String(payload.value)]
+
+  if (!report) return null
+
+  return (
+    <g transform={`translate(${x},${y})`}>
+      <text textAnchor="middle">
+        <tspan x="0" dy="0.4em">{report.year}</tspan>
+        <tspan x="0" dy="1.2em">{report.season}</tspan>
+      </text>
+    </g>
   )
 }
