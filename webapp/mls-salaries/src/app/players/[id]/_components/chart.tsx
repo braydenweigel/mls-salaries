@@ -4,7 +4,6 @@ import { ChartConfig, ChartContainer, ChartLegend, ChartLegendContent, ChartTool
 import { Area, AreaChart, Bar, BarChart, XAxis, YAxis} from "recharts"
 import { reports } from "@/lib/globals"
 import React from "react"
-import { report } from "process"
 
 interface Props {
     data: {
@@ -35,7 +34,12 @@ export default function PlayerIDChart({
         },
     } 
 
-    const ticks = data.map(d => d.report)
+    const ticks: string[] = []
+    data.map(d => {
+        if (reports[d.report].season === "Fall"){
+            ticks.push(d.report)
+        } 
+    })
 
     return (
         <ChartContainer config={chartConfig}>
@@ -63,7 +67,7 @@ export default function PlayerIDChart({
                     type="linear"
                     fill={colors.primary}
                     fillOpacity={1}
-                    stroke={colors.secondary}
+                    stroke={colors.primary}
                     stackId="a"
                 />
                 <Area 
@@ -71,7 +75,7 @@ export default function PlayerIDChart({
                     type="linear"
                     fill={colors.primary}
                     fillOpacity={0.7}
-                    stroke={colors.secondary}
+                    stroke={colors.primary}
                     stackId="a"
                 />
                 <ChartTooltip 
