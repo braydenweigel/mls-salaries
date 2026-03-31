@@ -1,6 +1,6 @@
 import { ChartConfig, ChartContainer, ChartLegend, ChartTooltip } from "@/components/ui/chart"
 import { PlayerData, PlayerList } from "../page"
-import { Area, AreaChart, Bar, BarChart, Line, LineChart, TooltipProps, XAxis, YAxis } from "recharts"
+import { Area, AreaChart, TextProps, TooltipProps, XAxis, YAxis } from "recharts"
 import { reports } from "@/lib/globals"
 
 type ComparePlayersChartProps = {
@@ -250,7 +250,16 @@ const CustomLegend = ({ players }: CustomLegendProps) => {
   )
 }
 
-const CustomTick = ({ x, y, payload }: any) => {
+type CustomTickProps = TextProps & {
+  x?: number
+  y?: number
+  payload?: {
+    value: string | number
+  }
+}
+
+const CustomTick = ({ x, y, payload }: CustomTickProps) => {
+  if (!payload) return null
   const report = reports[String(payload.value)]
 
   if (!report) return null

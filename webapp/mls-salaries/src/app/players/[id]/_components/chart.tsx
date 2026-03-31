@@ -1,7 +1,7 @@
 "use client"
 
 import { ChartConfig, ChartContainer, ChartLegend, ChartLegendContent, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart"
-import { Area, AreaChart, Bar, BarChart, XAxis, YAxis} from "recharts"
+import { Area, AreaChart, TextProps, XAxis, YAxis} from "recharts"
 import { reports } from "@/lib/globals"
 import React from "react"
 
@@ -100,7 +100,17 @@ export default function PlayerIDChart({
     )
 }
 
-const CustomTick = ({ x, y, payload }: any) => {
+type CustomTickProps = TextProps & {
+  x?: number
+  y?: number
+  payload?: {
+    value: string | number
+  }
+}
+
+const CustomTick = ({ x, y, payload }: CustomTickProps) => {
+  if (!payload) return null
+
   const report = reports[String(payload.value)]
 
   if (!report) return null
