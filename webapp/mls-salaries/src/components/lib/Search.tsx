@@ -83,6 +83,7 @@ export function SearchButton() {
                             href={`/clubs/${club.clubid}`} 
                             className="hover:underline py-1" 
                             key={club.clubid}
+                            prefetch={false}
                         >
                             {club.clubname}
                         </Link>
@@ -95,6 +96,7 @@ export function SearchButton() {
                             href={`/players/${player.playerid}`} 
                             className="hover:underline py-1" 
                             key={player.playerid}
+                            prefetch={false}
                         >
                             {player.lastname + " " + player.firstname}
                         </Link>

@@ -13,7 +13,7 @@ export default function ClubsList(){
     return (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 py-2">
             {allClubs.map((club) => (
-                <Link key={club.clubid} href={`/clubs/${club.clubid}`} className="hover:underline py-1">{club.clubname}</Link>
+                <Link key={club.clubid} href={`/clubs/${club.clubid}`} className="hover:underline py-1" prefetch={false}>{club.clubname}</Link>
             ))}
         </div>
     )
