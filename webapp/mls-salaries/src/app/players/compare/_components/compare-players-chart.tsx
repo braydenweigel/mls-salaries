@@ -63,48 +63,50 @@ export default function ComparePlayersChart({playerList}: ComparePlayersChartPro
     })
 
     return (
-    <ChartContainer config={chartConfig} className="px-4">
-        <AreaChart data={data} margin={{ right: 16}}>
-            <XAxis 
-                dataKey="report"
-                type="number"
-                domain={['dataMin', 'dataMax']}
-                tickLine={false}
-                axisLine={false}
-                interval={0} // ensures all ticks show
-                ticks={ticks}
-                tick={<CustomTick/>}
-            />
-            <YAxis 
-                type="number"
-                tickLine={false}
-                axisLine={false}
-                width={80}
-                tickFormatter={(value: number) => {return `$${value.toLocaleString()}`}}
-            />
-            {playerList.data.map((player, index) => (
-                player.player && 
-                    <>
-                        <Area
-                            dataKey={`baseSal_${player.stackID}`}
-                            type="linear"
-                            stroke={colors[index]}
-                            fill={colors[index]}
-                            fillOpacity={0.03}
-                        />
-                        <Area
-                            dataKey={`guarComp_${player.stackID}`}
-                            type="linear"
-                            stroke={colors[index]}
-                            fill={colors[index]}
-                            fillOpacity={0.03}
-                        />
-                    </>
-            ))}
-            <ChartTooltip cursor={false} content={<CustomTooltip/>}/>
-            <ChartLegend content={<CustomLegend players={playerList.data}/>}/>
-        </AreaChart>
-    </ChartContainer>
+      <ChartContainer config={chartConfig} className="px-4">
+          <AreaChart data={data} margin={{ right: 16}}>
+              <XAxis 
+                  dataKey="report"
+                  type="number"
+                  domain={['dataMin', 'dataMax']}
+                  tickLine={false}
+                  axisLine={false}
+                  interval={0} // ensures all ticks show
+                  ticks={ticks}
+                  tick={<CustomTick/>}
+              />
+              <YAxis 
+                  type="number"
+                  tickLine={false}
+                  axisLine={false}
+                  width={80}
+                  tickFormatter={(value: number) => {return `$${value.toLocaleString()}`}}
+              />
+              {playerList.data.map((player, index) => (
+                  player.player && 
+                      <>
+                          <Area
+                              dataKey={`baseSal_${player.stackID}`}
+                              type="linear"
+                              stroke={colors[index]}
+                              fill={colors[index]}
+                              fillOpacity={0.03}
+                              dot={{ r: 4 }}
+                          />
+                          <Area
+                              dataKey={`guarComp_${player.stackID}`}
+                              type="linear"
+                              stroke={colors[index]}
+                              fill={colors[index]}
+                              fillOpacity={0.03}
+                              dot={{ r: 4 }}
+                          />
+                      </>
+              ))}
+              <ChartTooltip cursor={false} content={<CustomTooltip/>}/>
+              <ChartLegend content={<CustomLegend players={playerList.data}/>}/>
+          </AreaChart>
+      </ChartContainer>
     )
 }
 
