@@ -1,9 +1,9 @@
-import { ClubData, ClubList, initialClubList } from "@/app/clubs/compare/page";
+import { ClubData, ClubList,} from "@/app/clubs/compare/page";
 import { Club, PlayerRecord } from "./data/types";
 import { reports } from "./globals";
 import { filterRecordsByReportAndClub } from "./data/filters";
 import records from "@/lib/data/records.json"
-import { formatData } from "@/app/clubs/[id]/page";
+import { formatData, initialClubList } from "./clubs";
 
 export function addClubToList(clubList: ClubList, reportValue: string, club: Club): ClubList{
 

@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react"
-import { initialPlayerList, PlayerList } from "../page"
+import { PlayerList } from "../page"
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
 import players from "@/lib/data/players.json"
 import { Player } from "@/lib/data/types"
@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button"
 import { Plus } from "lucide-react"
 import { Input } from "@/components/ui/input"
 import AddPlayersItem from "./add-players-item"
+import { initialPlayerList } from "@/lib/players"
 
 type AddPlayersDialogProps = {
     playerList: PlayerList

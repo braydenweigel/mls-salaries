@@ -1,5 +1,5 @@
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
-import { ClubList, initialClubList } from "../page"
+import { ClubList } from "../page"
 import { useEffect, useState } from "react"
 import  clubs from "@/lib/data/clubs.json"
 import { Club } from "@/lib/data/types"
@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button"
 import { Plus } from "lucide-react"
 import { Input } from "@/components/ui/input"
 import AddClubsItem from "./add-clubs-item"
+import { initialClubList } from "@/lib/clubs"
 
 type AddClubsDialogProps = {
     clubList: ClubList

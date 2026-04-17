@@ -2,12 +2,12 @@
 
 import { Button } from "@/components/ui/button";
 import { Player, PlayerRecord } from "@/lib/data/types";
-import { CURRENT_YEAR } from "@/lib/globals";
 import { useState } from "react";
 import AddPlayersDialog from "./_components/add-players-dialog";
 import { Card } from "@/components/ui/card";
 import ComparePlayersTable from "./_components/compare-players-table";
 import ComparePlayersChart from "./_components/compare-players-chart";
+import { initialPlayerList } from "@/lib/players";
 
 export type PlayerData = {
   player: Player,
@@ -22,16 +22,6 @@ export type PlayerList = {
   numPlayers: number,
   min: string,
   max: string
-}
-
-export const initialPlayerList: PlayerList = {
-  data: [{stackID: "a", player: null},
-  {stackID: "b", player: null},
-  {stackID: "c", player: null},
-  {stackID: "d", player: null}],
-  numPlayers: 0,
-  min: CURRENT_YEAR,
-  max: CURRENT_YEAR
 }
 
 export default function ComparePlayers() {

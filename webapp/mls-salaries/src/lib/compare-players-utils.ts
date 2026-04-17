@@ -1,8 +1,9 @@
-import { initialPlayerList, PlayerData, PlayerList } from "@/app/players/compare/page";
+import { PlayerData, PlayerList } from "@/app/players/compare/page";
 import { Player, PlayerRecord } from "./data/types";
 import { filterRecordsByPlayerID } from "./data/filters";
 import records from "@/lib/data/records.json"
 import { reports } from "./globals";
+import { initialPlayerList } from "./players";
 
 export function addPlayerToList(playerList: PlayerList, player: Player){
     const playerRecords = filterRecordsByPlayerID((records as PlayerRecord[]), player.playerid)

@@ -8,6 +8,7 @@ import AddClubsDialog from "./_components/add-clubs-dialog";
 import CompareClubsHeader from "./_components/compare-clubs-header";
 import CompareClubsTable from "./_components/compare-clubs-table";
 import CompareClubsChart from "./_components/compare-clubs-chart";
+import { initialClubList } from "@/lib/clubs";
 
 export type ClubData = {
   club: Club,
@@ -26,14 +27,6 @@ export type ClubList = {
 }
 
 
-export const initialClubList: ClubList = {
-  data: [{stackID: "a", club: null},
-  {stackID: "b", club: null},
-  {stackID: "c", club: null},
-  {stackID: "d", club: null}],
-  numClubs: 0
-}
-
 export default function CompareClubs() {
   const [clubList, setClubList] = useState<ClubList>(initialClubList)
  
@@ -49,7 +42,7 @@ export default function CompareClubs() {
       </div>
       {clubList.numClubs > 0 &&
       <Card className="flex flex-col w-full min-h-0 h-[70vh] overflow-x-hidden">
-        <div className="flex flex-row w-full justify-around border-b-1 pb-2">
+        <div className="flex flex-row w-full justify-around border-b pb-2">
           {clubList.data.map((club) => (
             club.club ? <CompareClubsHeader key={club.stackID + club.club.reportValue + club.club.club.clubname} clubList={clubList} setClubList={setClubList} club={club.club} id={club.stackID}/> : null
           ))}
