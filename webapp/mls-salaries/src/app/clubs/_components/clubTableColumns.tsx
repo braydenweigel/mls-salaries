@@ -20,7 +20,7 @@ export const clubColumns: ColumnDef<TableClub>[] = [
         cell: ({ row }) => {
             const club = row.original
             return (
-                <Link href={`/clubs/${club.clubid}?year=${club.reportYear}`} className="hover:underline">{club.clubName}</Link>
+                <Link href={`/clubs/${club.clubid}?year=${club.reportYear}`} className="hover:underline" prefetch={false}>{club.clubName}</Link>
             )
         },
         filterFn: (row, club, filterValue: string[]) => {

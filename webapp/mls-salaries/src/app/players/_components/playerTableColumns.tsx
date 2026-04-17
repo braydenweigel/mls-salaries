@@ -23,7 +23,7 @@ export const playerColumns: ColumnDef<TablePlayer>[] = [
         cell: ({ row }) => {
             const player = row.original
             return (
-                <Link href={`/players/${player.id}`} className="hover:underline">{player.name}</Link>
+                <Link href={`/players/${player.id}`} className="hover:underline" prefetch={false}>{player.name}</Link>
             )
             
         }
@@ -35,7 +35,7 @@ export const playerColumns: ColumnDef<TablePlayer>[] = [
         cell: ({ row }) => {
             const player = row.original
             return (
-                <Link href={`/clubs/${player.clubid}?year=${player.reportYear}`} className="hover:underline">{player.club}</Link>
+                <Link href={`/clubs/${player.clubid}?year=${player.reportYear}`} className="hover:underline" prefetch={false}>{player.club}</Link>
             )
         },
         filterFn: (row, club, filterValue: string[]) => {
