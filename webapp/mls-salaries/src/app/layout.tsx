@@ -15,6 +15,7 @@ import { SearchButton } from "@/components/lib/Search";
 import NavigationBar from "@/components/lib/nav-bar";
 import React from "react";
 import NavigationSideBar from "@/components/lib/nav-sidebar";
+import { GoogleAnalytics } from '@next/third-parties/google'
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -35,6 +36,7 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
+        <GoogleAnalytics gaId="G-5FBL2DXL5M" />
         <ThemeProvider
             attribute="class"
             defaultTheme="system"
