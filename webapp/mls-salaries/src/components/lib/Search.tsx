@@ -65,7 +65,7 @@ export function SearchButton() {
                     <span>Search</span>
                 </Button>
             </DialogTrigger>
-            <DialogContent className="h-[60vh] flex flex-col">
+            <DialogContent className="h-[80vh] overflow-y-hidden flex flex-col">
                 <DialogHeader className="h-fit">
                     <DialogTitle className="text-left">Search</DialogTitle>
                     <Input 
@@ -76,7 +76,7 @@ export function SearchButton() {
                         }}
                     />
                 </DialogHeader>
-                {filteredClubs.length > 0 ? <div className="flex flex-col overflow-y-scroll min-h-[20vh] max-h-[40vh]">
+                {filteredClubs.length > 0 ? <div className="flex flex-col overflow-y-auto min-h-[20vh] max-h-[40vh]">
                     <Label className="text-muted-foreground">Clubs</Label>
                     {filteredClubs.map((club) => (
                         <Link 
@@ -89,7 +89,7 @@ export function SearchButton() {
                         </Link>
                     ))}
                 </div> : null}
-                {filteredPlayers.length > 0 ? <div className="flex flex-col overflow-y-scroll min-h-[20vh] max-h-[40vh]">
+                {filteredPlayers.length > 0 ? <div className="flex flex-col overflow-y-auto min-h-[20vh] max-h-[40vh]">
                     <Label className="text-muted-foreground">Players</Label>
                     {filteredPlayers.map((player) => (
                         <Link 
