@@ -1,32 +1,35 @@
-"use client"
-
 import { PlayerTable } from "./_components/PlayerTable"
 import { playerColumns, TablePlayer } from "@/app/players/_components/playerTableColumns"
 import { Card, CardContent } from "@/components/ui/card"
 import { isValidClub } from "@/lib/storeUtils"
 import { CURRENT_YEAR, reports } from "@/lib/globals"
 import React, { useEffect } from "react"
-import SelectReport from "@/components/lib/SelectReport"
-import { useSearchParams, useRouter } from "next/navigation"
 import records from "@/lib/data/records.json"
 import clubs from "@/lib/data/clubs.json"
 import type { PlayerRecord, Club } from "@/lib/data/types"
 import { filterRecordsByReport } from "@/lib/data/filters"
+import PlayersSelectReport from "./_components/PlayersSelectReport"
 
-export default function Players() {
-  const searchParams = useSearchParams()
-  const { replace } = useRouter()
-  const reportParams = searchParams.get("year")
+export async function generateMetadata({ searchParams }: { searchParams: Promise<{ year?: string }> })  {
+  const { year: report } = await searchParams
 
-  const [reportValue, setReportValue] = React.useState(reports[reportParams ?? ""] && reportParams ? reportParams : CURRENT_YEAR)//report params used when params exist and are a valid year
+  const year = reports[report ?? CURRENT_YEAR].year
+  const season = reports[report ?? CURRENT_YEAR].season
+
+  return {
+    title: `${year} ${season} Players - MLS Salaries`,
+  }
+}
+
+export default async function Players({ searchParams }: { searchParams: Promise<{ year?: string }> }) {
+  const { year: report } = await searchParams
+  let reportParams = report
+
+  const defaultReport = reports[reportParams ?? ""] && reportParams ? reportParams : CURRENT_YEAR
+  const reportValue = reportParams ?? defaultReport
+
   const year = reports[reportValue].year
   const season = reports[reportValue].season
-  const defaultReport = reports[reportParams ?? ""] && reportParams ? reportParams : CURRENT_YEAR
-
-  useEffect(() => {
-    document.title = year + " " + season + " Players - MLS Salaries"
-    replace(`/players?year=${reportValue}`)
-  },[reportValue, replace, season, year])
 
   const playerRecords = filterRecordsByReport((records as PlayerRecord[]), year, season)
   const allClubs = clubs as Club[]
@@ -35,7 +38,7 @@ export default function Players() {
   return (
     <Card className="h-fit">
       <CardContent className="">
-        <SelectReport onReportValueChange={(report) => setReportValue(report)} reports={reports} defaultReport={defaultReport}/>
+        <PlayersSelectReport reports={reports} defaultReport={reportValue}/>
         <div>
           <PlayerTable columns={playerColumns} data={data} />
         </div>
