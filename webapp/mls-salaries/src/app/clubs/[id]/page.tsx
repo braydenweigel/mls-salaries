@@ -53,7 +53,7 @@ params,
   const { id } = await params
   const { year: report } = await searchParams
 
-  let reportParams = report
+  const reportParams = report
   const defaultReport = id == "CHV" ? "2014.5" : CURRENT_YEAR
   const reportValue = reportParams ?? defaultReport
 

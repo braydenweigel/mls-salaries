@@ -7,7 +7,7 @@ export default function ClubsSelectReport({
   reports,
   defaultReport,
 }: {
-  reports: any
+  reports: Record<string, { year: string; season: string }>
   defaultReport: string
 }) {
   const router = useRouter()

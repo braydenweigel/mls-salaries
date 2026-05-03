@@ -8,7 +8,7 @@ export default function ClubSelectReport({
   defaultReport,
   clubId,
 }: {
-  reports: any
+  reports: Record<string, { year: string; season: string }>
   defaultReport: string
   clubId: string
 }) {

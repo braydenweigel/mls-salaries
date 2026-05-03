@@ -21,7 +21,7 @@ export async function generateMetadata({ searchParams }: { searchParams: Promise
 
 export default async function Clubs({ searchParams }: { searchParams: Promise<{ year?: string }> }) {
   const { year: report } = await searchParams
-  let reportParams = report
+  const reportParams = report
 
   const defaultReport = reports[reportParams ?? ""] && reportParams ? reportParams : CURRENT_YEAR
   const reportValue = reportParams ?? defaultReport

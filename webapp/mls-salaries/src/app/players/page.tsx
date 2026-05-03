@@ -3,7 +3,7 @@ import { playerColumns, TablePlayer } from "@/app/players/_components/playerTabl
 import { Card, CardContent } from "@/components/ui/card"
 import { isValidClub } from "@/lib/storeUtils"
 import { CURRENT_YEAR, reports } from "@/lib/globals"
-import React, { useEffect } from "react"
+import React from "react"
 import records from "@/lib/data/records.json"
 import clubs from "@/lib/data/clubs.json"
 import type { PlayerRecord, Club } from "@/lib/data/types"
@@ -23,7 +23,7 @@ export async function generateMetadata({ searchParams }: { searchParams: Promise
 
 export default async function Players({ searchParams }: { searchParams: Promise<{ year?: string }> }) {
   const { year: report } = await searchParams
-  let reportParams = report
+  const reportParams = report
 
   const defaultReport = reports[reportParams ?? ""] && reportParams ? reportParams : CURRENT_YEAR
   const reportValue = reportParams ?? defaultReport
