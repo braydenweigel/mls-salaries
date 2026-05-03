@@ -1,5 +1,3 @@
-"use client"
-
 import { 
   Card,
   CardContent,
@@ -7,28 +5,57 @@ import {
   CardHeader,
   CardTitle 
 } from '@/components/ui/card'
-import { useEffect } from "react"
-import React, { use } from "react"
+import React from "react"
 import { CURRENT_YEAR, reports } from '@/lib/globals'
-import SelectReport from '@/components/lib/SelectReport'
 import { clubPlayerColumns, TableClubPlayers } from '@/app/clubs/[id]/_components/clubPlayerTableColumns'
 import { ClubPlayersTable } from './_components/ClubPlayersTable'
 import ClubIDChart from './_components/chart'
-import { notFound, useRouter, useSearchParams } from 'next/navigation'
+import { notFound } from 'next/navigation'
 import clubs from "@/lib/data/clubs.json"
 import records from "@/lib/data/records.json"
 import { Club, PlayerRecord } from '@/lib/data/types'
 import { filterRecordsByReportAndClub } from '@/lib/data/filters'
 import { formatData } from '@/lib/clubs'
+import ClubSelectReport from './_components/ClubSelectReport'
+
+export async function generateMetadata({
+  params,
+  searchParams,
+}: {
+  params: Promise<{ id: string }>,
+  searchParams: Promise<{ year?: string }>
+})  {
+  const { id } = await params
+  const { year: report } = await searchParams
+
+  const year = reports[report ?? CURRENT_YEAR].year
+  const season = reports[report ?? CURRENT_YEAR].season
+
+  const club = clubs.find((c) => c.clubid === id)
+
+  if (!club) {
+    return { title: "Club Not Found - MLS Salaries" }
+  }
+
+  return {
+    title: `${club.clubname} - ${year} ${season} - MLS Salaries`,
+  }
+}
 
 
-export default function ClubPage(props: { params: Promise<{ id: string }> }) {
-  const { id } = use(props.params)
-  const { replace } = useRouter()
-  const searchParams = useSearchParams()
-  let reportParams = searchParams.get("year")
+export default async function ClubPage({
+params,
+  searchParams,
+}: {
+  params: Promise<{ id: string }>,
+  searchParams: Promise<{ year?: string }>
+}) {
+  const { id } = await params
+  const { year: report } = await searchParams
+
+  let reportParams = report
   const defaultReport = id == "CHV" ? "2014.5" : CURRENT_YEAR
-  const [reportValue, setReportValue] = React.useState(reportParams ?? defaultReport)
+  const reportValue = reportParams ?? defaultReport
 
   let year: string, season: string
   if (reports[reportValue]){
@@ -37,8 +64,6 @@ export default function ClubPage(props: { params: Promise<{ id: string }> }) {
   } else {
     year = reports[CURRENT_YEAR].year
     season = reports[CURRENT_YEAR].season
-    reportParams = defaultReport
-    setReportValue(CURRENT_YEAR)
   }
 
   //find club
@@ -48,15 +73,6 @@ export default function ClubPage(props: { params: Promise<{ id: string }> }) {
   if (!club){
     notFound()
   }
-
-  useEffect(() => {
-    if (club) {
-      document.title = club.clubname + " - " + year + " " + season + " - MLS Salaries"
-      replace(`/clubs/${club.clubid}?year=${reportValue}`)
-    } else {
-      document.title = "Club Not Found - MLS Salaries"
-    }
-  },[club, replace, year, season, reportValue])
 
   const clubRecords = filterRecordsByReportAndClub((records as PlayerRecord[]), year, season, club.clubid)
   const { data, totalBaseSal, totalGuarComp } = formatData(clubRecords, year, season, reportValue)
@@ -78,7 +94,11 @@ export default function ClubPage(props: { params: Promise<{ id: string }> }) {
           <CardDescription className="text-base">Years Active: {clubYears}</CardDescription>
         </CardHeader>
         <CardContent className="overflow-hidden space-y-2">
-          <SelectReport onReportValueChange={(report) => setReportValue(report)} reports={clubReports} defaultReport={reportParams ?? defaultReport}/>
+          <ClubSelectReport
+            reports={clubReports}
+            defaultReport={reportValue}
+            clubId={club.clubid}
+          />
           <div className="md:hidden">
             <p>Total Base Salary: </p><p className="mb-2">${totalBaseSal.toLocaleString()}</p>
             <p>Total Guaranteed Compensation: </p><p>${totalGuarComp.toLocaleString()}</p>
