@@ -94,11 +94,7 @@ params,
           <CardDescription className="text-base">Years Active: {clubYears}</CardDescription>
         </CardHeader>
         <CardContent className="overflow-hidden space-y-2">
-          <ClubSelectReport
-            reports={clubReports}
-            defaultReport={reportValue}
-            clubId={club.clubid}
-          />
+          <ClubSelectReport reports={clubReports} defaultReport={reportValue} clubId={club.clubid}/>
           <div className="md:hidden">
             <p>Total Base Salary: </p><p className="mb-2">${totalBaseSal.toLocaleString()}</p>
             <p>Total Guaranteed Compensation: </p><p>${totalGuarComp.toLocaleString()}</p>

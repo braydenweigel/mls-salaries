@@ -1,30 +1,33 @@
-"use client"
-
-import SelectReport from "@/components/lib/SelectReport"
 import { Card, CardContent } from "@/components/ui/card"
 import { reports, clubs as clubsObject, CURRENT_YEAR} from "@/lib/globals"
-import React, { useEffect } from "react"
+import React from "react"
 import { clubColumns, TableClub} from "@/app/clubs/_components/clubTableColumns"
 import { ClubTable } from "./_components/ClubTable"
-import { useRouter, useSearchParams } from "next/navigation"
 import { filterRecordsByReport } from "@/lib/data/filters"
 import { PlayerRecord } from "@/lib/data/types"
 import records from "@/lib/data/records.json"
+import ClubsSelectReport from "./_components/ClubsSelectReport"
 
-export default function Clubs() {
-  const searchParams = useSearchParams()
-  const { replace } = useRouter()
-  const reportParams = searchParams.get("year")
+export async function generateMetadata({ searchParams }: { searchParams: Promise<{ year?: string }> })  {
+  const { year: report } = await searchParams
 
-  const [reportValue, setReportValue] = React.useState(reports[reportParams ?? ""] && reportParams ? reportParams : CURRENT_YEAR)//report params used when params exist and are a valid year
+  const year = reports[report ?? CURRENT_YEAR].year
+  const season = reports[report ?? CURRENT_YEAR].season
+
+  return {
+    title: `${year} ${season} Clubs - MLS Salaries`,
+  }
+}
+
+export default async function Clubs({ searchParams }: { searchParams: Promise<{ year?: string }> }) {
+  const { year: report } = await searchParams
+  let reportParams = report
+
+  const defaultReport = reports[reportParams ?? ""] && reportParams ? reportParams : CURRENT_YEAR
+  const reportValue = reportParams ?? defaultReport
+
   const year = reports[reportValue].year
   const season = reports[reportValue].season
-  const defaultReport = reports[reportParams ?? ""] && reportParams ? reportParams : CURRENT_YEAR
-
-  useEffect(() => {
-    document.title = year + " " + season + " Clubs - MLS Salaries"
-    replace(`/clubs?year=${reportValue}`)
-  },[reportValue, replace, year, season])
 
   //get player records for report and get blank clubs object
   const playerRecords = filterRecordsByReport((records as PlayerRecord[]), year, season)
@@ -43,7 +46,7 @@ export default function Clubs() {
   return (
     <Card>
       <CardContent className="overflow-hidden">
-        <SelectReport onReportValueChange={(report) => setReportValue(report)} reports={reports} defaultReport={defaultReport}/>
+        <ClubsSelectReport reports={reports} defaultReport={reportValue}/>
         <div>
         <ClubTable columns={clubColumns} data={data}/>
         </div>
@@ -55,7 +58,6 @@ export default function Clubs() {
 function createTableData(clubs: typeof clubsObject, reportValue: string){
   const data: TableClub[] = []
 
-  console.log("Report Value: ", reportValue)
   Object.entries(clubs).forEach(([key, club]) => {
     if (Number(reports[reportValue].year) >= club.yearFirst) {
       if (key == "SJ" && reportValue == "2007.5"){
