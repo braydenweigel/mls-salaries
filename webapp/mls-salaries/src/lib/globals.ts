@@ -19,6 +19,7 @@ export const reports: Record<string, { year: string; season: string }> = {
     "2024.5": { year: "2024", season: "Fall" },
     "2025": { year: "2025", season: "Spring" },
     "2025.5": { year: "2025", season: "Fall" },
+    "2026": { year: "2026", season: "Spring" },
     
 }
 
@@ -57,4 +58,4 @@ export const clubs: Record<string, { clubName: string; yearFirst: number; yearFi
     "MLS": { clubName: "MLS Pool", yearFirst: 0, yearFinal: 0, totalBaseSal: 0, totalGuarComp: 0 },
 }
 
-export const CURRENT_YEAR = "2025.5"
+export const CURRENT_YEAR = "2026"

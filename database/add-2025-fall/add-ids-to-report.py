@@ -6,8 +6,8 @@ def randomString(length):
     chars = string.ascii_letters + string.digits
     return ''.join(random.choice(chars) for _ in range(length))
 
-input_file = "2025-fall.csv"
-output_file = "2025-fall-ids.csv"
+input_file = "sp26.csv"
+output_file = "2026-spring-ids.csv"
 
 rows = []
 
@@ -28,8 +28,8 @@ with open(input_file, "r") as f:
             "position": row["position"].strip(),  # remove accidental spaces
             "basesalary": basesalary,
             "guaranteedcomp": guaranteedcomp,
-            "recordyear": "2025",
-            "recordseason": "Fall",
+            "recordyear": "2026",
+            "recordseason": "Spring",
         }
 
         rows.append(new_row)

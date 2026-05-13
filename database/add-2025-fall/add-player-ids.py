@@ -7,9 +7,9 @@ def randomString(length):
     chars = string.ascii_letters + string.digits
     return ''.join(random.choice(chars) for _ in range(length))
 
-input_file = "fall_2025_updated.csv"
-output_csv = "fall_2025_final.csv"
-output_json = "players_new_only.json"
+input_file = "spring_2026_updated.csv"
+output_csv = "spring_2026_final.csv"
+output_json = "players_new_only2.json"
 
 rows = []
 json_output = []

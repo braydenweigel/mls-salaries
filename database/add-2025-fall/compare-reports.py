@@ -1,8 +1,8 @@
 import csv
 
-spring_file = "2025-spring.csv"
-fall_file = "2025-fa.csv"
-output_file = "fall_2025_updated.csv"
+spring_file = "fall_2025_final.csv"
+fall_file = "2026-sp.csv"
+output_file = "spring_2026_updated.csv"
 
 # normalize names (important!)
 def normalize(name: str) -> str:

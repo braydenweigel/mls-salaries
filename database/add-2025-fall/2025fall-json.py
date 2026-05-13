@@ -1,8 +1,8 @@
 import csv
 import json
 
-input_file = "fall_2025_final.csv"
-output_file = "fall_2025_final.json"
+input_file = "spring_2026_final.csv"
+output_file = "spring_2026_final.json"
 
 data = []
 

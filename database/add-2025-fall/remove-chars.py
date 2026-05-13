@@ -7,8 +7,8 @@ def remove_accents(text: str) -> str:
         if not unicodedata.combining(c)
     )
 
-input_file = "2025-fall-ids.csv"
-output_file = "2025-fa.csv"
+input_file = "2026-spring-ids.csv"
+output_file = "2026-sp.csv"
 
 with open(input_file, "r") as f_in, open(output_file, "w", newline="") as f_out:
     reader = csv.DictReader(f_in)
