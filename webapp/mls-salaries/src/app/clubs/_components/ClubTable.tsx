@@ -67,13 +67,13 @@ export function ClubTable<TData extends TableClub, TValue>({
     }
 
     return (
-        <div className="w-full table-fixed">
-            <div className="flex items-center w-full py-4 justify-between">
+        <div className="flex h-full min-h-0 w-full flex-col">
+            <div className="flex shrink-0 items-center w-full py-4 justify-between">
                 <div className="flex items-center space-x-4">
                     <ClubFilter column={table.getColumn("clubName")!} clubs={clubs} />
                 </div>
             </div>
-            <div className="max-h-[55vh] overflow-auto w-full">
+            <div className="flex-1 min-h-0 overflow-auto w-full">
                 <Table>
                     <TableHeader>
                         {table.getHeaderGroups().map((headerGroup) => (
@@ -117,7 +117,7 @@ export function ClubTable<TData extends TableClub, TValue>({
                         </TableBody>
                 </Table>
             </div>
-            <div className="flex justify-between w-full space-x-2 py-4">
+            <div className="flex shrink-0 justify-between w-full space-x-2 py-4">
                 <Button variant="destructive" size="sm" className="" onClick={() => table.resetColumnFilters()}>Reset</Button>
             </div>
         </div>

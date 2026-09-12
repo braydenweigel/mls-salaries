@@ -35,7 +35,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
+      <body className={`${geistSans.variable} ${geistMono.variable} antialiased h-dvh flex flex-col overflow-hidden`}>
         <GoogleAnalytics gaId="G-5FBL2DXL5M" />
         <ThemeProvider
             attribute="class"
@@ -43,20 +43,22 @@ export default function RootLayout({
             enableSystem
             disableTransitionOnChange
           >
-          <header className="flex fixed w-full top-0 items-start bg-background bg-opacity-100 z-50">
+          <header className="relative flex w-full shrink-0 items-start bg-background bg-opacity-100 z-50">
             <NavigationSideBar/>
             <NavigationBar/>
-            <div className="fixed right-0 top-0 pr-2 pt-2 pb-2 flex items-center gap-2">
+            <div className="absolute right-0 top-0 pr-2 pt-2 pb-2 flex items-center gap-2">
               <SearchButton/>
               <ModeToggle/>
           </div>
           </header>
-          <main className="min-h-screen mt-16 mx-auto w-full max-w-[96%] lg:max-w-[66%] px-4">
-            <Suspense fallback={<LoadingPlayerPage/>}>
-              {children}
-            </Suspense>
+          <main className="flex-1 min-h-0 overflow-y-auto">
+            <div className="flex h-full flex-col mx-auto w-full max-w-[96%] lg:max-w-[66%] px-4 pt-4">
+              <Suspense fallback={<LoadingPlayerPage/>}>
+                {children}
+              </Suspense>
+            </div>
           </main>
-          <footer className="flex justify-center items-center bottom-0 mx-auto w-full max-w-[96%] md:max-w-[66%] px-4 py-2 text-center mt-16">
+          <footer className="shrink-0 flex justify-center items-center mx-auto w-full max-w-[96%] md:max-w-[66%] px-4 py-2 text-center">
             <div><Link href="/players/list" className="hover:underline">All Players List</Link> • <Link href="/clubs/list" className="hover:underline">All Clubs List</Link></div>
           </footer>
         </ThemeProvider>

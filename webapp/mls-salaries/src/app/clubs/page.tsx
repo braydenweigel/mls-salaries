@@ -44,10 +44,10 @@ export default async function Clubs({ searchParams }: { searchParams: Promise<{ 
   data.sort((a,b) => b.totalGuarComp - a.totalGuarComp)
 
   return (
-    <Card>
-      <CardContent className="overflow-hidden">
+    <Card className="flex-1 min-h-0 mb-4">
+      <CardContent className="flex-1 min-h-0 flex flex-col overflow-hidden space-y-2">
         <ClubsSelectReport reports={reports} defaultReport={reportValue}/>
-        <div>
+        <div className="flex-1 min-h-0">
         <ClubTable columns={clubColumns} data={data}/>
         </div>
       </CardContent>

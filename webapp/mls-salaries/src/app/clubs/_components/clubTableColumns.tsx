@@ -33,26 +33,28 @@ export const clubColumns: ColumnDef<TableClub>[] = [
         accessorKey: "totalBaseSal",
         header: ({ column }) => {
             return (
-              <Button
-                variant="ghost"
-                onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-              >
-                Base Salary
-                <ArrowUpDown />
-              </Button>
+              <div className="flex justify-end">
+                <Button
+                  variant="ghost"
+                  onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+                >
+                  Base Salary
+                  <ArrowUpDown />
+                </Button>
+              </div>
             )
           },
           cell: ({ row }) => {
               const value = row.getValue<number>("totalBaseSal")
-              return <div className="pl-8">${value.toLocaleString()}</div>
+              return <div className="text-right">${value.toLocaleString()}</div>
           }
-        
+
     },
     {
         accessorKey: "totalGuarComp",
         header: ({ column }) => {
             return (
-              <div className="flex items-center">
+              <div className="flex justify-end">
                 <Button
                 variant="ghost"
                 onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
@@ -65,9 +67,9 @@ export const clubColumns: ColumnDef<TableClub>[] = [
           },
           cell: ({ row }) => {
               const value = row.getValue<number>("totalGuarComp")
-              return <div className="pl-8">${value.toLocaleString()}</div>
+              return <div className="text-right">${value.toLocaleString()}</div>
           }
-        
+
     },
     
 ]

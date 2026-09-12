@@ -38,13 +38,15 @@ export const clubPlayerColumns: ColumnDef<TableClubPlayers>[] = [
         accessorKey: "baseSal",
         header: ({ column }) => {
           return (
-            <Button
-              variant="ghost"
-              onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-            >
-              Base Salary
-              <ArrowUpDown className="ml-2 h-4 w-4" />
-            </Button>
+            <div className="flex justify-center">
+              <Button
+                variant="ghost"
+                onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+              >
+                Base Salary
+                <ArrowUpDown className="ml-2 h-4 w-4" />
+              </Button>
+            </div>
           )
         },
         cell: ({ row }) => {
@@ -58,7 +60,7 @@ export const clubPlayerColumns: ColumnDef<TableClubPlayers>[] = [
         accessorKey: "guarComp",
         header: ({ column }) => {
           return (
-            <div className="flex items-center">
+            <div className="flex items-center justify-center">
               <Button
               variant="ghost"
               onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
