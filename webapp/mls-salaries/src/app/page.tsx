@@ -1,5 +1,6 @@
 import { ClubReportsSelector, PlayerReportSelector } from "@/components/lib/report-selectors";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Metadata } from "next";
 import Link from "next/link";
 import React from "react";
@@ -9,6 +10,7 @@ import type { PlayerRecord, Club } from "@/lib/data/types";
 import { filterRecordsByReport } from "@/lib/data/filters";
 import { CURRENT_YEAR, reports, clubs as clubsObject } from "@/lib/globals";
 import { isValidClub } from "@/lib/storeUtils";
+import LeagueSalaryChart from "./_components/LeagueSalaryChart";
 
 export const metadata: Metadata = {
   title: "Home - MLS Salaries",
@@ -45,6 +47,30 @@ export default function Home() {
   const reportYears = Object.values(reports).map((r) => Number(r.year));
   const firstYear = Math.min(...reportYears);
   const lastYear = Math.max(...reportYears);
+
+  const totalsByReport = new Map<string, { baseSal: number; guarComp: number }>();
+  for (const record of records as PlayerRecord[]) {
+    const key = `${record.recordyear}-${record.recordseason}`;
+    const totals = totalsByReport.get(key) ?? { baseSal: 0, guarComp: 0 };
+    totals.baseSal += record.basesalary;
+    totals.guarComp += record.guaranteedcomp;
+    totalsByReport.set(key, totals);
+  }
+
+  const reportRows = Object.entries(reports)
+    .map(([reportKey, { year: reportYear, season: reportSeason }]) => {
+      const totals = totalsByReport.get(`${reportYear}-${reportSeason}`) ?? { baseSal: 0, guarComp: 0 };
+      return { reportKey, year: reportYear, season: reportSeason, ...totals };
+    })
+    .sort((a, b) => Number(b.reportKey) - Number(a.reportKey));
+
+  const chartData = reportRows
+    .map((row) => ({
+      report: row.reportKey,
+      baseSalary: row.baseSal,
+      guaranteedComp: row.guarComp - row.baseSal,
+    }))
+    .sort((a, b) => Number(a.report) - Number(b.report));
 
   return (
     <div className="space-y-8 pb-8">
@@ -146,6 +172,47 @@ export default function Home() {
           </CardFooter>
         </Card>
       </div>
+
+      <Card>
+        <CardHeader>
+          <CardTitle className="text-xl">Total league salary spend by report</CardTitle>
+          <CardDescription>Combined base salary and guaranteed compensation across all MLS clubs, per report</CardDescription>
+        </CardHeader>
+        <CardContent>
+          <div className="max-h-[70vh] overflow-auto">
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead className="sticky top-0 z-10 bg-card">Report</TableHead>
+                  <TableHead className="sticky top-0 z-10 bg-card text-right hidden md:table-cell">Total Base Salary</TableHead>
+                  <TableHead className="sticky top-0 z-10 bg-card text-right">Total Guaranteed Comp</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {reportRows.map((row) => (
+                  <TableRow key={row.reportKey}>
+                    <TableCell>
+                      <Link href={`/clubs?year=${row.reportKey}`} className="hover:underline">{row.year} {row.season}</Link>
+                    </TableCell>
+                    <TableCell className="text-right hidden md:table-cell">${row.baseSal.toLocaleString()}</TableCell>
+                    <TableCell className="text-right">${row.guarComp.toLocaleString()}</TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </div>
+        </CardContent>
+      </Card>
+
+      <Card className="hidden md:block">
+        <CardHeader>
+          <CardTitle className="text-xl">League salary spend over time</CardTitle>
+          <CardDescription>Total base salary and guaranteed compensation across all MLS clubs, by report</CardDescription>
+        </CardHeader>
+        <CardContent>
+          <LeagueSalaryChart data={chartData} />
+        </CardContent>
+      </Card>
     </div>
   );
 }
