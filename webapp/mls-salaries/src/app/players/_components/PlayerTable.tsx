@@ -10,11 +10,10 @@ import {
     getFilteredRowModel,
     getSortedRowModel,
     useReactTable,
-    VisibilityState, 
 } from "@tanstack/react-table"
 
 import {
-    Table, 
+    Table,
     TableBody,
     TableCell,
     TableHead,
@@ -31,11 +30,14 @@ import { ArrowLeft, ArrowRight } from "lucide-react";
 import SelectNumRows from "./SelectNumRows";
 import { Label } from "@/components/ui/label";
 import { TablePlayer } from "./playerTableColumns";
+import { cn } from "@/lib/utils";
 
 interface DataTableProps<TData extends TablePlayer, TValue>{
     columns: ColumnDef<TData, TValue>[];
     data: TData[]
 }
+
+const MOBILE_HIDDEN_COLUMNS = new Set(["club", "position", "baseSal"])
 
 export function PlayerTable<TData extends TablePlayer, TValue>({
     columns,
@@ -43,8 +45,6 @@ export function PlayerTable<TData extends TablePlayer, TValue>({
 }: DataTableProps<TData, TValue>) {
     const [sorting, setSorting] = React.useState<SortingState>([])
     const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>([])
-    const [columnVisibility, setColumnVisibility] = React.useState<VisibilityState>({club: true, position: true, baseSal: true})
-    const isMobile = useIsMobile()
 
     const table = useReactTable({
         data,
@@ -55,22 +55,12 @@ export function PlayerTable<TData extends TablePlayer, TValue>({
         getSortedRowModel: getSortedRowModel(),
         onColumnFiltersChange: setColumnFilters,
         getFilteredRowModel: getFilteredRowModel(),
-        onColumnVisibilityChange: setColumnVisibility,
         state: {
             sorting,
             columnFilters,
-            columnVisibility
         },
 
     })
-
-    React.useEffect(() => {
-        setColumnVisibility({
-            club: !isMobile,
-            position: !isMobile,
-            baseSal: !isMobile
-        })
-    }, [isMobile])
 
     const allPlayerClubs: string[] = []
     for (const player of data){
@@ -79,8 +69,8 @@ export function PlayerTable<TData extends TablePlayer, TValue>({
     const clubs = [...new Set(allPlayerClubs)]//remove duplicates
 
     return (
-        <div className="w-full">
-            <div className="grid grid-cols-1 md:grid-cols-2 items-center w-fit gap-2 py-2">
+        <div className="flex h-full min-h-0 w-full flex-col">
+            <div className="shrink-0 grid grid-cols-1 md:grid-cols-2 items-center w-fit gap-2 py-2">
                 <div className="flex items-center space-x-2">
                     <PositionFilter column={table.getColumn("position")!}/>
                     <ClubFilter column={table.getColumn("club")!} clubs={clubs}/>
@@ -94,14 +84,14 @@ export function PlayerTable<TData extends TablePlayer, TValue>({
                     className="max-w-sm"
                 />
             </div>
-            <div className="max-h-[55vh] overflow-y-auto w-full overflow-x-hidden">
+            <div className="min-h-0 overflow-y-auto w-full overflow-x-hidden">
                 <Table className="table-fixed">
                     <TableHeader>
                         {table.getHeaderGroups().map((headerGroup) => (
                             <TableRow key={headerGroup.id}>
                                 {headerGroup.headers.map((header) => {
                                 return (
-                                    <TableHead key={header.id} className="sticky top-0 z-10 min-w-0">
+                                    <TableHead key={header.id} className={cn("sticky top-0 z-10 min-w-0", MOBILE_HIDDEN_COLUMNS.has(header.column.id) && "hidden md:table-cell")}>
                                         {header.isPlaceholder
                                         ? null
                                         : flexRender(
@@ -122,10 +112,10 @@ export function PlayerTable<TData extends TablePlayer, TValue>({
                                 data-state={row.getIsSelected() && "selected"}
                             >
                                {row.getVisibleCells().map((cell) => (
-                                <TableCell key={cell.id} className=" min-w-0">
+                                <TableCell key={cell.id} className={cn("min-w-0", MOBILE_HIDDEN_COLUMNS.has(cell.column.id) && "hidden md:table-cell")}>
                                     {flexRender(cell.column.columnDef.cell, cell.getContext())}
                                 </TableCell>
-                                ))} 
+                                ))}
                             </TableRow>
                             ))
                         ) : (
@@ -138,7 +128,7 @@ export function PlayerTable<TData extends TablePlayer, TValue>({
                         </TableBody>
                 </Table>
             </div>
-            <div className="flex justify-between items-start w-full space-x-2 py-4">
+            <div className="shrink-0 flex justify-between items-start w-full space-x-2 py-4">
                 <Button variant="destructive" size="sm" className="" onClick={() => table.resetColumnFilters()}>Reset</Button>
                 <div className="flex flex-col items-end gap-4">
                     <ButtonGroup className="">
@@ -167,20 +157,4 @@ export function PlayerTable<TData extends TablePlayer, TValue>({
             </div>
         </div>
     )
-}
-
-function useIsMobile() {
-  const [isMobile, setIsMobile] = React.useState(false);
-
-  React.useEffect(() => {
-    const media = window.matchMedia("(max-width: 768px)");
-    setIsMobile(media.matches);
-
-    const listener = () => setIsMobile(media.matches);
-    media.addEventListener("change", listener);
-
-    return () => media.removeEventListener("change", listener);
-  }, []);
-
-  return isMobile;
 }

@@ -36,10 +36,12 @@ export default async function Players({ searchParams }: { searchParams: Promise<
   const data: TablePlayer[] = setTableData(playerRecords, allClubs, reportValue)
 
   return (
-    <Card className="h-fit">
-      <CardContent className="">
-        <PlayersSelectReport reports={reports} defaultReport={reportValue}/>
-        <div>
+    <Card className="min-h-0">
+      <CardContent className="min-h-0 flex flex-col overflow-hidden">
+        <div className="shrink-0">
+          <PlayersSelectReport reports={reports} defaultReport={reportValue}/>
+        </div>
+        <div className="min-h-0">
           <PlayerTable columns={playerColumns} data={data} />
         </div>
       </CardContent>
