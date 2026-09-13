@@ -23,11 +23,6 @@ export const clubColumns: ColumnDef<TableClub>[] = [
                 <Link href={`/clubs/${club.clubid}?year=${club.reportYear}`} className="hover:underline" prefetch={false}>{club.clubName}</Link>
             )
         },
-        filterFn: (row, club, filterValue: string[]) => {
-            if (!filterValue?.length) return true
-            return filterValue.includes(row.getValue(club))
-        }
-        
     },
     {
         accessorKey: "totalBaseSal",

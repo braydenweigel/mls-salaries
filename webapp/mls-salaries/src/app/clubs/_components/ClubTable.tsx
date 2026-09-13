@@ -2,27 +2,23 @@
 
 import {
     ColumnDef,
-    ColumnFiltersState,
     SortingState,
     VisibilityState,
     flexRender,
     getCoreRowModel,
-    getFilteredRowModel,
     getSortedRowModel,
     useReactTable
 } from "@tanstack/react-table"
 
 import {
-    Table, 
+    Table,
     TableBody,
     TableCell,
     TableHead,
     TableHeader,
     TableRow
 } from "@/components/ui/table"
-import { Button } from "@/components/ui/button";
 import React from "react";
-import { ClubFilter } from "@/components/lib/ClubFilter"; 
 import { TableClub } from "./clubTableColumns";
 
 interface DataTableProps<TData extends TableClub, TValue>{
@@ -35,7 +31,6 @@ export function ClubTable<TData extends TableClub, TValue>({
     data
 }: DataTableProps<TData, TValue>) {
     const [sorting, setSorting] = React.useState<SortingState>([])
-    const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>([])
     const [columnVisibility, setColumnVisibility] = React.useState<VisibilityState>({totalBaseSal: true})
     const isMobile = useIsMobile()
 
@@ -45,12 +40,9 @@ export function ClubTable<TData extends TableClub, TValue>({
         getCoreRowModel: getCoreRowModel(),
         onSortingChange: setSorting,
         getSortedRowModel: getSortedRowModel(),
-        onColumnFiltersChange: setColumnFilters,
-        getFilteredRowModel: getFilteredRowModel(),
         onColumnVisibilityChange: setColumnVisibility,
         state: {
             sorting,
-            columnFilters,
             columnVisibility
         },
     })
@@ -61,19 +53,9 @@ export function ClubTable<TData extends TableClub, TValue>({
         })
     }, [isMobile])
 
-    const clubs: string[] = []
-    for (const club of data){
-        clubs.push(club.clubName)
-    }
-
     return (
-        <div className="flex h-full min-h-0 w-full flex-col">
-            <div className="flex shrink-0 items-center w-full py-4 justify-between">
-                <div className="flex items-center space-x-4">
-                    <ClubFilter column={table.getColumn("clubName")!} clubs={clubs} />
-                </div>
-            </div>
-            <div className="flex-1 min-h-0 overflow-auto w-full">
+        <div className="w-full">
+            <div className="max-h-[70vh] overflow-auto w-full">
                 <Table>
                     <TableHeader>
                         {table.getHeaderGroups().map((headerGroup) => (
@@ -116,9 +98,6 @@ export function ClubTable<TData extends TableClub, TValue>({
                         )}
                         </TableBody>
                 </Table>
-            </div>
-            <div className="flex shrink-0 justify-between w-full space-x-2 py-4">
-                <Button variant="destructive" size="sm" className="" onClick={() => table.resetColumnFilters()}>Reset</Button>
             </div>
         </div>
     )

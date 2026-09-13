@@ -11,43 +11,37 @@ import {
   DialogFooter,
 } from "@/components/ui/dialog"
 import { Checkbox } from "@/components/ui/checkbox"
-import type { Column } from "@tanstack/react-table"
 
-// const CLUBS = [
-//     "Austin FC","Atlanta United","Charlotte FC","Chicago Fire","Chivas USA","FC Cincinnati",
-//     "Columbus Crew","Colorado Rapids","FC Dallas","DC United","Houston Dynamo",
-//     "Sporting Kansas City","LA Galaxy","LAFC","Inter Miami","Minnesota United",
-//     "CF Montreal","Nashville SC","New England Revolution","New York City FC",
-//     "New York Red Bulls","Orlando City SC","Philadelphia Union","Portland Timbers","Real Salt Lake",
-//     "St. Louis City SC","San Diego FC","Seattle Sounders FC","San Jose Earthquakes","Toronto FC",
-//     "Vancouver Whitecaps"
-// ]
-
-export function ClubFilter<TData>({
-     column, 
-     clubs 
-}: { 
-    column: Column<TData, unknown>; 
+export function ClubFilter({
+     value,
+     onChange,
+     clubs
+}: {
+    value: string[];
+    onChange: (value: string[]) => void;
     clubs: string[]
 }) {
     const [open, setOpen] = React.useState(false)
-    const currentFilter = (column?.getFilterValue() as string[]) ?? []
-    const [selected, setSelected] = React.useState<string[]>(currentFilter)
-  
+    const [selected, setSelected] = React.useState<string[]>(value)
+
+    React.useEffect(() => {
+        if (open) setSelected(value)
+    }, [open, value])
+
     const toggle = (pos: string) => {
       setSelected((prev) =>
         prev.includes(pos) ? prev.filter((p) => p !== pos) : [...prev, pos]
       )
     }
-  
+
     const applyFilter = () => {
-      column.setFilterValue(selected.length ? selected : undefined)
+      onChange(selected)
       setOpen(false)
     }
-  
+
     const clearFilter = () => {
       setSelected([])
-      column.setFilterValue(undefined)
+      onChange([])
       setOpen(false)
     }
 

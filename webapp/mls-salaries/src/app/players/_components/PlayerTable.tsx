@@ -73,7 +73,11 @@ export function PlayerTable<TData extends TablePlayer, TValue>({
             <div className="shrink-0 grid grid-cols-1 md:grid-cols-2 items-center w-fit gap-2 py-2">
                 <div className="flex items-center space-x-2">
                     <PositionFilter column={table.getColumn("position")!}/>
-                    <ClubFilter column={table.getColumn("club")!} clubs={clubs}/>
+                    <ClubFilter
+                        value={(table.getColumn("club")?.getFilterValue() as string[]) ?? []}
+                        onChange={(value) => table.getColumn("club")?.setFilterValue(value.length ? value : undefined)}
+                        clubs={clubs}
+                    />
                 </div>
                 <Input
                     placeholder="Filter players..."

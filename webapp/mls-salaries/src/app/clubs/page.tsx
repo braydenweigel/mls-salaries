@@ -1,12 +1,9 @@
-import { Card, CardContent } from "@/components/ui/card"
 import { reports, clubs as clubsObject, CURRENT_YEAR} from "@/lib/globals"
-import React from "react"
-import { clubColumns, TableClub} from "@/app/clubs/_components/clubTableColumns"
-import { ClubTable } from "./_components/ClubTable"
+import { TableClub} from "@/app/clubs/_components/clubTableColumns"
 import { filterRecordsByReport } from "@/lib/data/filters"
 import { PlayerRecord } from "@/lib/data/types"
 import records from "@/lib/data/records.json"
-import ClubsSelectReport from "./_components/ClubsSelectReport"
+import ClubsDashboard from "./_components/ClubsDashboard"
 
 export async function generateMetadata({ searchParams }: { searchParams: Promise<{ year?: string }> })  {
   const { year: report } = await searchParams
@@ -44,14 +41,7 @@ export default async function Clubs({ searchParams }: { searchParams: Promise<{ 
   data.sort((a,b) => b.totalGuarComp - a.totalGuarComp)
 
   return (
-    <Card className="flex-1 min-h-0 mb-4">
-      <CardContent className="flex-1 min-h-0 flex flex-col overflow-hidden space-y-2">
-        <ClubsSelectReport reports={reports} defaultReport={reportValue}/>
-        <div className="flex-1 min-h-0">
-        <ClubTable columns={clubColumns} data={data}/>
-        </div>
-      </CardContent>
-    </Card>
+    <ClubsDashboard data={data} reports={reports} reportValue={reportValue} year={year} season={season} />
   );
 }
 
