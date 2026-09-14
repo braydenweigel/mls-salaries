@@ -90,10 +90,10 @@ params,
     <div>
       <Card className="my-4">
         <CardHeader>
-          <CardTitle className="text-2xl">{club.clubname}</CardTitle>
-          <CardDescription className="text-base">Years Active: {clubYears}</CardDescription>
+          <CardTitle className="text-xl md:text-2xl">{club.clubname}</CardTitle>
+          <CardDescription className="text-sm md:text-base">Years Active: {clubYears}</CardDescription>
         </CardHeader>
-        <CardContent className="overflow-hidden space-y-2">
+        <CardContent className="overflow-hidden space-y-2 text-sm md:text-base">
           <ClubSelectReport reports={clubReports} defaultReport={reportValue} clubId={club.clubid}/>
           <div className="md:hidden">
             <p>Total Base Salary: </p><p className="mb-2">${totalBaseSal.toLocaleString()}</p>

@@ -72,19 +72,19 @@ export function ClubPlayersTable<TData, TValue>({
                     onChange={(event) =>
                         table.getColumn("name")?.setFilterValue(event.target.value)
                     }
-                    className="max-w-sm"
+                    className="max-w-sm text-xs md:text-sm"
                     />
                     <PositionFilter column={table.getColumn("position")!}/>
                 </div>
             </div>
-            <div className="max-h-[55vh] overflow-auto w-full">
-                <Table>
+            <div className="max-h-[40vh] overflow-auto w-full md:max-h-[55vh]">
+                <Table className="text-xs md:text-sm">
                     <TableHeader>
                         {table.getHeaderGroups().map((headerGroup) => (
                             <TableRow key={headerGroup.id}>
                             {headerGroup.headers.map((header) => {
                                 return (
-                                <TableHead key={header.id} className="sticky top-0 z-10">
+                                <TableHead key={header.id} className="sticky top-0 z-10 px-0.5 md:px-2">
                                     {header.isPlaceholder
                                     ? null
                                     : flexRender(
@@ -105,7 +105,7 @@ export function ClubPlayersTable<TData, TValue>({
                                 data-state={row.getIsSelected() && "selected"}
                             >
                                 {row.getVisibleCells().map((cell) => (
-                                <TableCell key={cell.id}>
+                                <TableCell key={cell.id} className="px-0.5 md:px-2">
                                     {flexRender(cell.column.columnDef.cell, cell.getContext())}
                                 </TableCell>
                                 ))}
@@ -122,7 +122,7 @@ export function ClubPlayersTable<TData, TValue>({
                 </Table>
             </div>
             <div className="flex justify-between w-full space-x-2 py-4">
-                <Button variant="destructive" size="sm" className="" onClick={() => table.resetColumnFilters()}>Reset</Button>
+                <Button variant="destructive" size="sm" className="text-xs md:text-sm" onClick={() => table.resetColumnFilters()}>Reset</Button>
             </div>
         </div>
     )

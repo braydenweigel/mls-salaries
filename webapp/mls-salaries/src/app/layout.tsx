@@ -58,7 +58,7 @@ export default function RootLayout({
               </Suspense>
             </div>
           </main>
-          <footer className="shrink-0 flex justify-center items-center mx-auto w-full max-w-[96%] md:max-w-[66%] px-4 py-2 text-center">
+          <footer className="shrink-0 flex justify-center items-center mx-auto w-full max-w-[96%] md:max-w-[66%] px-4 py-2 text-center text-xs md:text-base">
             <div><Link href="/players/list" className="hover:underline">All Players List</Link> • <Link href="/clubs/list" className="hover:underline">All Clubs List</Link></div>
           </footer>
         </ThemeProvider>

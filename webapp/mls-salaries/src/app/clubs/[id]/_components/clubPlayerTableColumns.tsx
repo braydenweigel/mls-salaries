@@ -41,10 +41,12 @@ export const clubPlayerColumns: ColumnDef<TableClubPlayers>[] = [
             <div className="flex justify-center">
               <Button
                 variant="ghost"
+                size="sm"
+                className="px-1 text-xs md:px-3 md:text-sm"
                 onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
               >
                 Base Salary
-                <ArrowUpDown className="ml-2 h-4 w-4" />
+                <ArrowUpDown className="hidden size-4 md:inline" />
               </Button>
             </div>
           )
@@ -63,10 +65,12 @@ export const clubPlayerColumns: ColumnDef<TableClubPlayers>[] = [
             <div className="flex items-center justify-center">
               <Button
               variant="ghost"
+              size="sm"
+              className="px-1 text-xs md:px-3 md:text-sm"
               onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
               >
                 Guaranteed Comp
-                <ArrowUpDown className="ml-1 h-4 w-4" />
+                <ArrowUpDown className="hidden size-4 md:inline" />
               </Button>
             </div>
           )

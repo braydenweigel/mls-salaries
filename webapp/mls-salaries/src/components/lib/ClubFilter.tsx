@@ -50,7 +50,7 @@ export function ClubFilter({
     return (
         <Dialog open={open} onOpenChange={setOpen}>
             <DialogTrigger asChild>
-                <Button variant="outline" onClick={() => setOpen(true)}>Filter by Club</Button>
+                <Button variant="outline" className="text-xs md:text-sm" onClick={() => setOpen(true)}>Filter by Club</Button>
             </DialogTrigger>
             <DialogContent>
                 <DialogHeader>

@@ -66,8 +66,8 @@ export default async function PlayerPage({ params }: { params: Promise<{ id: str
     <div>
     <Card className="my-4">
       <CardHeader>
-        <CardTitle className="text-2xl">{playerRecords[0].firstname} {playerRecords[0].lastname}</CardTitle>
-        <CardDescription className="text-base"><div>{clubText} <Link href={`/clubs/${playerRecords[0].club}`} className="hover:underline">{playerClubs[0].clubname}</Link></div><div>Position: {position}</div></CardDescription>
+        <CardTitle className="text-xl md:text-2xl">{playerRecords[0].firstname} {playerRecords[0].lastname}</CardTitle>
+        <CardDescription className="text-sm md:text-base"><div>{clubText} <Link href={`/clubs/${playerRecords[0].club}`} className="hover:underline">{playerClubs[0].clubname}</Link></div><div>Position: {position}</div></CardDescription>
       </CardHeader>
     </Card>
     <Card className="my-4">

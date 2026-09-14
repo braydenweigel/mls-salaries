@@ -85,17 +85,17 @@ export function PlayerTable<TData extends TablePlayer, TValue>({
                     onChange={(event) =>
                         table.getColumn("name")?.setFilterValue(event.target.value)
                     }
-                    className="max-w-sm"
+                    className="max-w-sm text-xs md:text-sm"
                 />
             </div>
             <div className="min-h-0 overflow-y-auto w-full overflow-x-hidden">
-                <Table className="table-fixed">
+                <Table className="table-fixed text-xs md:text-sm">
                     <TableHeader>
                         {table.getHeaderGroups().map((headerGroup) => (
                             <TableRow key={headerGroup.id}>
                                 {headerGroup.headers.map((header) => {
                                 return (
-                                    <TableHead key={header.id} className={cn("sticky top-0 z-10 min-w-0", MOBILE_HIDDEN_COLUMNS.has(header.column.id) && "hidden md:table-cell")}>
+                                    <TableHead key={header.id} className={cn("sticky top-0 z-10 min-w-0 px-0.5 md:px-2", MOBILE_HIDDEN_COLUMNS.has(header.column.id) && "hidden md:table-cell")}>
                                         {header.isPlaceholder
                                         ? null
                                         : flexRender(
@@ -116,7 +116,7 @@ export function PlayerTable<TData extends TablePlayer, TValue>({
                                 data-state={row.getIsSelected() && "selected"}
                             >
                                {row.getVisibleCells().map((cell) => (
-                                <TableCell key={cell.id} className={cn("min-w-0", MOBILE_HIDDEN_COLUMNS.has(cell.column.id) && "hidden md:table-cell")}>
+                                <TableCell key={cell.id} className={cn("min-w-0 px-0.5 md:px-2", MOBILE_HIDDEN_COLUMNS.has(cell.column.id) && "hidden md:table-cell")}>
                                     {flexRender(cell.column.columnDef.cell, cell.getContext())}
                                 </TableCell>
                                 ))}
@@ -133,12 +133,13 @@ export function PlayerTable<TData extends TablePlayer, TValue>({
                 </Table>
             </div>
             <div className="shrink-0 flex justify-between items-start w-full space-x-2 py-4">
-                <Button variant="destructive" size="sm" className="" onClick={() => table.resetColumnFilters()}>Reset</Button>
+                <Button variant="destructive" size="sm" className="text-xs md:text-sm" onClick={() => table.resetColumnFilters()}>Reset</Button>
                 <div className="flex flex-col items-end gap-4">
                     <ButtonGroup className="">
                         <Button
                             variant="outline"
                             size="sm"
+                            className="text-xs md:text-sm"
                             onClick={() => table.previousPage()}
                             disabled={!table.getCanPreviousPage()}
                             >
@@ -147,6 +148,7 @@ export function PlayerTable<TData extends TablePlayer, TValue>({
                             <Button
                             variant="outline"
                             size="sm"
+                            className="text-xs md:text-sm"
                             onClick={() => table.nextPage()}
                             disabled={!table.getCanNextPage()}
                             >
@@ -154,7 +156,7 @@ export function PlayerTable<TData extends TablePlayer, TValue>({
                         </Button>
                     </ButtonGroup>
                     <div className="flex items-center">
-                        <Label>Rows per page: &emsp;</Label>
+                        <Label className="text-xs md:text-sm">Rows per page: &emsp;</Label>
                         <SelectNumRows pageSize={table.getState().pagination.pageSize} dataSize={data.length} onPageSizeChange={(size) => table.setPageSize(size)}/>
                     </div>
                 </div>

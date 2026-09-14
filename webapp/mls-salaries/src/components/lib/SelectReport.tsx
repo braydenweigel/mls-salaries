@@ -22,7 +22,7 @@ export default function SelectReport({
 
     return (
         <Select defaultValue={defaultReport} onValueChange={(value) => onReportValueChange(value)} >
-          <SelectTrigger className="w-[180px]">
+          <SelectTrigger className="w-[180px] text-xs md:text-sm">
             <SelectValue/>
           </SelectTrigger>
           <SelectContent className="max-h-60 overflow-y-auto">

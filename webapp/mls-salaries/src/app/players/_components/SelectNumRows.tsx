@@ -30,7 +30,7 @@ export default function SelectNumRows({
 
     return (
         <Select value={String(pageSize)} onValueChange={(value) => onPageSizeChange(Number(value))}>
-            <SelectTrigger className="w-[80px] self-end">
+            <SelectTrigger className="w-[80px] self-end text-xs md:text-sm">
                 <SelectValue/>
              </SelectTrigger>
              <SelectContent>

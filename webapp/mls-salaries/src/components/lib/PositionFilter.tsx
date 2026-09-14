@@ -40,7 +40,7 @@ export function PositionFilter<TData>({ column }: { column: Column<TData, unknow
     return (
         <Dialog open={open} onOpenChange={setOpen}>
             <DialogTrigger asChild>
-                <Button variant="outline" onClick={() => setOpen(true)}>Filter by Position</Button>
+                <Button variant="outline" className="text-xs md:text-sm" onClick={() => setOpen(true)}>Filter by Position</Button>
             </DialogTrigger>
             <DialogContent>
                 <DialogHeader>

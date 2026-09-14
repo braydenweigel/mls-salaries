@@ -31,10 +31,12 @@ export const clubColumns: ColumnDef<TableClub>[] = [
               <div className="flex justify-end">
                 <Button
                   variant="ghost"
+                  size="sm"
+                  className="px-1 md:px-3 text-xs md:text-sm"
                   onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
                 >
                   Base Salary
-                  <ArrowUpDown />
+                  <ArrowUpDown className="hidden size-4 md:inline" />
                 </Button>
               </div>
             )
@@ -52,10 +54,12 @@ export const clubColumns: ColumnDef<TableClub>[] = [
               <div className="flex justify-end">
                 <Button
                 variant="ghost"
+                size="sm"
+                className="px-1 md:px-3 text-xs md:text-sm"
                 onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
                 >
                   Guaranteed Comp
-                  <ArrowUpDown />
+                  <ArrowUpDown className="hidden size-4 md:inline" />
               </Button>
             </div>
             )

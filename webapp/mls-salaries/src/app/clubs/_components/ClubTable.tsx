@@ -55,14 +55,14 @@ export function ClubTable<TData extends TableClub, TValue>({
 
     return (
         <div className="w-full">
-            <div className="max-h-[70vh] overflow-auto w-full">
-                <Table>
+            <div className="max-h-[50vh] overflow-auto w-full md:max-h-[70vh]">
+                <Table className="text-xs md:text-sm">
                     <TableHeader>
                         {table.getHeaderGroups().map((headerGroup) => (
                             <TableRow key={headerGroup.id}>
                                 {headerGroup.headers.map((header) => {
                                     return (
-                                        <TableHead key={header.id} className="sticky top-0 z-10">
+                                        <TableHead key={header.id} className="sticky top-0 z-10 px-0.5 md:px-2">
                                             {header.isPlaceholder
                                             ? null
                                             : flexRender(
@@ -83,7 +83,7 @@ export function ClubTable<TData extends TableClub, TValue>({
                                 data-state={row.getIsSelected() && "selected"}
                             >
                                {row.getVisibleCells().map((cell) => (
-                                    <TableCell key={cell.id}>
+                                    <TableCell key={cell.id} className="px-0.5 md:px-2">
                                         {flexRender(cell.column.columnDef.cell, cell.getContext())}
                                     </TableCell>
                                 ))}
