@@ -29,10 +29,6 @@ export const clubPlayerColumns: ColumnDef<TableClubPlayers>[] = [
     {
         accessorKey: "position",
         header: "Position",
-        filterFn: (row, position, filterValue: string[]) => {
-            if (!filterValue?.length) return true
-            return filterValue.includes(row.getValue(position))
-        }
     },
     {
         accessorKey: "baseSal",

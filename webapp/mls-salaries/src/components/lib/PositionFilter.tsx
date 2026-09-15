@@ -11,32 +11,39 @@ import {
   DialogFooter,
 } from "@/components/ui/dialog"
 import { Checkbox } from "@/components/ui/checkbox"
-import type { Column } from "@tanstack/react-table"
 
 const POSITIONS = ["GK", "D", "D-M", "M-D", "M", "M-F", "F-M", "F"]
 
-export function PositionFilter<TData>({ column }: { column: Column<TData, unknown> }) {
+interface Props {
+    value: string[]
+    onChange: (value: string[]) => void
+}
+
+export function PositionFilter({ value, onChange }: Props) {
     const [open, setOpen] = React.useState(false)
-    const currentFilter = (column?.getFilterValue() as string[]) ?? []
-    const [selected, setSelected] = React.useState<string[]>(currentFilter)
-  
+    const [selected, setSelected] = React.useState<string[]>(value)
+
+    React.useEffect(() => {
+      if (open) setSelected(value)
+    }, [open, value])
+
     const toggle = (pos: string) => {
       setSelected((prev) =>
         prev.includes(pos) ? prev.filter((p) => p !== pos) : [...prev, pos]
       )
     }
-  
+
     const applyFilter = () => {
-      column.setFilterValue(selected.length ? selected : undefined)
+      onChange(selected)
       setOpen(false)
     }
-  
+
     const clearFilter = () => {
       setSelected([])
-      column.setFilterValue(undefined)
+      onChange([])
       setOpen(false)
     }
-    
+
     return (
         <Dialog open={open} onOpenChange={setOpen}>
             <DialogTrigger asChild>

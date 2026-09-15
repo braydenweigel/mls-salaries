@@ -7,9 +7,7 @@ import {
 } from '@/components/ui/card'
 import React from "react"
 import { CURRENT_YEAR, reports } from '@/lib/globals'
-import { clubPlayerColumns, TableClubPlayers } from '@/app/clubs/[id]/_components/clubPlayerTableColumns'
-import { ClubPlayersTable } from './_components/ClubPlayersTable'
-import ClubIDChart from './_components/chart'
+import ClubDashboard from './_components/ClubDashboard'
 import { notFound } from 'next/navigation'
 import clubs from "@/lib/data/clubs.json"
 import records from "@/lib/data/records.json"
@@ -79,7 +77,6 @@ params,
 
   const clubYears = formatClubYears(club)
   const clubReports = getClubReports(club)
-  const chartData = formatChartData(data)
 
   const colors = {
     primary: club.colorprimary,
@@ -105,17 +102,7 @@ params,
           </div>
         </CardContent>
       </Card>
-      <Card className="my-4">
-        <CardContent className="overflow-hidden space-y-2">
-          <ClubPlayersTable columns={clubPlayerColumns} data={data} />
-        </CardContent>
-      </Card>
-      <Card className="hidden md:block">
-        <CardContent className="overflow-hidden space-y-2">
-          <ClubIDChart data={chartData} colors={colors}/>
-        </CardContent>
-      </Card>
-      
+      <ClubDashboard data={data} colors={colors}/>
     </div>
     );
 }
@@ -128,27 +115,6 @@ function formatClubYears(club: Club){
   } else {
     return club.yearfirst + "-"
   }
-}
-
-function formatChartData(data: TableClubPlayers[]){
-  const chartData = structuredClone(data).reverse()
-
-  for (const record of chartData){
-    let bS = 0
-    let gC = 0
-
-    if (!record.baseSal){
-      bS = record.guarComp ?? 0
-    } else {
-      bS = record.baseSal
-      gC = record.guarComp - record.baseSal
-    }
-
-    record.baseSal = bS
-    record.guarComp = gC
-  }
-
-  return chartData
 }
 
 function getClubReports(club: Club){
