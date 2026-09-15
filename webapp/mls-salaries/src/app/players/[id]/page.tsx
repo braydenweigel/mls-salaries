@@ -75,7 +75,7 @@ export default async function PlayerPage({ params }: { params: Promise<{ id: str
         <PlayerIDTable records={playerRecords} playerClubs={playerClubs} />
       </CardContent>
     </Card>
-    <Card className="hidden md:block">
+    <Card className="my-4">
       <CardContent>
         <PlayerIDChart data={data} colors={colors}/>
       </CardContent>

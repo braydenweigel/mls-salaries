@@ -23,6 +23,7 @@ export default function PlayerIDChart({
     data,
     colors
 }: Props){
+    const isMobile = useIsMobile()
     const chartConfig: ChartConfig = {
         baseSalary: {
           label: "Base Salary",
@@ -42,9 +43,9 @@ export default function PlayerIDChart({
     })
 
     return (
-        <ChartContainer config={chartConfig}>
+        <ChartContainer config={chartConfig} className="h-40 md:h-auto">
             <AreaChart data={data} margin={{ right: 16}}>
-                <XAxis 
+                <XAxis
                     dataKey="report"
                     type="number"
                     domain={['dataMin', 'dataMax']}
@@ -52,15 +53,15 @@ export default function PlayerIDChart({
                     axisLine={false}
                     interval={0} // ensures all ticks show
                     ticks={ticks}
-                    tick={<CustomTick />}
+                    tick={isMobile ? false : <CustomTick />}
                 />
                 <YAxis
                     type="number"
                     tickLine={false}
                     axisLine={false}
-                    width={70}
-                    tickFormatter={(value: number) => {return `$${value.toLocaleString()}`}}
-                    tick={{ fontSize: 10 }}
+                    width={isMobile ? 36 : 70}
+                    tickFormatter={(value: number) => {return isMobile ? formatCompactCurrency(value) : `$${value.toLocaleString()}`}}
+                    tick={{ fontSize: isMobile ? 9 : 10 }}
                 />
                 <Area 
                     dataKey="baseSalary"
@@ -78,18 +79,19 @@ export default function PlayerIDChart({
                     stroke={colors.primary}
                     stackId="a"
                 />
-                <ChartTooltip 
+                <ChartTooltip
                     cursor={false}
-                    content={<ChartTooltipContent 
+                    content={<ChartTooltipContent
+                        className="min-w-24 gap-1 px-2 py-1 text-[10px] md:min-w-32 md:gap-1.5 md:px-2.5 md:py-1.5 md:text-xs"
                         labelFormatter={(value) => {return (reports[value].year + " " + reports[value].season)}}
                         formatter={(value, name, item) => {
                             if (item.payload.baseSalary == 0 && item.payload.guaranteedComp == 0) return null
                             const base = item?.payload?.baseSalary ?? 0
 
                             if (name === "guaranteedComp"){
-                                return `Guaranteed Compensation: $${(base + value).toLocaleString()}`
+                                return `${isMobile ? "Total" : "Guaranteed Compensation"}: $${(base + value).toLocaleString()}`
                             }
-                            return `Base Salary: $${value.toLocaleString()}`
+                            return `${isMobile ? "Base" : "Base Salary"}: $${value.toLocaleString()}`
                         }}
                     />
                     }
@@ -125,4 +127,31 @@ const CustomTick = ({ x, y, payload }: CustomTickProps) => {
   )
 }
 
+function formatCompactCurrency(value: number){
+  const abs = Math.abs(value)
+
+  if (abs >= 1_000_000){
+    return `$${(value / 1_000_000).toFixed(1).replace(/\.0$/, "")}m`
+  }
+  if (abs >= 1_000){
+    return `$${(value / 1_000).toFixed(0)}k`
+  }
+  return `$${value}`
+}
+
+function useIsMobile() {
+  const [isMobile, setIsMobile] = React.useState(false);
+
+  React.useEffect(() => {
+    const media = window.matchMedia("(max-width: 768px)");
+    setIsMobile(media.matches);
+
+    const listener = () => setIsMobile(media.matches);
+    media.addEventListener("change", listener);
+
+    return () => media.removeEventListener("change", listener);
+  }, []);
+
+  return isMobile;
+}
 
