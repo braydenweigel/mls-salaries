@@ -12,10 +12,11 @@ import { initialPlayerList } from "@/lib/players"
 type AddPlayersDialogProps = {
     playerList: PlayerList
     setPlayerList: React.Dispatch<React.SetStateAction<PlayerList>>
+    open: boolean
+    setOpen: React.Dispatch<React.SetStateAction<boolean>>
 }
 
-export default function AddClubsDialog({playerList, setPlayerList}: AddPlayersDialogProps){
-    const [open, setOpen] = useState(false)
+export default function AddClubsDialog({playerList, setPlayerList, open, setOpen}: AddPlayersDialogProps){
     const [filter, setFilter] = useState("")
 
     const allPlayers = [...players].sort(

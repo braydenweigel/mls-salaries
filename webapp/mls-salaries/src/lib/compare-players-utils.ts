@@ -2,6 +2,7 @@ import { PlayerData, PlayerList } from "@/app/players/compare/page";
 import { Player, PlayerRecord } from "./data/types";
 import { filterRecordsByPlayerID } from "./data/filters";
 import records from "@/lib/data/records.json"
+import players from "@/lib/data/players.json"
 import { reports } from "./globals";
 import { initialPlayerList } from "./players";
 
@@ -29,7 +30,7 @@ export function addPlayerToList(playerList: PlayerList, player: Player){
         player: player,
         records: playerRecords
     }
-    console.log(newPlayer)
+    
 
     const newList = structuredClone(playerList)
     newList.data[newList.numPlayers].player = newPlayer
@@ -39,6 +40,25 @@ export function addPlayerToList(playerList: PlayerList, player: Player){
 
     return newList
 
+}
+
+export function buildPlayerListFromIds(playerIds: string[]): PlayerList {
+    let newList = structuredClone(initialPlayerList)
+
+    for (const playerId of playerIds) {
+        if (newList.numPlayers >= newList.data.length) break
+
+        const player = (players as Player[]).find((p) => p.playerid === playerId)
+        if (player) newList = addPlayerToList(newList, player)
+    }
+
+    return newList
+}
+
+export function getPlayerIdsFromList(playerList: PlayerList): string[] {
+    return playerList.data
+        .filter((d) => d.player)
+        .map((d) => d.player!.player.playerid)
 }
 
 export function removePlayerFromList(playerList: PlayerList, id: "a" | "b" | "c" | "d"){

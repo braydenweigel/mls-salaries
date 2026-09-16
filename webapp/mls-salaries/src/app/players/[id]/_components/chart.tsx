@@ -3,6 +3,7 @@
 import { ChartConfig, ChartContainer, ChartLegend, ChartLegendContent, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart"
 import { Area, AreaChart, TextProps, XAxis, YAxis} from "recharts"
 import { reports } from "@/lib/globals"
+import { formatCompactCurrency } from "@/lib/utils"
 import React from "react"
 
 interface Props {
@@ -125,18 +126,6 @@ const CustomTick = ({ x, y, payload }: CustomTickProps) => {
       </text>
     </g>
   )
-}
-
-function formatCompactCurrency(value: number){
-  const abs = Math.abs(value)
-
-  if (abs >= 1_000_000){
-    return `$${(value / 1_000_000).toFixed(1).replace(/\.0$/, "")}m`
-  }
-  if (abs >= 1_000){
-    return `$${(value / 1_000).toFixed(0)}k`
-  }
-  return `$${value}`
 }
 
 function useIsMobile() {

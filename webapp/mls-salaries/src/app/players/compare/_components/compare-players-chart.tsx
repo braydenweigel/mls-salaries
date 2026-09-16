@@ -230,7 +230,7 @@ type CustomLegendProps = {
 
 const CustomLegend = ({ players }: CustomLegendProps) => {
   return (
-    <div className="flex flex-wrap gap-4 justify-center">
+    <div className="flex flex-wrap gap-4 justify-center pt-4">
       {players.map((player: { stackID: string, player: PlayerData | null}, index) =>
         player.player ? (
           <div
