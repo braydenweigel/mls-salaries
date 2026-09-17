@@ -12,17 +12,21 @@ interface ReportSelectProps {
     reports: object
     defaultReport: string
     onReportValueChange: (report: string) => void
+    className?: string
+    size?: "sm" | "default"
 }
 
 export default function SelectReport({
     reports,
     defaultReport,
     onReportValueChange,
+    className,
+    size = "default",
 }: ReportSelectProps){
 
     return (
         <Select defaultValue={defaultReport} onValueChange={(value) => onReportValueChange(value)} >
-          <SelectTrigger className="w-[180px] text-xs md:text-sm">
+          <SelectTrigger size={size} className={className ?? "w-[180px] text-xs md:text-sm"}>
             <SelectValue/>
           </SelectTrigger>
           <SelectContent className="max-h-60 overflow-y-auto">

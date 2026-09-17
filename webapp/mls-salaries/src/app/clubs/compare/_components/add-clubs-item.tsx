@@ -3,9 +3,9 @@ import { ClubList } from "../page"
 import { CURRENT_YEAR, reports } from "@/lib/globals"
 import SelectReport from "@/components/lib/SelectReport"
 import { Button } from "@/components/ui/button"
-import { Plus } from "lucide-react"
+import { Plus, X } from "lucide-react"
 import { useEffect, useState } from "react"
-import { addClubToList } from "@/lib/compare-clubs-utils"
+import { addClubToList, removeClubFromList } from "@/lib/compare-clubs-utils"
 
 type AddClubsItemProps = {
     clubList: ClubList
@@ -19,18 +19,33 @@ export default function AddClubsItem({clubList, setClubList, club}: AddClubsItem
     const clubReports = getClubReports(club)
     const isMobile = useIsMobile()
 
+    const existingEntry = clubList.data.find((d) => d.club?.club.clubid === club.clubid && d.club?.reportValue === reportValue)
+
     const handleAddClub = () => {
-        if (clubList.numClubs < (isMobile ? 2 : 4)){
+        if (clubList.numClubs < 4){
             setClubList(addClubToList(clubList, reportValue, club))
         }
     }
 
+    const handleRemoveClub = () => {
+        if (existingEntry) setClubList(removeClubFromList(clubList, existingEntry.stackID))
+    }
+
     return (
-        <div className="flex flex-row w-full items-center justify-between py-2">
-            <p>{club.clubname}</p>
-            <div className="flex flex-row">
-                <SelectReport reports={clubReports} defaultReport={defaultReport} onReportValueChange={(report) => setReportValue(report)}/>
-                <Button variant="outline" size="icon" disabled={!(clubList.numClubs < (isMobile ? 2 : 4))} onClick={handleAddClub} className="mx-2"><Plus/></Button>
+        <div className="flex flex-row w-full items-center justify-between gap-2 py-1 md:py-2">
+            <p className="min-w-0 flex-1 truncate text-xs md:text-base">{club.clubname}</p>
+            <div className="flex flex-row items-center shrink-0">
+                <SelectReport
+                    reports={clubReports}
+                    defaultReport={defaultReport}
+                    onReportValueChange={(report) => setReportValue(report)}
+                    size={isMobile ? "sm" : "default"}
+                    className={isMobile ? "w-[120px] text-[11px]" : "w-[180px] text-sm"}
+                />
+                {existingEntry ?
+                    <Button variant="outline" size={isMobile ? "icon-sm" : "icon"} style={{borderColor: "var(--destructive)"}} onClick={handleRemoveClub} className="mx-1 md:mx-2"><X color="var(--destructive)"/></Button>
+                    : <Button variant="outline" size={isMobile ? "icon-sm" : "icon"} disabled={!(clubList.numClubs < 4)} onClick={handleAddClub} className="mx-1 md:mx-2"><Plus/></Button>
+                }
             </div>
         </div>
     )

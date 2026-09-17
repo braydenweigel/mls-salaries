@@ -3,6 +3,7 @@ import { Club, PlayerRecord } from "./data/types";
 import { reports } from "./globals";
 import { filterRecordsByReportAndClub } from "./data/filters";
 import records from "@/lib/data/records.json"
+import clubs from "@/lib/data/clubs.json"
 import { formatData, initialClubList } from "./clubs";
 
 export function addClubToList(clubList: ClubList, reportValue: string, club: Club): ClubList{
@@ -30,6 +31,28 @@ export function addClubToList(clubList: ClubList, reportValue: string, club: Clu
     newList.numClubs++
 
     return newList
+}
+
+export function buildClubListFromIds(pairs: string[]): ClubList {
+    let newList = structuredClone(initialClubList)
+
+    for (const pair of pairs) {
+        if (newList.numClubs >= newList.data.length) break
+
+        const [clubId, reportValue] = pair.split(":")
+        if (!clubId || !reportValue || !reports[reportValue]) continue
+
+        const club = (clubs as Club[]).find((c) => c.clubid === clubId)
+        if (club) newList = addClubToList(newList, reportValue, club)
+    }
+
+    return newList
+}
+
+export function getClubIdsFromList(clubList: ClubList): string[] {
+    return clubList.data
+        .filter((d) => d.club)
+        .map((d) => `${d.club!.club.clubid}:${d.club!.reportValue}`)
 }
 
 export function removeClubFromList(clubList: ClubList, id: "a" | "b" | "c" | "d"): ClubList{

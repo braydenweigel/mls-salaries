@@ -12,10 +12,11 @@ import { initialClubList } from "@/lib/clubs"
 type AddClubsDialogProps = {
     clubList: ClubList
     setClubList: React.Dispatch<React.SetStateAction<ClubList>>
+    open: boolean
+    setOpen: React.Dispatch<React.SetStateAction<boolean>>
 }
 
-export default function AddClubsDialog({clubList, setClubList}: AddClubsDialogProps){
-    const [open, setOpen] = useState(false)
+export default function AddClubsDialog({clubList, setClubList, open, setOpen}: AddClubsDialogProps){
     const [filter, setFilter] = useState("")
 
     const allClubs = clubs as Club[]
