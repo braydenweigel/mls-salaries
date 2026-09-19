@@ -1,10 +1,12 @@
 "use client"
 
 import { ChartConfig, ChartContainer, ChartLegend, ChartLegendContent, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart"
-import { Area, AreaChart, TextProps, XAxis, YAxis} from "recharts"
+import { Area, AreaChart, CartesianGrid, Customized, TextProps, XAxis, YAxis} from "recharts"
 import { reports } from "@/lib/globals"
 import { formatCompactCurrency } from "@/lib/utils"
 import React from "react"
+
+const CHART_AREA_CLIP_ID = "player-chart-area-clip"
 
 interface Props {
     data: {
@@ -44,63 +46,88 @@ export default function PlayerIDChart({
     })
 
     return (
-        <ChartContainer config={chartConfig} className="h-40 md:h-auto">
-            <AreaChart data={data} margin={{ right: 16}}>
-                <XAxis
-                    dataKey="report"
-                    type="number"
-                    domain={['dataMin', 'dataMax']}
-                    tickLine={false}
-                    axisLine={false}
-                    interval={0} // ensures all ticks show
-                    ticks={ticks}
-                    tick={isMobile ? false : <CustomTick />}
-                />
-                <YAxis
-                    type="number"
-                    tickLine={false}
-                    axisLine={false}
-                    width={isMobile ? 36 : 70}
-                    tickFormatter={(value: number) => {return isMobile ? formatCompactCurrency(value) : `$${value.toLocaleString()}`}}
-                    tick={{ fontSize: isMobile ? 9 : 10 }}
-                />
-                <Area 
-                    dataKey="baseSalary"
-                    type="linear"
-                    fill={colors.primary}
-                    fillOpacity={1}
-                    stroke={colors.primary}
-                    stackId="a"
-                />
-                <Area 
-                    dataKey="guaranteedComp"
-                    type="linear"
-                    fill={colors.primary}
-                    fillOpacity={0.7}
-                    stroke={colors.primary}
-                    stackId="a"
-                />
-                <ChartTooltip
-                    cursor={false}
-                    content={<ChartTooltipContent
-                        className="min-w-24 gap-1 px-2 py-1 text-[10px] md:min-w-32 md:gap-1.5 md:px-2.5 md:py-1.5 md:text-xs"
-                        labelFormatter={(value) => {return (reports[value].year + " " + reports[value].season)}}
-                        formatter={(value, name, item) => {
-                            if (item.payload.baseSalary == 0 && item.payload.guaranteedComp == 0) return null
-                            const base = item?.payload?.baseSalary ?? 0
-
-                            if (name === "guaranteedComp"){
-                                return `${isMobile ? "Total" : "Guaranteed Compensation"}: $${(base + value).toLocaleString()}`
-                            }
-                            return `${isMobile ? "Base" : "Base Salary"}: $${value.toLocaleString()}`
-                        }}
+        <div className="player-salary-chart">
+            <style>{`
+                .player-salary-chart .recharts-area-area {
+                    clip-path: url(#${CHART_AREA_CLIP_ID});
+                }
+            `}</style>
+            <ChartContainer config={chartConfig} className="h-40 md:h-auto">
+                <AreaChart data={data} margin={{ right: 16}}>
+                    <Customized component={ChartAreaClipDefs}/>
+                    <CartesianGrid vertical={false} fill="var(--secondary)" fillOpacity={1} ry={8}/>
+                    <XAxis
+                        dataKey="report"
+                        type="number"
+                        domain={['dataMin', 'dataMax']}
+                        tickLine={false}
+                        axisLine={false}
+                        interval={0} // ensures all ticks show
+                        ticks={ticks}
+                        tick={isMobile ? false : <CustomTick />}
                     />
-                    }
-                />
-                <ChartLegend content={<ChartLegendContent/>}/>
-            </AreaChart>
-        </ChartContainer>
+                    <YAxis
+                        type="number"
+                        tickLine={false}
+                        axisLine={false}
+                        width={isMobile ? 36 : 70}
+                        tickFormatter={(value: number) => {return isMobile ? formatCompactCurrency(value) : `$${value.toLocaleString()}`}}
+                        tick={{ fontSize: isMobile ? 9 : 10 }}
+                    />
+                    <Area
+                        dataKey="baseSalary"
+                        type="linear"
+                        fill={colors.primary}
+                        fillOpacity={1}
+                        stroke={colors.primary}
+                        stackId="a"
+                    />
+                    <Area
+                        dataKey="guaranteedComp"
+                        type="linear"
+                        fill={colors.primary}
+                        fillOpacity={0.7}
+                        stroke={colors.primary}
+                        stackId="a"
+                    />
+                    <ChartTooltip
+                        cursor={false}
+                        content={<ChartTooltipContent
+                            className="min-w-24 gap-1 px-2 py-1 text-[10px] md:min-w-32 md:gap-1.5 md:px-2.5 md:py-1.5 md:text-xs"
+                            labelFormatter={(value) => {return (reports[value].year + " " + reports[value].season)}}
+                            formatter={(value, name, item) => {
+                                if (item.payload.baseSalary == 0 && item.payload.guaranteedComp == 0) return null
+                                const base = item?.payload?.baseSalary ?? 0
+
+                                if (name === "guaranteedComp"){
+                                    return `${isMobile ? "Total" : "Guaranteed Compensation"}: $${(base + value).toLocaleString()}`
+                                }
+                                return `${isMobile ? "Base" : "Base Salary"}: $${value.toLocaleString()}`
+                            }}
+                        />
+                        }
+                    />
+                    <ChartLegend content={<ChartLegendContent/>}/>
+                </AreaChart>
+            </ChartContainer>
+        </div>
     )
+}
+
+type ChartAreaClipDefsProps = {
+  offset?: { left: number, top: number, width: number, height: number }
+}
+
+const ChartAreaClipDefs = ({ offset }: ChartAreaClipDefsProps) => {
+  if (!offset) return null
+
+  return (
+    <defs>
+      <clipPath id={CHART_AREA_CLIP_ID}>
+        <rect x={offset.left} y={offset.top} width={offset.width} height={offset.height} rx={8} ry={8}/>
+      </clipPath>
+    </defs>
+  )
 }
 
 type CustomTickProps = TextProps & {

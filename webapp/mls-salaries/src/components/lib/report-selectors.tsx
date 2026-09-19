@@ -13,7 +13,7 @@ export function PlayerReportSelector(){
     return (
         <ButtonGroup>
             <SelectReport onReportValueChange={(report) => setReportValuePlayers(report)} reports={reports} defaultReport={CURRENT_YEAR}/>
-            <Button asChild><Link href={`/players?year=${reportValuePlayers}`}>Go</Link></Button>
+            <Button variant={"outline"} asChild><Link href={`/players?year=${reportValuePlayers}`}>Go</Link></Button>
         </ButtonGroup>
     )
 }
@@ -24,7 +24,7 @@ export function ClubReportsSelector(){
     return (
         <ButtonGroup>
             <SelectReport onReportValueChange={(report) => setReportValueClubs(report)} reports={reports} defaultReport={CURRENT_YEAR}/>
-            <Button asChild><Link href={`/clubs?year=${reportValueClubs}`}>Go</Link></Button>
+            <Button variant={"outline"} asChild><Link href={`/clubs?year=${reportValueClubs}`}>Go</Link></Button>
         </ButtonGroup>
     )
 }

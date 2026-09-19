@@ -1,6 +1,8 @@
 import { ClubData, ClubList } from "../page"
 import { ChartConfig, ChartContainer, ChartLegend, ChartTooltip, } from "@/components/ui/chart"
-import { Bar, BarChart, TooltipProps, XAxis, YAxis } from "recharts"
+import { Bar, BarChart, CartesianGrid, Customized, TooltipProps, XAxis, YAxis } from "recharts"
+
+const CHART_BAR_CLIP_ID = "compare-clubs-bar-chart-clip"
 
 type CompareClubsChartProps = {
     clubList: ClubList
@@ -47,39 +49,64 @@ export default function CompareClubsChart({clubList}: CompareClubsChartProps){
     const data = formatChartData(clubList)
 
     return (
-        <ChartContainer config={chartConfig} className="px-4">
-            <BarChart data={data} barGap={0}>
-                <XAxis
-                    tick={false}
-                />
-                <YAxis 
-                    type="number"
-                    tickLine={false}
-                    axisLine={false}
-                    width={80}
-                    tickFormatter={(value: number) => {return `$${value.toLocaleString()}`}}
-                />
-                {clubList.data.map((club) => (
-                    club.club && 
-                        <>
-                            <Bar
-                                dataKey={`baseSal_${club.stackID}`}
-                                stackId={club.stackID}
-                                fill={club.club.club.colorprimary}
-                            />
-                            <Bar
-                                dataKey={`guarComp_${club.stackID}`}
-                                stackId={club.stackID}
-                                fill={club.club.club.colorprimary}
-                                fillOpacity={0.7}
-                            />
-                        </>
-                ))}
-                <ChartTooltip cursor={false} content={<CustomTooltip/>}/>
-                <ChartLegend content={<CustomLegend clubs={clubList.data}/>}/>
-            </BarChart>
-        </ChartContainer>
+        <div className="compare-clubs-chart">
+            <style>{`
+                .compare-clubs-chart .recharts-bar-rectangle {
+                    clip-path: url(#${CHART_BAR_CLIP_ID});
+                }
+            `}</style>
+            <ChartContainer config={chartConfig} className="px-4">
+                <BarChart data={data} barGap={0}>
+                    <Customized component={ChartBarClipDefs}/>
+                    <CartesianGrid vertical={false} fill="var(--secondary)" fillOpacity={1} ry={8}/>
+                    <XAxis
+                        tick={false}
+                    />
+                    <YAxis
+                        type="number"
+                        tickLine={false}
+                        axisLine={false}
+                        width={80}
+                        tickFormatter={(value: number) => {return `$${value.toLocaleString()}`}}
+                    />
+                    {clubList.data.map((club) => (
+                        club.club &&
+                            <>
+                                <Bar
+                                    dataKey={`baseSal_${club.stackID}`}
+                                    stackId={club.stackID}
+                                    fill={club.club.club.colorprimary}
+                                />
+                                <Bar
+                                    dataKey={`guarComp_${club.stackID}`}
+                                    stackId={club.stackID}
+                                    fill={club.club.club.colorprimary}
+                                    fillOpacity={0.7}
+                                />
+                            </>
+                    ))}
+                    <ChartTooltip cursor={false} content={<CustomTooltip/>}/>
+                    <ChartLegend content={<CustomLegend clubs={clubList.data}/>}/>
+                </BarChart>
+            </ChartContainer>
+        </div>
     )
+}
+
+type ChartBarClipDefsProps = {
+  offset?: { left: number, top: number, width: number, height: number }
+}
+
+const ChartBarClipDefs = ({ offset }: ChartBarClipDefsProps) => {
+  if (!offset) return null
+
+  return (
+    <defs>
+      <clipPath id={CHART_BAR_CLIP_ID}>
+        <rect x={offset.left} y={offset.top} width={offset.width} height={offset.height} rx={8} ry={8}/>
+      </clipPath>
+    </defs>
+  )
 }
 
 function getMaxPlayers(clubList: ClubList){

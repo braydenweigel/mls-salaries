@@ -272,7 +272,7 @@ function ChartLegendContent({
   return (
     <div
       className={cn(
-        "flex items-center justify-center gap-4",
+        "flex items-center justify-center gap-2 text-[11px] md:gap-4 md:text-sm",
         verticalAlign === "top" ? "pb-3" : "pt-3",
         className
       )}

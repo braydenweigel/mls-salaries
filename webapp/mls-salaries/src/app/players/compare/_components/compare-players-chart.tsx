@@ -1,7 +1,9 @@
 import { ChartConfig, ChartContainer, ChartLegend, ChartTooltip } from "@/components/ui/chart"
 import { PlayerData, PlayerList } from "../page"
-import { Area, AreaChart, TextProps, TooltipProps, XAxis, YAxis } from "recharts"
+import { Area, AreaChart, CartesianGrid, Customized, TextProps, TooltipProps, XAxis, YAxis } from "recharts"
 import { reports } from "@/lib/globals"
+
+const CHART_AREA_CLIP_ID = "compare-players-chart-area-clip"
 
 type ComparePlayersChartProps = {
     playerList: PlayerList
@@ -63,51 +65,76 @@ export default function ComparePlayersChart({playerList}: ComparePlayersChartPro
     })
 
     return (
-      <ChartContainer config={chartConfig} className="px-4">
-          <AreaChart data={data} margin={{ right: 16}}>
-              <XAxis 
-                  dataKey="report"
-                  type="number"
-                  domain={['dataMin', 'dataMax']}
-                  tickLine={false}
-                  axisLine={false}
-                  interval={0} // ensures all ticks show
-                  ticks={ticks}
-                  tick={<CustomTick/>}
-              />
-              <YAxis 
-                  type="number"
-                  tickLine={false}
-                  axisLine={false}
-                  width={80}
-                  tickFormatter={(value: number) => {return `$${value.toLocaleString()}`}}
-              />
-              {playerList.data.map((player, index) => (
-                  player.player && 
-                      <>
-                          <Area
-                              dataKey={`baseSal_${player.stackID}`}
-                              type="linear"
-                              stroke={colors[index]}
-                              fill={colors[index]}
-                              fillOpacity={0.03}
-                              dot={{ r: 4 }}
-                          />
-                          <Area
-                              dataKey={`guarComp_${player.stackID}`}
-                              type="linear"
-                              stroke={colors[index]}
-                              fill={colors[index]}
-                              fillOpacity={0.03}
-                              dot={{ r: 4 }}
-                          />
-                      </>
-              ))}
-              <ChartTooltip cursor={false} content={<CustomTooltip/>}/>
-              <ChartLegend content={<CustomLegend players={playerList.data}/>}/>
-          </AreaChart>
-      </ChartContainer>
+      <div className="compare-players-chart">
+          <style>{`
+              .compare-players-chart .recharts-area-area {
+                  clip-path: url(#${CHART_AREA_CLIP_ID});
+              }
+          `}</style>
+          <ChartContainer config={chartConfig} className="px-4">
+              <AreaChart data={data} margin={{ right: 16}}>
+                  <Customized component={ChartAreaClipDefs}/>
+                  <CartesianGrid vertical={false} fill="var(--secondary)" fillOpacity={1} ry={8}/>
+                  <XAxis
+                      dataKey="report"
+                      type="number"
+                      domain={['dataMin', 'dataMax']}
+                      tickLine={false}
+                      axisLine={false}
+                      interval={0} // ensures all ticks show
+                      ticks={ticks}
+                      tick={<CustomTick/>}
+                  />
+                  <YAxis
+                      type="number"
+                      tickLine={false}
+                      axisLine={false}
+                      width={80}
+                      tickFormatter={(value: number) => {return `$${value.toLocaleString()}`}}
+                  />
+                  {playerList.data.map((player, index) => (
+                      player.player &&
+                          <>
+                              <Area
+                                  dataKey={`baseSal_${player.stackID}`}
+                                  type="linear"
+                                  stroke={colors[index]}
+                                  fill={colors[index]}
+                                  fillOpacity={0.03}
+                                  dot={{ r: 4 }}
+                              />
+                              <Area
+                                  dataKey={`guarComp_${player.stackID}`}
+                                  type="linear"
+                                  stroke={colors[index]}
+                                  fill={colors[index]}
+                                  fillOpacity={0.03}
+                                  dot={{ r: 4 }}
+                              />
+                          </>
+                  ))}
+                  <ChartTooltip cursor={false} content={<CustomTooltip/>}/>
+                  <ChartLegend content={<CustomLegend players={playerList.data}/>}/>
+              </AreaChart>
+          </ChartContainer>
+      </div>
     )
+}
+
+type ChartAreaClipDefsProps = {
+  offset?: { left: number, top: number, width: number, height: number }
+}
+
+const ChartAreaClipDefs = ({ offset }: ChartAreaClipDefsProps) => {
+  if (!offset) return null
+
+  return (
+    <defs>
+      <clipPath id={CHART_AREA_CLIP_ID}>
+        <rect x={offset.left} y={offset.top} width={offset.width} height={offset.height} rx={8} ry={8}/>
+      </clipPath>
+    </defs>
+  )
 }
 
 function formatChartData(playerList: PlayerList){
