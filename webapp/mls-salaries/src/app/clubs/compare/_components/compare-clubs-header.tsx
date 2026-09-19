@@ -7,6 +7,7 @@ import { reports } from "@/lib/globals"
 import SelectReport from "@/components/lib/SelectReport"
 import { removeClubFromList, updateClubReportValue } from "@/lib/compare-clubs-utils"
 import { formatCompactCurrency } from "@/lib/utils"
+import Link from "next/link"
 
 
 type CompareClubsHeaderProps = {
@@ -41,7 +42,7 @@ export default function CompareClubsHeader({clubList, setClubList, club, id}: Co
         <div className="flex flex-col max-w-full" style={{minWidth: isMobile ? "50%" : `${100 / clubList.numClubs}%`}}>
             <div className="flex flex-col justify-between px-1 py-1 md:px-4 md:py-2 items-center h-full" >
                 <div className={`flex justify-between items-start gap-1 ${selectorWidth}`}>
-                    <p className="min-w-0 wrap-break-word font-semibold text-xs md:text-base">{club.club.clubname}</p>
+                    <Link href={`/clubs/${club.club.clubid}?year=${club.reportValue}`} className="hover:underline" prefetch={false}><p className="min-w-0 wrap-break-word font-semibold text-xs md:text-base">{club.club.clubname}</p></Link>
                     <Button
                         variant="outline"
                         size="icon"

@@ -6,6 +6,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { reports } from "@/lib/globals"
 import { removePlayerFromList } from "@/lib/compare-players-utils"
 import { formatCompactCurrency } from "@/lib/utils"
+import Link from "next/link"
 
 
 type ComparePlayersHeaderProps = {
@@ -92,9 +93,9 @@ function ComparePlayersHeader({playerList, setPlayerList, player, id, index}: Co
     return (
         <TableHead className="p-0 whitespace-normal align-top border-b">
             <div className={"flex h-full items-center justify-center gap-2 rounded-md px-1 py-1"}>
-                <p className="min-w-0 font-semibold wrap-break-word text-center text-xs md:text-base">
+                <Link href={`/players/${player.player.playerid}`}><p className="min-w-0 font-semibold wrap-break-word text-center text-xs md:text-base hover:underline">
                     {player.player.lastname} {player.player.firstname}
-                </p>
+                </p></Link>
                 <Button
                     variant="outline"
                     size="icon"
@@ -143,7 +144,10 @@ function ComparePlayersRow({playerList, reportValue, isMobile, hoveredReport, se
                                 <p className="text-center text-xs md:text-base font">{formatSalary(match.guaranteedcomp, isMobile)}</p>
                                 <p className="text-center text-[10px] md:text-xs">{formatSalary(match.basesalary, isMobile)}</p>
                             </div>
-                            : <p className="text-center">---</p>
+                            : <div className="flex flex-col">
+                                <p className="text-center text-xs md:text-base font text-muted-foreground">---</p>
+                                <p className="text-center text-[10px] md:text-xs invisible">---</p>
+                            </div>
                         }
                     </TableCell>
                 )

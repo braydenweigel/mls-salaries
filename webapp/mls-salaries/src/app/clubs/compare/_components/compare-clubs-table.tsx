@@ -35,7 +35,7 @@ export default function CompareClubsTable({clubList, onScroll}: CompareClubsTabl
                         <div key={player ? (player.id + index) : index} className="flex flex-col max-w-full" style={{minWidth: `${100 / row.row.length}%`}}>
                             {player &&
                                 <>
-                                    <Link key={player.id} href={`/players/${player.id}`}><p className="text-center text-xs md:text-sm hover:underline">{player.name}</p></Link>
+                                    <Link key={player.id} href={`/players/${player.id}`} prefetch={false}><p className="text-center text-xs md:text-sm hover:underline">{player.name}</p></Link>
                                     <p className="text-center text-xs md:text-sm font">${player.guaranteedComp.toLocaleString()}</p>
                                     <p className="text-center text-[10px] md:text-xs">${player.baseSalary.toLocaleString()}</p>
                                 </>
