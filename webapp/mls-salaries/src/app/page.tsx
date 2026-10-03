@@ -19,10 +19,7 @@ export const metadata: Metadata = {
 export default function Home() {
   const { year, season } = reports[CURRENT_YEAR];
   const playerRecords = filterRecordsByReport(records as PlayerRecord[], year, season);
-  const allClubs = clubsData as Club[];
 
-  const uniquePlayerCount = new Set(playerRecords.map((r) => r.playerid)).size;
-  const uniqueClubCount = new Set(playerRecords.map((r) => r.club)).size;
 
   let topPlayer: PlayerRecord | null = null;
   for (const record of playerRecords) {
@@ -30,8 +27,6 @@ export default function Home() {
       topPlayer = record;
     }
   }
-  const topPlayerName = topPlayer ? [topPlayer.firstname, topPlayer.lastname].filter(Boolean).join(" ") : ""
-  const topPlayerClub = topPlayer ? isValidClub(allClubs, topPlayer.club) : null
 
   const clubTotals = structuredClone(clubsObject);
   for (const record of playerRecords) {
@@ -79,58 +74,6 @@ export default function Home() {
         <p className="mt-2 text-lg text-muted-foreground">
           Explore MLS player and club salaries from {firstYear} to {lastYear}
         </p>
-      </div>
-
-      <div className="grid grid-cols-2 gap-3 md:grid-cols-4">
-        <Card>
-          <CardHeader>
-            <CardDescription>Seasons of data</CardDescription>
-            <CardTitle className="text-2xl">{firstYear}&ndash;{lastYear}</CardTitle>
-          </CardHeader>
-        </Card>
-        <Card>
-          <CardHeader>
-            <CardDescription>{year} {season} players</CardDescription>
-            <CardTitle className="text-2xl">{uniquePlayerCount.toLocaleString()}</CardTitle>
-          </CardHeader>
-          <CardContent className="text-xs text-muted-foreground">
-            across {uniqueClubCount} clubs
-          </CardContent>
-        </Card>
-        <Card>
-          <CardHeader>
-            <CardDescription>Top earner, {year} {season}</CardDescription>
-            {topPlayer ? (
-              <CardTitle className="text-2xl">
-                <Link href={`/players/${topPlayer.playerid}`} className="hover:underline">{topPlayerName}</Link>
-              </CardTitle>
-            ) : (
-              <CardTitle className="text-2xl">&mdash;</CardTitle>
-            )}
-          </CardHeader>
-          {topPlayer && (
-            <CardContent className="text-xs text-muted-foreground">
-              ${topPlayer.guaranteedcomp.toLocaleString()}{topPlayerClub ? ` • ${topPlayerClub.clubname}` : ""}
-            </CardContent>
-          )}
-        </Card>
-        <Card>
-          <CardHeader>
-            <CardDescription>Highest payroll, {year} {season}</CardDescription>
-            {topClubId ? (
-              <CardTitle className="text-2xl">
-                <Link href={`/clubs/${topClubId}`} className="hover:underline">{clubsObject[topClubId].clubName}</Link>
-              </CardTitle>
-            ) : (
-              <CardTitle className="text-2xl">&mdash;</CardTitle>
-            )}
-          </CardHeader>
-          {topClubId && (
-            <CardContent className="text-xs text-muted-foreground">
-              ${clubTotals[topClubId].totalGuarComp.toLocaleString()} guaranteed comp
-            </CardContent>
-          )}
-        </Card>
       </div>
 
       <div className="grid gap-4 md:grid-cols-2">
