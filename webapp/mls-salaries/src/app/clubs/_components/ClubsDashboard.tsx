@@ -8,6 +8,8 @@ import { ClubTable } from "./ClubTable"
 import { clubColumns, TableClub } from "./clubTableColumns"
 import ClubsBarChart from "./ClubsBarChart"
 import ClubsSelectReport from "./ClubsSelectReport"
+import Link from "next/link"
+import { Download, Shuffle } from "lucide-react"
 
 interface Props {
     data: TableClub[]
@@ -41,29 +43,45 @@ export default function ClubsDashboard({
         .toReversed()
 
     return (
-        <div>
-            <Card className="mb-4">
-                <CardContent className="overflow-hidden space-y-2">
-                    <ClubsSelectReport reports={reports} defaultReport={reportValue}/>
-                    <div className="flex items-center w-full md:py-2 justify-between">
-                        <div className="flex items-center space-x-4">
-                            <ClubFilter value={selectedClubs} onChange={setSelectedClubs} clubs={clubNames} />
-                        </div>
-                    </div>
-                    <ClubTable columns={clubColumns} data={filteredData}/>
-                    <div className="flex justify-between w-full space-x-2 py-4">
-                        <Button variant="destructive" size="sm" className="text-xs md:text-sm" onClick={() => setSelectedClubs([])}>Reset</Button>
-                    </div>
+        <div className="flex flex-col gap-4 min-h-0">
+            <div className="hidden shrink-0 md:flex items-center gap-1.5 text-sm text-muted-foreground">mn
+                <Link href="/" className="hover:underline">Home</Link>
+                <span>/</span>
+                <span className="text-foreground">Clubs</span>
+            </div>
+            <div className="shrink-0 flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
+                <div>
+                    <h1 className="text-2xl md:text-3xl font-bold">Club payrolls</h1>
+                    <p className="hidden md:block text-sm text-muted-foreground mt-1">
+                        Total base salary and guaranteed compensation by club, {year} {season} release.
+                    </p>
+                </div>
+                <div className="hidden md:flex items-center gap-2 shrink-0">
+                    <Button variant="outline" className="text-xs md:text-sm">
+                        <Download className="size-4"/>
+                        Export CSV
+                    </Button>
+                    <Button asChild className="text-xs md:text-sm">
+                        <Link href="/clubs/compare">
+                            <Shuffle className="size-4"/>
+                            Compare clubs
+                        </Link>
+                    </Button>
+                </div>
+            </div>
+            <Card className="min-h-0 border-0 shadow-none bg-transparent py-0 gap-0 md:border md:shadow-sm md:bg-card md:py-6">
+                <CardContent className="min-h-0 flex flex-col overflow-hidden px-0 md:px-6">
+                    <ClubTable
+                        columns={clubColumns}
+                        data={filteredData}
+                        reportSelector={<ClubsSelectReport reports={reports} defaultReport={reportValue}/>}
+                        filters={<ClubFilter value={selectedClubs} onChange={setSelectedClubs} clubs={clubNames}/>}
+                    />
                 </CardContent>
             </Card>
-
             <Card className="hidden md:block">
-                <CardHeader>
-                    <CardTitle className="text-xl">Club payroll comparison</CardTitle>
-                    <CardDescription>Base salary and guaranteed compensation by club, {year} {season}</CardDescription>
-                </CardHeader>
                 <CardContent>
-                    <ClubsBarChart data={chartData} />
+                    <ClubsBarChart data={chartData}/>
                 </CardContent>
             </Card>
         </div>
