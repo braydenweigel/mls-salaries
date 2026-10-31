@@ -1,5 +1,6 @@
 import { Geist, Geist_Mono } from "next/font/google";
 import Link from "next/link"
+import { DollarSign } from "lucide-react"
 import "./globals.css";
 // import {
 //   DropdownMenu,
@@ -43,13 +44,25 @@ export default function RootLayout({
             enableSystem
             disableTransitionOnChange
           >
-          <header className="relative flex w-full shrink-0 items-start bg-background bg-opacity-100 z-50">
-            <NavigationSideBar/>
-            <NavigationBar/>
-            <div className="absolute right-0 top-0 pr-2 pt-2 pb-2 flex items-center gap-2">
-              <SearchButton/>
-              <ModeToggle/>
-          </div>
+          <header className="shrink-0 border-b bg-card z-50">
+            <div className="mx-auto flex h-15 max-w-[96%] lg:max-w-[66%] items-center justify-between gap-4 pr-3 pl-4 md:h-16 md:px-6">
+              <div className="flex items-center gap-2.5 md:gap-5">
+                <NavigationSideBar/>
+                <Link href="/" className="flex items-center gap-2.5">
+                  <span className="inline-flex size-7.5 items-center justify-center rounded-lg bg-primary text-primary-foreground md:size-8">
+                    <DollarSign className="size-4.25 md:size-4.5" aria-hidden="true" />
+                  </span>
+                  <span className="text-base font-semibold tracking-[-0.01em] md:text-[15px]">
+                    mlssalaries.fyi
+                  </span>
+                </Link>
+                <NavigationBar/>
+              </div>
+              <div className="flex items-center gap-1 md:gap-2">
+                <SearchButton/>
+                <ModeToggle/>
+              </div>
+            </div>
           </header>
           <main className="flex-1 min-h-0 overflow-y-auto">
             <div className="flex min-h-full flex-col">

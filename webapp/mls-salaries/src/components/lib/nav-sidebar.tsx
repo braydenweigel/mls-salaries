@@ -24,7 +24,7 @@ export default function NavigationSideBar(){
 
     return (
        <Sheet open={open} onOpenChange={setOpen}>
-        <SheetTrigger asChild><Button variant="outline" onClick={() => setOpen(true)} className="md:hidden ml-2 mt-2"><Menu/>Menu</Button></SheetTrigger>
+        <SheetTrigger asChild><Button variant="outline" size="icon" onClick={() => setOpen(true)} className="md:hidden" aria-label="Open menu"><Menu/></Button></SheetTrigger>
         <SheetContent side="left" className=" w-[45%]">
             <SheetHeader><SheetTitle>mlssalaries.fyi</SheetTitle></SheetHeader>
             <div className="ml-4 -mt-4 flex flex-col gap-1">

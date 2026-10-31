@@ -62,7 +62,7 @@ export function SearchButton() {
             <DialogTrigger asChild>
                 <Button variant="outline">
                     <Search className=" h-[1.2rem] w-[1.2rem] scale-100 transition-all" />
-                    <span>Search</span>
+                    <span className="hidden sm:inline">Search</span>
                 </Button>
             </DialogTrigger>
             <DialogContent className="h-[80vh] overflow-y-hidden flex flex-col">

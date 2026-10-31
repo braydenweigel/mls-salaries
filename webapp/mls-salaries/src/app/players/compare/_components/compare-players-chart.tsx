@@ -295,7 +295,7 @@ const CustomTick = ({ x, y, payload }: CustomTickProps) => {
 
   return (
     <g transform={`translate(${x},${y})`}>
-      <text textAnchor="middle">
+      <text textAnchor="middle" className="fill-muted-foreground">
         <tspan x="0" dy="0.4em">{report.year}</tspan>
         <tspan x="0" dy="1.2em">{report.season}</tspan>
       </text>
