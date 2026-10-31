@@ -11,6 +11,8 @@ import {
   DialogFooter,
 } from "@/components/ui/dialog"
 import { Checkbox } from "@/components/ui/checkbox"
+import { Plus } from "lucide-react"
+import { cn } from "@/lib/utils"
 
 export function ClubFilter({
      value,
@@ -50,7 +52,10 @@ export function ClubFilter({
     return (
         <Dialog open={open} onOpenChange={setOpen}>
             <DialogTrigger asChild>
-                <Button variant="outline" className="text-xs md:text-sm" onClick={() => setOpen(true)}>Filter by Club</Button>
+                <Button variant={value.length ? "secondary" : "outline"} className={cn("text-xs md:text-sm", !value.length && "border-dashed")} onClick={() => setOpen(true)}>
+                    <Plus className="size-4"/>
+                    Club{value.length ? ` (${value.length})` : ""}
+                </Button>
             </DialogTrigger>
             <DialogContent>
                 <DialogHeader>

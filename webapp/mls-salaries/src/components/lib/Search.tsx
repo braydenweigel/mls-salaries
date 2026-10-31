@@ -60,7 +60,7 @@ export function SearchButton() {
     <>
         <Dialog onOpenChange={setOpen} open={open}>
             <DialogTrigger asChild>
-                <Button variant="outline">
+                <Button variant="outline" className="w-9 px-0 sm:w-auto sm:px-4">
                     <Search className=" h-[1.2rem] w-[1.2rem] scale-100 transition-all" />
                     <span className="hidden sm:inline">Search</span>
                 </Button>

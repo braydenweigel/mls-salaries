@@ -47,7 +47,6 @@ export default function RootLayout({
           <header className="shrink-0 border-b bg-card z-50">
             <div className="mx-auto flex h-15 max-w-[96%] lg:max-w-[66%] items-center justify-between gap-4 pr-3 pl-4 md:h-16 md:px-6">
               <div className="flex items-center gap-2.5 md:gap-5">
-                <NavigationSideBar/>
                 <Link href="/" className="flex items-center gap-2.5">
                   <span className="inline-flex size-7.5 items-center justify-center rounded-lg bg-primary text-primary-foreground md:size-8">
                     <DollarSign className="size-4.25 md:size-4.5" aria-hidden="true" />
@@ -61,6 +60,7 @@ export default function RootLayout({
               <div className="flex items-center gap-1 md:gap-2">
                 <SearchButton/>
                 <ModeToggle/>
+                <NavigationSideBar/>
               </div>
             </div>
           </header>

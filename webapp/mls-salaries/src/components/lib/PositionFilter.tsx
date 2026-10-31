@@ -11,6 +11,8 @@ import {
   DialogFooter,
 } from "@/components/ui/dialog"
 import { Checkbox } from "@/components/ui/checkbox"
+import { Plus } from "lucide-react"
+import { cn } from "@/lib/utils"
 
 const POSITIONS = ["GK", "D", "D-M", "M-D", "M", "M-F", "F-M", "F"]
 
@@ -47,7 +49,10 @@ export function PositionFilter({ value, onChange }: Props) {
     return (
         <Dialog open={open} onOpenChange={setOpen}>
             <DialogTrigger asChild>
-                <Button variant="outline" className="text-xs md:text-sm" onClick={() => setOpen(true)}>Filter by Position</Button>
+                <Button variant={value.length ? "secondary" : "outline"} className={cn("text-xs md:text-sm", !value.length && "border-dashed")} onClick={() => setOpen(true)}>
+                    <Plus className="size-4"/>
+                    Position{value.length ? ` (${value.length})` : ""}
+                </Button>
             </DialogTrigger>
             <DialogContent>
                 <DialogHeader>

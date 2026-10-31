@@ -1,5 +1,6 @@
 "use client"
 
+import React from "react"
 import {
   Select,
   SelectContent,
@@ -14,6 +15,7 @@ interface ReportSelectProps {
     onReportValueChange: (report: string) => void
     className?: string
     size?: "sm" | "default"
+    icon?: React.ReactNode
 }
 
 export default function SelectReport({
@@ -22,11 +24,13 @@ export default function SelectReport({
     onReportValueChange,
     className,
     size = "default",
+    icon,
 }: ReportSelectProps){
 
     return (
-        <Select defaultValue={defaultReport} onValueChange={(value) => onReportValueChange(value)} >
+        <Select value={defaultReport} onValueChange={(value) => onReportValueChange(value)} >
           <SelectTrigger size={size} className={className ?? "w-[180px] text-xs md:text-sm"}>
+            {icon}
             <SelectValue/>
           </SelectTrigger>
           <SelectContent className="max-h-60 overflow-y-auto">

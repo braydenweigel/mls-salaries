@@ -21,11 +21,11 @@ export default function LeagueSalaryChart({
     const chartConfig: ChartConfig = {
         baseSalary: {
           label: "Base Salary",
-          color: "#3b82f6",
+          color: "var(--primary)",
         },
         guaranteedComp: {
           label: "Guaranteed Compensation",
-          color: "#3b82f6",
+          color: "var(--primary)",
         },
     }
 
@@ -68,17 +68,17 @@ export default function LeagueSalaryChart({
                     <Area
                         dataKey="baseSalary"
                         type="linear"
-                        fill="#3b82f6"
+                        fill="var(--primary)"
                         fillOpacity={1}
-                        stroke="#3b82f6"
+                        stroke="var(--primary)"
                         stackId="a"
                     />
                     <Area
                         dataKey="guaranteedComp"
                         type="linear"
-                        fill="#3b82f6"
+                        fill="var(--primary)"
                         fillOpacity={0.7}
-                        stroke="#3b82f6"
+                        stroke="var(--primary)"
                         stackId="a"
                     />
                     <ChartTooltip

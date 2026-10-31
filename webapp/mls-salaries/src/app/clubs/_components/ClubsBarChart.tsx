@@ -19,11 +19,11 @@ export default function ClubsBarChart({
     const chartConfig: ChartConfig = {
         baseSal: {
           label: "Base Salary",
-          color: "#3b82f6",
+          color: "var(--primary)",
         },
         guarComp: {
           label: "Guaranteed Compensation",
-          color: "#3b82f6",
+          color: "var(--primary)",
         },
     }
 
@@ -59,12 +59,12 @@ export default function ClubsBarChart({
                     <Bar
                         dataKey="baseSal"
                         stackId="a"
-                        fill="#3b82f6"
+                        fill="var(--primary)"
                     />
                     <Bar
                         dataKey="guarComp"
                         stackId="a"
-                        fill="#3b82f6"
+                        fill="var(--primary)"
                         fillOpacity={0.6}
                     />
                     <ChartTooltip
