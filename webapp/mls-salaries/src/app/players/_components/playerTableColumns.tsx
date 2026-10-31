@@ -5,6 +5,7 @@ import { ArrowDown, ArrowUp, ArrowUpDown } from "lucide-react";
 import Link from "next/link";
 import { Button } from "../../../components/ui/button";
 import { Badge } from "../../../components/ui/badge";
+import { POSITION_LABELS } from "@/lib/globals";
 
 export type TablePlayer = {
     id: string;
@@ -15,17 +16,6 @@ export type TablePlayer = {
     baseSal: number;
     guarComp: number;
     reportYear: string;
-}
-
-const POSITION_LABELS: Record<string, string> = {
-    "GK": "Goalkeeper",
-    "D": "Defender",
-    "M": "Midfielder",
-    "F": "Forward",
-    "D-M": "Defender-Mid",
-    "M-D": "Mid-Defender",
-    "M-F": "Mid-Forward",
-    "F-M": "Forward-Mid",
 }
 
 function getInitials(name: string){

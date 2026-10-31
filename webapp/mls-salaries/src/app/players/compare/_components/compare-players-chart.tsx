@@ -1,3 +1,4 @@
+import { Fragment } from "react"
 import { ChartConfig, ChartContainer, ChartLegend, ChartTooltip } from "@/components/ui/chart"
 import { PlayerData, PlayerList } from "../page"
 import { Area, AreaChart, CartesianGrid, Customized, TextProps, TooltipProps, XAxis, YAxis } from "recharts"
@@ -94,7 +95,7 @@ export default function ComparePlayersChart({playerList}: ComparePlayersChartPro
                   />
                   {playerList.data.map((player, index) => (
                       player.player &&
-                          <>
+                          <Fragment key={player.stackID}>
                               <Area
                                   dataKey={`baseSal_${player.stackID}`}
                                   type="linear"
@@ -111,7 +112,7 @@ export default function ComparePlayersChart({playerList}: ComparePlayersChartPro
                                   fillOpacity={0.03}
                                   dot={{ r: 4 }}
                               />
-                          </>
+                          </Fragment>
                   ))}
                   <ChartTooltip cursor={false} content={<CustomTooltip/>}/>
                   <ChartLegend content={<CustomLegend players={playerList.data}/>}/>

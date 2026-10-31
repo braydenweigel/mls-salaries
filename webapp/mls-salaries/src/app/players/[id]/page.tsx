@@ -1,16 +1,16 @@
-import { 
+import {
   Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle 
+  CardContent
 } from '@/components/ui/card'
+import { Badge } from '@/components/ui/badge'
+import { Button } from '@/components/ui/button'
+import { ArrowLeftRight, ChevronLeft, Download } from 'lucide-react'
 import Link from 'next/link'
 import { isValidClub, isValidPlayer} from '@/lib/storeUtils'
 import { cache } from "react"
 import React from "react";
 import PlayerIDTable from '@/app/players/[id]/_components/table'
-import { CURRENT_YEAR, reports } from "@/lib/globals"
+import { reports, POSITION_LABELS } from "@/lib/globals"
 import PlayerIDChart from '@/app/players/[id]/_components/chart'
 import { notFound } from 'next/navigation'
 import players from '@/lib/data/players.json'
@@ -53,8 +53,11 @@ export default async function PlayerPage({ params }: { params: Promise<{ id: str
   const playerClubs = getPlayerClubs(allClubs, playerRecords)
 
   //Formatting stuff
-  const clubText = playerRecords[0].recordyear == reports[CURRENT_YEAR].year && playerRecords[0].recordseason == reports[CURRENT_YEAR].season ? "Current Club: " : "Last Club: "
   const position = playerRecords[0].position
+  const positionLabel = POSITION_LABELS[position] ?? position
+  const name = `${playerRecords[0].firstname} ${playerRecords[0].lastname}`
+  const initials = getInitials(name)
+  const seasonRange = getSeasonRanges(playerRecords)
   const data = formatData(playerRecords)
 
   const colors = {
@@ -64,25 +67,88 @@ export default async function PlayerPage({ params }: { params: Promise<{ id: str
 
   return (
     <div>
-    <Card className="my-4">
-      <CardHeader>
-        <CardTitle className="text-xl md:text-2xl">{playerRecords[0].firstname} {playerRecords[0].lastname}</CardTitle>
-        <CardDescription className="text-sm md:text-base"><div>{clubText} <Link href={`/clubs/${playerRecords[0].club}`} className="hover:underline">{playerClubs[0].clubname}</Link></div><div>Position: {position}</div></CardDescription>
-      </CardHeader>
-    </Card>
-    <Card className="my-4">
-      <CardContent>
+    <div className="flex md:hidden items-center gap-1 text-sm font-medium text-muted-foreground mb-3">
+      <Link href="/players" className="flex items-center gap-0.5 hover:text-foreground">
+        <ChevronLeft className="size-4"/>
+        Players
+      </Link>
+    </div>
+    <div className="hidden shrink-0 md:flex items-center gap-1.5 text-sm text-muted-foreground mb-4">
+      <Link href="/players" className="hover:underline">Players</Link>
+      <span>/</span>
+      <span className="text-foreground">{name}</span>
+    </div>
+    <div className="flex flex-col gap-3 mb-4 md:flex-row md:items-center md:justify-between">
+      <div className="flex items-center gap-3 md:gap-4 min-w-0 flex-1">
+        <span className="flex size-12 shrink-0 items-center justify-center rounded-full bg-muted text-sm font-semibold">
+          {initials}
+        </span>
+        <div className="min-w-0">
+          <h1 className="text-xl md:text-2xl font-bold">{name}</h1>
+          <div className="flex flex-wrap items-center gap-2 mt-1.5">
+            <Badge variant="outline" asChild>
+              <Link href={`/clubs/${playerRecords[0].club}`} className="hover:underline">{playerClubs[0].clubname}</Link>
+            </Badge>
+            <Badge variant="outline">{positionLabel}</Badge>
+            <span className="text-sm text-muted-foreground">{seasonRange}</span>
+          </div>
+        </div>
+      </div>
+      <div className="flex flex-col gap-2 md:flex-row md:items-center md:w-fit">
+        <Button variant="outline" className="hidden md:flex text-xs md:text-sm">
+          <Download className="size-4"/>
+          Export CSV
+        </Button>
+        <Button asChild className="w-full md:w-fit shrink-0">
+          <Link href={`/players/compare?players=${player.playerid}`}>
+            <ArrowLeftRight className="size-4"/>
+            Compare
+          </Link>
+        </Button>
+      </div>
+    </div>
+    <PlayerIDChart data={data} colors={colors}/>
+    <Card className="min-h-0 border-0 shadow-none bg-transparent py-0 gap-0 md:border md:shadow-sm md:bg-card md:py-6 my-4">
+      <CardContent className="min-h-0 flex flex-col overflow-hidden px-0 md:px-6">
         <PlayerIDTable records={playerRecords} playerClubs={playerClubs} />
-      </CardContent>
-    </Card>
-    <Card className="my-4">
-      <CardContent>
-        <PlayerIDChart data={data} colors={colors}/>
       </CardContent>
     </Card>
 
     </div>
   );
+}
+
+function getInitials(name: string){
+  const parts = name.trim().split(/\s+/).filter(Boolean)
+  if (parts.length === 0) return ""
+  if (parts.length === 1) return parts[0].slice(0, 2).toUpperCase()
+  return (parts[0][0] + parts[parts.length - 1][0]).toUpperCase()
+}
+
+function getSeasonRanges(playerRecords: PlayerRecord[]){
+  const reportKeys = Object.keys(reports).sort((a, b) => Number(a) - Number(b))
+  const ranges: { start: { year: string, season: string }, end: { year: string, season: string } }[] = []
+  let current: { start: { year: string, season: string }, end: { year: string, season: string } } | null = null
+
+  for (const key of reportKeys){
+    const report = reports[key]
+    const hasRecord = playerRecords.some((record) => record.recordyear === report.year && record.recordseason === report.season)
+
+    if (hasRecord){
+      current = current ? { start: current.start, end: report } : { start: report, end: report }
+    } else if (current){
+      ranges.push(current)
+      current = null
+    }
+  }
+
+  if (current) ranges.push(current)
+
+  return ranges
+    .map((range) => range.start.year === range.end.year && range.start.season === range.end.season
+      ? `${range.start.season} ${range.start.year}`
+      : `${range.start.season} ${range.start.year} – ${range.end.season} ${range.end.year}`)
+    .join(", ")
 }
 
 const getPlayer = cache((id: string) => {
@@ -127,9 +193,10 @@ function formatData(playerRecords: PlayerRecord[]){
 
       if (!record.basesalary){
         bS = record.guaranteedcomp ?? 0
+        gC = record.guaranteedcomp ?? 0
       } else {
         bS = record.basesalary
-        gC = record.guaranteedcomp - record.basesalary
+        gC = record.guaranteedcomp
       }
 
       data.push({

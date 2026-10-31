@@ -1,3 +1,4 @@
+import { Fragment } from "react"
 import { ClubData, ClubList } from "../page"
 import { ChartConfig, ChartContainer, ChartLegend, ChartTooltip, } from "@/components/ui/chart"
 import { Bar, BarChart, CartesianGrid, Customized, TooltipProps, XAxis, YAxis } from "recharts"
@@ -71,7 +72,7 @@ export default function CompareClubsChart({clubList}: CompareClubsChartProps){
                     />
                     {clubList.data.map((club) => (
                         club.club &&
-                            <>
+                            <Fragment key={club.stackID}>
                                 <Bar
                                     dataKey={`baseSal_${club.stackID}`}
                                     stackId={club.stackID}
@@ -83,7 +84,7 @@ export default function CompareClubsChart({clubList}: CompareClubsChartProps){
                                     fill={club.club.club.colorprimary}
                                     fillOpacity={0.7}
                                 />
-                            </>
+                            </Fragment>
                     ))}
                     <ChartTooltip cursor={false} content={<CustomTooltip/>}/>
                     <ChartLegend content={<CustomLegend clubs={clubList.data}/>}/>

@@ -59,3 +59,14 @@ export const clubs: Record<string, { clubName: string; yearFirst: number; yearFi
 }
 
 export const CURRENT_YEAR = "2026"
+
+export const POSITION_LABELS: Record<string, string> = {
+    "GK": "Goalkeeper",
+    "D": "Defender",
+    "M": "Midfielder",
+    "F": "Forward",
+    "D-M": "Defender-Mid",
+    "M-D": "Mid-Defender",
+    "M-F": "Mid-Forward",
+    "F-M": "Forward-Mid",
+}

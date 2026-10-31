@@ -44,7 +44,7 @@ export default function ClubsDashboard({
 
     return (
         <div className="flex flex-col gap-4 min-h-0">
-            <div className="hidden shrink-0 md:flex items-center gap-1.5 text-sm text-muted-foreground">mn
+            <div className="hidden shrink-0 md:flex items-center gap-1.5 text-sm text-muted-foreground">
                 <Link href="/" className="hover:underline">Home</Link>
                 <span>/</span>
                 <span className="text-foreground">Clubs</span>

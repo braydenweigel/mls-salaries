@@ -88,17 +88,6 @@ export function ClubTable<TData extends TableClub, TValue>({
         <div className="flex h-full min-h-0 w-full flex-col">
             <div className="shrink-0 flex flex-wrap items-center gap-2 py-2">
                 <React.Fragment key="report-selector">{reportSelector}</React.Fragment>
-                <div className="relative w-full md:w-auto">
-                    <Search className="pointer-events-none absolute left-2.5 top-1/2 size-4 -translate-y-1/2 text-muted-foreground"/>
-                    <Input
-                        placeholder="Filter by club name..."
-                        value={(table.getColumn("clubName")?.getFilterValue() as string) ?? ""}
-                        onChange={(event) =>
-                            table.getColumn("clubName")?.setFilterValue(event.target.value)
-                        }
-                        className="w-full pl-8 text-xs md:w-[260px] md:text-sm"
-                    />
-                </div>
                 <React.Fragment key="filters">{filters}</React.Fragment>
                 <DropdownMenu>
                     <DropdownMenuTrigger asChild>

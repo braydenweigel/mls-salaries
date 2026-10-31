@@ -1,21 +1,24 @@
 "use client"
 
-import { ChartConfig, ChartContainer, ChartLegend, ChartLegendContent, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart"
+import { ChartConfig, ChartContainer, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart"
 import { Area, AreaChart, CartesianGrid, Customized, TextProps, XAxis, YAxis} from "recharts"
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { reports } from "@/lib/globals"
 import { formatCompactCurrency } from "@/lib/utils"
 import React from "react"
 
 const CHART_AREA_CLIP_ID = "player-chart-area-clip"
 
+type ChartDatum = {
+    report: string,
+    baseSalary: number,
+    guaranteedComp: number,
+    club: string,
+    position: string
+}
+
 interface Props {
-    data: {
-        report: string,
-        baseSalary: number,
-        guaranteedComp: number,
-        club: string,
-        position: string
-    }[],
+    data: ChartDatum[],
     colors: {
         primary: string,
         secondary: string
@@ -27,6 +30,11 @@ export default function PlayerIDChart({
     colors
 }: Props){
     const isMobile = useIsMobile()
+    const lastReport = data.length ? data[data.length - 1].report : ""
+    const [selectedReport, setSelectedReport] = React.useState(lastReport)
+
+    const selected = data.find(d => d.report === selectedReport) ?? data[data.length - 1]
+
     const chartConfig: ChartConfig = {
         baseSalary: {
           label: "Base Salary",
@@ -34,83 +42,147 @@ export default function PlayerIDChart({
         },
         guaranteedComp: {
           label: "Guaranteed Compensation",
-          color: colors.primary + "B3",
+          color: colors.primary,
         },
-    } 
+    }
 
-    const ticks: string[] = []
-    data.map(d => {
-        if (reports[d.report].season === "Fall"){
-            ticks.push(d.report)
-        } 
-    })
+    const ticks = isMobile
+        ? [data[0], data[Math.floor((data.length - 1) / 2)], data[data.length - 1]]
+            .filter(Boolean)
+            .map(d => d.report)
+        : data.map(d => d.report)
+
+    const handleChartClick = (state: { activeLabel?: string | number }) => {
+        if (!isMobile || state?.activeLabel === undefined || state.activeLabel === null) return
+
+        const match = data.find(d => Number(d.report) === Number(state.activeLabel))
+        if (match) setSelectedReport(match.report)
+    }
+
+    const renderDot = (dotProps: unknown): React.ReactElement => {
+        const { cx, cy, payload } = dotProps as { cx?: number, cy?: number, payload?: ChartDatum }
+        const isSelected = isMobile && payload?.report === selectedReport
+        return <CustomDot cx={cx} cy={cy} color={colors.primary} isSelected={isSelected}/>
+    }
 
     return (
-        <div className="player-salary-chart">
-            <style>{`
-                .player-salary-chart .recharts-area-area {
-                    clip-path: url(#${CHART_AREA_CLIP_ID});
-                }
-            `}</style>
-            <ChartContainer config={chartConfig} className="h-40 md:h-auto">
-                <AreaChart data={data} margin={{ right: 16}}>
-                    <Customized component={ChartAreaClipDefs}/>
-                    <CartesianGrid vertical={false} fill="var(--secondary)" fillOpacity={1} ry={8}/>
-                    <XAxis
-                        dataKey="report"
-                        type="number"
-                        domain={['dataMin', 'dataMax']}
-                        tickLine={false}
-                        axisLine={false}
-                        interval={0} // ensures all ticks show
-                        ticks={ticks}
-                        tick={isMobile ? false : <CustomTick />}
-                    />
-                    <YAxis
-                        type="number"
-                        tickLine={false}
-                        axisLine={false}
-                        width={isMobile ? 36 : 70}
-                        tickFormatter={(value: number) => {return isMobile ? formatCompactCurrency(value) : `$${value.toLocaleString()}`}}
-                        tick={{ fontSize: isMobile ? 9 : 10 }}
-                    />
-                    <Area
-                        dataKey="baseSalary"
-                        type="linear"
-                        fill={colors.primary}
-                        fillOpacity={1}
-                        stroke={colors.primary}
-                        stackId="a"
-                    />
-                    <Area
-                        dataKey="guaranteedComp"
-                        type="linear"
-                        fill={colors.primary}
-                        fillOpacity={0.7}
-                        stroke={colors.primary}
-                        stackId="a"
-                    />
-                    <ChartTooltip
-                        cursor={false}
-                        content={<ChartTooltipContent
-                            className="min-w-24 gap-1 px-2 py-1 text-[10px] md:min-w-32 md:gap-1.5 md:px-2.5 md:py-1.5 md:text-xs"
-                            labelFormatter={(value) => {return (reports[value].year + " " + reports[value].season)}}
-                            formatter={(value, name, item) => {
-                                if (item.payload.baseSalary == 0 && item.payload.guaranteedComp == 0) return null
-                                const base = item?.payload?.baseSalary ?? 0
-
-                                if (name === "guaranteedComp"){
-                                    return `${isMobile ? "Total" : "Guaranteed Compensation"}: $${(base + value).toLocaleString()}`
-                                }
-                                return `${isMobile ? "Base" : "Base Salary"}: $${value.toLocaleString()}`
-                            }}
-                        />
+        <Card className="py-4 gap-3 md:py-6 md:gap-6 my-4">
+            <CardHeader className="px-4 md:px-6 flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
+                <div>
+                    <CardTitle className="text-lg md:text-xl">Salary history</CardTitle>
+                    <CardDescription className="hidden md:block">Each point is one report. Hover for details.</CardDescription>
+                </div>
+                <div className="flex items-center gap-4 text-xs md:text-sm text-muted-foreground shrink-0">
+                    <span className="flex items-center gap-1.5">
+                        <svg viewBox="0 0 16 10" className="h-2.5 w-4 shrink-0">
+                            <line x1="0" y1="5" x2="16" y2="5" stroke={colors.primary} strokeWidth={2} strokeLinecap="round"/>
+                        </svg>
+                        <span className="md:hidden">Guaranteed</span>
+                        <span className="hidden md:inline">Guaranteed comp.</span>
+                    </span>
+                    <span className="flex items-center gap-1.5">
+                        <svg viewBox="0 0 16 10" className="h-2.5 w-4 shrink-0">
+                            <line x1="0" y1="5" x2="16" y2="5" stroke={colors.primary} strokeWidth={2} strokeLinecap="round" strokeDasharray="3 3"/>
+                        </svg>
+                        <span className="md:hidden">Base</span>
+                        <span className="hidden md:inline">Base salary</span>
+                    </span>
+                </div>
+            </CardHeader>
+            <CardContent className="px-4 md:px-6">
+                {isMobile && selected && (
+                    <div className="flex items-center justify-between gap-2 rounded-lg bg-muted px-3 py-2 mb-3 text-sm">
+                        <span className="font-semibold">{reports[selected.report].season} {reports[selected.report].year}</span>
+                        <div className="flex items-center gap-3">
+                            <span className="flex items-center gap-1.5 font-semibold">
+                                <span className="size-2 shrink-0 rounded-full" style={{ backgroundColor: colors.primary }}/>
+                                ${selected.guaranteedComp.toLocaleString()}
+                            </span>
+                            <span className="flex items-center gap-1.5 text-muted-foreground">
+                                <span className="size-2 shrink-0 rounded-full" style={{ backgroundColor: colors.primary }}/>
+                                ${selected.baseSalary.toLocaleString()}
+                            </span>
+                        </div>
+                    </div>
+                )}
+                <div className="player-salary-chart">
+                    <style>{`
+                        .player-salary-chart .recharts-area-area {
+                            clip-path: url(#${CHART_AREA_CLIP_ID});
                         }
-                    />
-                    <ChartLegend content={<ChartLegendContent/>}/>
-                </AreaChart>
-            </ChartContainer>
-        </div>
+                    `}</style>
+                    <ChartContainer config={chartConfig} className="aspect-auto h-40 md:h-56">
+                        <AreaChart
+                            data={data}
+                            margin={{ right: isMobile ? 4 : 24, bottom: isMobile ? 0 : undefined}}
+                            onClick={handleChartClick}
+                        >
+                            <Customized component={ChartAreaClipDefs}/>
+                            <CartesianGrid vertical={false} fill="var(--secondary)" fillOpacity={1} ry={8}/>
+                            <XAxis
+                                dataKey="report"
+                                type="number"
+                                domain={['dataMin', 'dataMax']}
+                                tickLine={false}
+                                axisLine={false}
+                                interval={0} // ensures all ticks show
+                                ticks={ticks}
+                                tick={isMobile ? <CustomTick compact ticks={ticks}/> : <CustomTick />}
+                                height={isMobile ? 20 : undefined}
+                            />
+                            <YAxis
+                                type="number"
+                                tickLine={false}
+                                axisLine={false}
+                                width={isMobile ? 36 : 70}
+                                tickCount={isMobile ? 3 : undefined}
+                                tickFormatter={(value: number) => {return isMobile ? formatCompactCurrency(value) : `$${value.toLocaleString()}`}}
+                                tick={{ fontSize: isMobile ? 9 : 10 }}
+                            />
+                            <Area
+                                dataKey="guaranteedComp"
+                                type="linear"
+                                fill={colors.primary}
+                                fillOpacity={0.35}
+                                stroke={colors.primary}
+                                dot={(dotProps: unknown) => renderDot(dotProps)}
+                                activeDot={{ r: isMobile ? 4 : 5 }}
+                            />
+                            <Area
+                                dataKey="baseSalary"
+                                type="linear"
+                                fill="none"
+                                stroke={colors.primary}
+                                strokeDasharray="5 5"
+                                dot={(dotProps: unknown) => renderDot(dotProps)}
+                                activeDot={{ r: isMobile ? 4 : 5 }}
+                            />
+                            {!isMobile && (
+                                <ChartTooltip
+                                    cursor={false}
+                                    content={<ChartTooltipContent
+                                        className="min-w-24 gap-1 px-2 py-1 text-[10px] md:min-w-32 md:gap-1.5 md:px-2.5 md:py-1.5 md:text-xs"
+                                        labelFormatter={(value) => {return (reports[value].year + " " + reports[value].season)}}
+                                        formatter={(value, name, item) => {
+                                            if (item.payload.baseSalary == 0 && item.payload.guaranteedComp == 0) return null
+
+                                            if (name === "guaranteedComp"){
+                                                return `Guaranteed Compensation: $${value.toLocaleString()}`
+                                            }
+                                            return `Base Salary: $${value.toLocaleString()}`
+                                        }}
+                                    />
+                                    }
+                                />
+                            )}
+                        </AreaChart>
+                    </ChartContainer>
+                </div>
+                {isMobile && (
+                    <p className="mt-2 text-xs text-foreground">Tap a release on the chart to see its numbers.</p>
+                )}
+            </CardContent>
+        </Card>
     )
 }
 
@@ -130,26 +202,57 @@ const ChartAreaClipDefs = ({ offset }: ChartAreaClipDefsProps) => {
   )
 }
 
+type CustomDotProps = {
+  cx?: number
+  cy?: number
+  payload?: ChartDatum
+  color: string
+  isSelected?: boolean
+}
+
+const CustomDot = ({ cx, cy, color, isSelected }: CustomDotProps) => {
+  if (cx === undefined || cy === undefined) return <circle cx={0} cy={0} r={0} fill={color}/>
+
+  return <circle cx={cx} cy={cy} r={isSelected ? 5 : 3} fill={color}/>
+}
+
 type CustomTickProps = TextProps & {
   x?: number
   y?: number
   payload?: {
     value: string | number
   }
+  compact?: boolean
+  ticks?: string[]
 }
 
-const CustomTick = ({ x, y, payload }: CustomTickProps) => {
+const CustomTick = ({ x, y, payload, compact, ticks }: CustomTickProps) => {
   if (!payload) return null
 
   const report = reports[String(payload.value)]
 
   if (!report) return null
 
+  const seasonLabel = report.season === "Spring" ? "Spr" : report.season
+
+  if (compact){
+    let anchor: "start" | "middle" | "end" = "middle"
+    if (ticks && ticks.length > 1){
+      if (String(payload.value) === ticks[0]) anchor = "start"
+      else if (String(payload.value) === ticks[ticks.length - 1]) anchor = "end"
+    }
+
+    return (
+      <text x={x} y={y} dy="0.9em" textAnchor={anchor} className="fill-muted-foreground text-[10px]">
+        {seasonLabel} &apos;{report.year.slice(2)}
+      </text>
+    )
+  }
+
   return (
     <g transform={`translate(${x},${y})`}>
-      <text textAnchor="middle" className="fill-muted-foreground">
-        <tspan x="0" dy="0.4em">{report.year}</tspan>
-        <tspan x="0" dy="1.2em">{report.season}</tspan>
+      <text textAnchor="middle" dy="0.9em" className="fill-muted-foreground text-xs">
+        {seasonLabel} &apos;{report.year.slice(2)}
       </text>
     </g>
   )
@@ -170,4 +273,3 @@ function useIsMobile() {
 
   return isMobile;
 }
-
