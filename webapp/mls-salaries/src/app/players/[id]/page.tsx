@@ -80,7 +80,7 @@ export default async function PlayerPage({ params }: { params: Promise<{ id: str
     </div>
     <div className="flex flex-col gap-3 mb-4 md:flex-row md:items-center md:justify-between">
       <div className="flex items-center gap-3 md:gap-4 min-w-0 flex-1">
-        <span className="flex size-12 shrink-0 items-center justify-center rounded-full bg-muted text-sm font-semibold">
+        <span className="flex size-12 shrink-0 items-center justify-center rounded-full text-sm font-semibold text-white" style={{ backgroundColor: colors.primary }}>
           {initials}
         </span>
         <div className="min-w-0">
@@ -99,10 +99,10 @@ export default async function PlayerPage({ params }: { params: Promise<{ id: str
           <Download className="size-4"/>
           Export CSV
         </Button>
-        <Button asChild className="w-full md:w-fit shrink-0">
+        <Button asChild className="w-full md:w-fit shrink-0" style={{ backgroundColor: colors.primary }}>
           <Link href={`/players/compare?players=${player.playerid}`}>
             <ArrowLeftRight className="size-4"/>
-            Compare
+            Compare Players
           </Link>
         </Button>
       </div>

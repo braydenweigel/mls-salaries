@@ -94,7 +94,7 @@ params,
       </div>
       <div className="flex flex-col gap-3 mb-4 md:flex-row md:items-center md:justify-between">
         <div className="flex items-center gap-3 md:gap-4 min-w-0 flex-1">
-          <span className="flex size-12 shrink-0 items-center justify-center rounded-md bg-muted text-sm font-semibold">
+          <span className="flex size-12 shrink-0 items-center justify-center rounded-md text-sm font-semibold text-white" style={{ backgroundColor: colors.primary }}>
             {club.clubid}
           </span>
           <div className="min-w-0">
@@ -105,10 +105,10 @@ params,
           </div>
         </div>
         <div className="flex flex-col gap-2 md:flex-row md:items-center md:w-fit">
-          <Button asChild className="w-full md:w-fit shrink-0">
+          <Button asChild className="w-full md:w-fit shrink-0" style={{ backgroundColor: colors.primary }}>
             <Link href={`/clubs/compare?clubs=${club.clubid}:${reportValue}`}>
               <ArrowLeftRight className="size-4"/>
-              Compare
+              Compare Clubs
             </Link>
           </Button>
         </div>

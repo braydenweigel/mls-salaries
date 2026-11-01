@@ -40,6 +40,7 @@ interface DataTableProps<TData extends TableClubPlayers, TValue>{
     reportSelector?: React.ReactNode
     totalBaseSal: number
     totalGuarComp: number
+    positionFilterColor?: string
 }
 
 const MOBILE_HIDDEN_COLUMNS = new Set(["position", "baseSal", "pctOfPayroll"])
@@ -56,7 +57,8 @@ export function ClubPlayersTable<TData extends TableClubPlayers, TValue>({
     data,
     reportSelector,
     totalBaseSal,
-    totalGuarComp
+    totalGuarComp,
+    positionFilterColor
 }: DataTableProps<TData, TValue>) {
     const [sorting, setSorting] = React.useState<SortingState>([{id: "guarComp", desc: true}])
     const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>([])
@@ -100,6 +102,7 @@ export function ClubPlayersTable<TData extends TableClubPlayers, TValue>({
                 <PositionFilter
                     value={(table.getColumn("position")?.getFilterValue() as string[]) ?? []}
                     onChange={(value) => table.getColumn("position")?.setFilterValue(value.length ? value : undefined)}
+                    applyColor={positionFilterColor}
                 />
                 <Button variant="outline" className="ml-auto hidden md:flex text-xs md:text-sm">
                     <Download className="size-4"/>

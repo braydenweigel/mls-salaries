@@ -6,7 +6,7 @@ import { isValidClub } from "@/lib/storeUtils"
 import { CURRENT_YEAR, reports } from "@/lib/globals"
 import React from "react"
 import Link from "next/link"
-import { Download, Shuffle } from "lucide-react"
+import { ArrowLeftRight, Download, Shuffle } from "lucide-react"
 import records from "@/lib/data/records.json"
 import clubs from "@/lib/data/clubs.json"
 import type { PlayerRecord, Club } from "@/lib/data/types"
@@ -59,8 +59,8 @@ export default async function Players({ searchParams }: { searchParams: Promise<
           </Button>
           <Button asChild className="text-xs md:text-sm">
             <Link href="/players/compare">
-              <Shuffle className="size-4"/>
-              Compare players
+              <ArrowLeftRight className="size-4"/>
+              Compare Players
             </Link>
           </Button>
         </div>

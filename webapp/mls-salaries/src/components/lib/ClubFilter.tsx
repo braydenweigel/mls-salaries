@@ -11,7 +11,7 @@ import {
   DialogFooter,
 } from "@/components/ui/dialog"
 import { Checkbox } from "@/components/ui/checkbox"
-import { Plus } from "lucide-react"
+import { SlidersHorizontal } from "lucide-react"
 import { cn } from "@/lib/utils"
 
 export function ClubFilter({
@@ -53,7 +53,7 @@ export function ClubFilter({
         <Dialog open={open} onOpenChange={setOpen}>
             <DialogTrigger asChild>
                 <Button variant={value.length ? "secondary" : "outline"} className={cn("text-xs md:text-sm", !value.length && "border-dashed")} onClick={() => setOpen(true)}>
-                    <Plus className="size-4"/>
+                    <SlidersHorizontal className="size-4"/>
                     Club{value.length ? ` (${value.length})` : ""}
                 </Button>
             </DialogTrigger>

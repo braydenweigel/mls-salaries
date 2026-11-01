@@ -38,6 +38,7 @@ export default function ClubDashboard({
                         reportSelector={<ClubSelectReport reports={reports} defaultReport={reportValue} clubId={clubId}/>}
                         totalBaseSal={totalBaseSal}
                         totalGuarComp={totalGuarComp}
+                        positionFilterColor={colors.primary}
                     />
                 </CardContent>
             </Card>

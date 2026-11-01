@@ -27,7 +27,7 @@ import React from "react";
 import { Input } from "@/components/ui/input";
 import { PositionFilter } from "@/components/lib/PositionFilter";
 import { ClubFilter } from "@/components/lib/ClubFilter";
-import { ArrowLeft, ArrowRight, ArrowUpDown, Search, SlidersHorizontal } from "lucide-react";
+import { ArrowLeft, ArrowRight, ArrowUpDown, Columns3, Search } from "lucide-react";
 import SelectNumRows from "./SelectNumRows";
 import { Label } from "@/components/ui/label";
 import { TablePlayer } from "./playerTableColumns";
@@ -155,7 +155,7 @@ export function PlayerTable<TData extends TablePlayer, TValue>({
                 <DropdownMenu>
                     <DropdownMenuTrigger asChild>
                         <Button variant="outline" className="ml-auto hidden md:flex text-xs md:text-sm">
-                            <SlidersHorizontal className="size-4"/>
+                            <Columns3 className="size-4"/>
                             Columns
                         </Button>
                     </DropdownMenuTrigger>

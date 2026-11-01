@@ -11,7 +11,7 @@ import {
   DialogFooter,
 } from "@/components/ui/dialog"
 import { Checkbox } from "@/components/ui/checkbox"
-import { Plus } from "lucide-react"
+import { SlidersHorizontal } from "lucide-react"
 import { cn } from "@/lib/utils"
 
 const POSITIONS = ["GK", "D", "D-M", "M-D", "M", "M-F", "F-M", "F"]
@@ -19,9 +19,10 @@ const POSITIONS = ["GK", "D", "D-M", "M-D", "M", "M-F", "F-M", "F"]
 interface Props {
     value: string[]
     onChange: (value: string[]) => void
+    applyColor?: string
 }
 
-export function PositionFilter({ value, onChange }: Props) {
+export function PositionFilter({ value, onChange, applyColor }: Props) {
     const [open, setOpen] = React.useState(false)
     const [selected, setSelected] = React.useState<string[]>(value)
 
@@ -50,7 +51,7 @@ export function PositionFilter({ value, onChange }: Props) {
         <Dialog open={open} onOpenChange={setOpen}>
             <DialogTrigger asChild>
                 <Button variant={value.length ? "secondary" : "outline"} className={cn("text-xs md:text-sm", !value.length && "border-dashed")} onClick={() => setOpen(true)}>
-                    <Plus className="size-4"/>
+                    <SlidersHorizontal className="size-4"/>
                     Position{value.length ? ` (${value.length})` : ""}
                 </Button>
             </DialogTrigger>
@@ -71,7 +72,7 @@ export function PositionFilter({ value, onChange }: Props) {
                 </div>       
                 <DialogFooter className="mt-4 flex justify-between">
                     <Button variant="ghost" onClick={clearFilter}>Clear</Button>
-                    <Button onClick={applyFilter}>Apply</Button>
+                    <Button onClick={applyFilter} style={applyColor ? { backgroundColor: applyColor } : undefined}>Apply</Button>
                 </DialogFooter>                
             </DialogContent>
         </Dialog>

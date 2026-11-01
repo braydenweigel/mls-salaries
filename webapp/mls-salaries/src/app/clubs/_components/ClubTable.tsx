@@ -23,7 +23,7 @@ import {
 import { Button } from "@/components/ui/button";
 import React from "react";
 import { Input } from "@/components/ui/input";
-import { ArrowUpDown, Search, SlidersHorizontal } from "lucide-react";
+import { ArrowUpDown, Columns3, Search } from "lucide-react";
 import { TableClub } from "./clubTableColumns";
 import { cn } from "@/lib/utils";
 import {
@@ -92,7 +92,7 @@ export function ClubTable<TData extends TableClub, TValue>({
                 <DropdownMenu>
                     <DropdownMenuTrigger asChild>
                         <Button variant="outline" className="ml-auto hidden md:flex text-xs md:text-sm">
-                            <SlidersHorizontal className="size-4"/>
+                            <Columns3 className="size-4"/>
                             Columns
                         </Button>
                     </DropdownMenuTrigger>

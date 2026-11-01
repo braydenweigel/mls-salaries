@@ -9,7 +9,7 @@ import { clubColumns, TableClub } from "./clubTableColumns"
 import ClubsBarChart from "./ClubsBarChart"
 import ClubsSelectReport from "./ClubsSelectReport"
 import Link from "next/link"
-import { Download, Shuffle } from "lucide-react"
+import { ArrowLeftRight, Download, Shuffle } from "lucide-react"
 
 interface Props {
     data: TableClub[]
@@ -63,8 +63,8 @@ export default function ClubsDashboard({
                     </Button>
                     <Button asChild className="text-xs md:text-sm">
                         <Link href="/clubs/compare">
-                            <Shuffle className="size-4"/>
-                            Compare clubs
+                            <ArrowLeftRight className="size-4"/>
+                            Compare Clubs
                         </Link>
                     </Button>
                 </div>
