@@ -59,7 +59,7 @@ export default function RootLayout({
               </div>
               <div className="flex items-center gap-1 md:gap-2">
                 <SearchButton/>
-                <ModeToggle/>
+                <div className="hidden md:flex"><ModeToggle/></div>
                 <NavigationSideBar/>
               </div>
             </div>
@@ -71,7 +71,7 @@ export default function RootLayout({
                   {children}
                 </Suspense>
               </div>
-              <footer className="shrink-0 flex justify-center items-center mx-auto w-full max-w-[96%] md:max-w-[66%] px-4 py-2 text-center text-xs md:text-base">
+              <footer className="hidden shrink-0 md:flex justify-center items-center mx-auto w-full max-w-[96%] md:max-w-[66%] px-4 py-2 text-center text-xs md:text-base">
                 <div><Link href="/players/list" className="hover:underline">All Players List</Link> • <Link href="/clubs/list" className="hover:underline">All Clubs List</Link></div>
               </footer>
             </div>

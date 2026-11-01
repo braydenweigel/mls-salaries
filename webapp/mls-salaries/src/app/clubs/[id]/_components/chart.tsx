@@ -42,7 +42,7 @@ export default function ClubIDChart({
                     clip-path: url(#${CHART_BAR_CLIP_ID});
                 }
             `}</style>
-            <ChartContainer config={chartConfig} className="">
+            <ChartContainer config={chartConfig} className="aspect-auto h-[480px]">
                 <BarChart data={data}>
                     <Customized component={ChartBarClipDefs}/>
                     <CartesianGrid vertical={false} fill="var(--secondary)" fillOpacity={1} ry={8}/>
