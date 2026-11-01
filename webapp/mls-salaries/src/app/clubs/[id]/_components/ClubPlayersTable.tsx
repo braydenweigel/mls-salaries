@@ -2,12 +2,14 @@
 
 import {
     ColumnDef,
+    ColumnFiltersState,
     SortingState,
     VisibilityState,
     flexRender,
     getCoreRowModel,
+    getFilteredRowModel,
     getSortedRowModel,
-    useReactTable
+    useReactTable,
 } from "@tanstack/react-table"
 
 import {
@@ -22,27 +24,43 @@ import { Button } from "@/components/ui/button";
 import React from "react";
 import { Input } from "@/components/ui/input";
 import { PositionFilter } from "@/components/lib/PositionFilter";
+import { ArrowUpDown, Download, Search } from "lucide-react";
+import { TableClubPlayers } from "./clubPlayerTableColumns";
+import { cn } from "@/lib/utils";
+import {
+    DropdownMenu,
+    DropdownMenuCheckboxItem,
+    DropdownMenuContent,
+    DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
-interface DataTableProps<TData, TValue>{
+interface DataTableProps<TData extends TableClubPlayers, TValue>{
     columns: ColumnDef<TData, TValue>[];
     data: TData[]
-    selectedPositions: string[]
-    onPositionsChange: (value: string[]) => void
-    nameFilter: string
-    onNameFilterChange: (value: string) => void
+    reportSelector?: React.ReactNode
+    totalBaseSal: number
+    totalGuarComp: number
 }
 
-export function ClubPlayersTable<TData, TValue>({
+const MOBILE_HIDDEN_COLUMNS = new Set(["position", "baseSal", "pctOfPayroll"])
+
+const SORT_OPTIONS = [
+    { label: "Highest paid", id: "guarComp", desc: true },
+    { label: "Lowest paid", id: "guarComp", desc: false },
+    { label: "Highest base salary", id: "baseSal", desc: true },
+    { label: "Lowest base salary", id: "baseSal", desc: false },
+]
+
+export function ClubPlayersTable<TData extends TableClubPlayers, TValue>({
     columns,
     data,
-    selectedPositions,
-    onPositionsChange,
-    nameFilter,
-    onNameFilterChange
+    reportSelector,
+    totalBaseSal,
+    totalGuarComp
 }: DataTableProps<TData, TValue>) {
-    const [sorting, setSorting] = React.useState<SortingState>([])
-    const [columnVisibility, setColumnVisibility] = React.useState<VisibilityState>({position: true, baseSal: true})
-    const isMobile = useIsMobile()
+    const [sorting, setSorting] = React.useState<SortingState>([{id: "guarComp", desc: true}])
+    const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>([])
+    const [columnVisibility, setColumnVisibility] = React.useState<VisibilityState>({})
 
     const table = useReactTable({
         data,
@@ -50,62 +68,99 @@ export function ClubPlayersTable<TData, TValue>({
         getCoreRowModel: getCoreRowModel(),
         onSortingChange: setSorting,
         getSortedRowModel: getSortedRowModel(),
+        onColumnFiltersChange: setColumnFilters,
+        getFilteredRowModel: getFilteredRowModel(),
         onColumnVisibilityChange: setColumnVisibility,
         state: {
             sorting,
-            columnVisibility
+            columnFilters,
+            columnVisibility,
         },
     })
 
-    React.useEffect(() => {
-        setColumnVisibility({
-            position: !isMobile,
-            baseSal: !isMobile
-        })
-    }, [isMobile])
+    const rows = table.getRowModel().rows
+    const activeSort = sorting[0]
+    const activeSortOption = SORT_OPTIONS.find((option) => option.id === activeSort?.id && option.desc === activeSort?.desc)
 
     return (
-        <div className="w-full table-fixed">
-            <div className="flex items-center w-full py-4 justify-between">
-                <div className="flex items-center space-x-4">
+        <div className="flex h-full min-h-0 w-full flex-col">
+            <div className="shrink-0 flex flex-wrap items-center gap-2 py-2">
+                <React.Fragment key="report-selector">{reportSelector}</React.Fragment>
+                <div className="relative w-full md:w-auto">
+                    <Search className="pointer-events-none absolute left-2.5 top-1/2 size-4 -translate-y-1/2 text-muted-foreground"/>
                     <Input
-                    placeholder="Filter players..."
-                    value={nameFilter}
-                    onChange={(event) => onNameFilterChange(event.target.value)}
-                    className="max-w-sm text-xs md:text-sm"
+                        placeholder="Filter by player name..."
+                        value={(table.getColumn("name")?.getFilterValue() as string) ?? ""}
+                        onChange={(event) =>
+                            table.getColumn("name")?.setFilterValue(event.target.value)
+                        }
+                        className="w-full pl-8 text-xs md:w-[260px] md:text-sm"
                     />
-                    <PositionFilter value={selectedPositions} onChange={onPositionsChange}/>
+                </div>
+                <PositionFilter
+                    value={(table.getColumn("position")?.getFilterValue() as string[]) ?? []}
+                    onChange={(value) => table.getColumn("position")?.setFilterValue(value.length ? value : undefined)}
+                />
+                <Button variant="outline" className="ml-auto hidden md:flex text-xs md:text-sm">
+                    <Download className="size-4"/>
+                    Export CSV
+                </Button>
+                <DropdownMenu>
+                    <DropdownMenuTrigger asChild>
+                        <Button variant="outline" className="ml-auto flex md:hidden text-xs">
+                            <ArrowUpDown className="size-4"/>
+                            {activeSortOption?.label ?? "Sort"}
+                        </Button>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent align="end">
+                        {SORT_OPTIONS.map((option) => (
+                            <DropdownMenuCheckboxItem
+                                key={option.label}
+                                checked={activeSortOption?.label === option.label}
+                                onCheckedChange={() => setSorting([{ id: option.id, desc: option.desc }])}
+                            >
+                                {option.label}
+                            </DropdownMenuCheckboxItem>
+                        ))}
+                    </DropdownMenuContent>
+                </DropdownMenu>
+            </div>
+            <div className="shrink-0 flex items-center justify-between gap-3 rounded-md border bg-muted/40 px-3 py-2 mb-2 text-xs md:text-sm">
+                <span className="font-semibold">Club totals</span>
+                <div className="flex items-center gap-4 text-right">
+                    <span className="text-muted-foreground">Base <span className="font-semibold text-foreground">${totalBaseSal.toLocaleString()}</span></span>
+                    <span className="text-muted-foreground">Guaranteed <span className="font-semibold text-foreground">${totalGuarComp.toLocaleString()}</span></span>
                 </div>
             </div>
-            <div className="max-h-[40vh] overflow-auto w-full md:max-h-[55vh]">
+            <div className="min-h-0 overflow-y-auto w-full overflow-x-auto">
                 <Table className="text-xs md:text-sm">
                     <TableHeader>
                         {table.getHeaderGroups().map((headerGroup) => (
                             <TableRow key={headerGroup.id}>
-                            {headerGroup.headers.map((header) => {
+                                {headerGroup.headers.map((header) => {
                                 return (
-                                <TableHead key={header.id} className="sticky top-0 z-10 px-0.5 md:px-2">
-                                    {header.isPlaceholder
-                                    ? null
-                                    : flexRender(
-                                        header.column.columnDef.header,
-                                        header.getContext()
-                                        )}
-                                </TableHead>
-                                )
-                            })}
+                                    <TableHead key={header.id} className={cn("sticky top-0 z-10 min-w-0 px-0.5 md:px-2", MOBILE_HIDDEN_COLUMNS.has(header.column.id) && "hidden md:table-cell")}>
+                                        {header.isPlaceholder
+                                        ? null
+                                        : flexRender(
+                                            header.column.columnDef.header,
+                                            header.getContext()
+                                            )}
+                                    </TableHead>
+                                    )
+                                })}
                             </TableRow>
                             ))}
                         </TableHeader>
                         <TableBody>
-                        {table.getRowModel().rows?.length ? (
-                            table.getRowModel().rows.map((row) => (
+                        {rows?.length ? (
+                            rows.map((row) => (
                             <TableRow
                                 key={row.id}
                                 data-state={row.getIsSelected() && "selected"}
                             >
-                                {row.getVisibleCells().map((cell) => (
-                                <TableCell key={cell.id} className="px-0.5 md:px-2">
+                               {row.getVisibleCells().map((cell) => (
+                                <TableCell key={cell.id} className={cn("min-w-0 px-0.5 py-3 md:px-2 md:py-2", MOBILE_HIDDEN_COLUMNS.has(cell.column.id) && "hidden md:table-cell", cell.column.id === "name" && "max-w-0 w-full md:max-w-none md:w-auto", cell.column.id === "index" && "pr-2 md:pr-2")}>
                                     {flexRender(cell.column.columnDef.cell, cell.getContext())}
                                 </TableCell>
                                 ))}
@@ -121,25 +176,9 @@ export function ClubPlayersTable<TData, TValue>({
                         </TableBody>
                 </Table>
             </div>
-            <div className="flex justify-between w-full space-x-2 py-4">
-                <Button variant="destructive" size="sm" className="text-xs md:text-sm" onClick={() => { onPositionsChange([]); onNameFilterChange("") }}>Reset</Button>
+            <div className="hidden md:block shrink-0 pt-4 text-xs md:text-sm text-muted-foreground">
+                Showing {rows.length} player{rows.length === 1 ? "" : "s"}
             </div>
         </div>
     )
-}
-
-function useIsMobile() {
-  const [isMobile, setIsMobile] = React.useState(false);
-
-  React.useEffect(() => {
-    const media = window.matchMedia("(max-width: 768px)");
-    setIsMobile(media.matches);
-
-    const listener = () => setIsMobile(media.matches);
-    media.addEventListener("change", listener);
-
-    return () => media.removeEventListener("change", listener);
-  }, []);
-
-  return isMobile;
 }

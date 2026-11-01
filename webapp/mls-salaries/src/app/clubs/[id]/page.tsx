@@ -1,11 +1,8 @@
-import { 
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle 
-} from '@/components/ui/card'
 import React from "react"
+import Link from 'next/link'
+import { ArrowLeftRight, ChevronLeft } from 'lucide-react'
+import { Badge } from '@/components/ui/badge'
+import { Button } from '@/components/ui/button'
 import { CURRENT_YEAR, reports } from '@/lib/globals'
 import ClubDashboard from './_components/ClubDashboard'
 import { notFound } from 'next/navigation'
@@ -14,7 +11,6 @@ import records from "@/lib/data/records.json"
 import { Club, PlayerRecord } from '@/lib/data/types'
 import { filterRecordsByReportAndClub } from '@/lib/data/filters'
 import { formatData } from '@/lib/clubs'
-import ClubSelectReport from './_components/ClubSelectReport'
 
 export async function generateMetadata({
   params,
@@ -75,7 +71,7 @@ params,
   const clubRecords = filterRecordsByReportAndClub((records as PlayerRecord[]), year, season, club.clubid)
   const { data, totalBaseSal, totalGuarComp } = formatData(clubRecords, year, season, reportValue)
 
-  const clubYears = formatClubYears(club)
+  const clubSubtitle = formatClubSubtitle(club)
   const clubReports = getClubReports(club)
 
   const colors = {
@@ -85,35 +81,58 @@ params,
 
   return (
     <div>
-      <Card className="my-4">
-        <CardHeader>
-          <CardTitle className="text-xl md:text-2xl">{club.clubname}</CardTitle>
-          <CardDescription className="text-sm md:text-base">Years Active: {clubYears}</CardDescription>
-        </CardHeader>
-        <CardContent className="overflow-hidden space-y-2 text-sm md:text-base">
-          <ClubSelectReport reports={clubReports} defaultReport={reportValue} clubId={club.clubid}/>
-          <div className="md:hidden">
-            <p>Total Base Salary: </p><p className="mb-2">${totalBaseSal.toLocaleString()}</p>
-            <p>Total Guaranteed Compensation: </p><p>${totalGuarComp.toLocaleString()}</p>
+      <div className="flex md:hidden items-center gap-1 text-sm font-medium text-muted-foreground mb-3">
+        <Link href="/clubs" className="flex items-center gap-0.5 hover:text-foreground">
+          <ChevronLeft className="size-4"/>
+          Clubs
+        </Link>
+      </div>
+      <div className="hidden shrink-0 md:flex items-center gap-1.5 text-sm text-muted-foreground mb-4">
+        <Link href="/clubs" className="hover:underline">Clubs</Link>
+        <span>/</span>
+        <span className="text-foreground">{club.clubname}</span>
+      </div>
+      <div className="flex flex-col gap-3 mb-4 md:flex-row md:items-center md:justify-between">
+        <div className="flex items-center gap-3 md:gap-4 min-w-0 flex-1">
+          <span className="flex size-12 shrink-0 items-center justify-center rounded-md bg-muted text-sm font-semibold">
+            {club.clubid}
+          </span>
+          <div className="min-w-0">
+            <h1 className="text-xl md:text-2xl font-bold">{club.clubname}</h1>
+            <div className="flex flex-wrap items-center gap-2 mt-1.5">
+              <Badge variant="outline">{clubSubtitle}</Badge>
+            </div>
           </div>
-          <div className="hidden md:block">
-            <p>Total Base Salary: ${totalBaseSal.toLocaleString()}</p>
-            <p>Total Guaranteed Compensation: ${totalGuarComp.toLocaleString()}</p>
-          </div>
-        </CardContent>
-      </Card>
-      <ClubDashboard data={data} colors={colors}/>
+        </div>
+        <div className="flex flex-col gap-2 md:flex-row md:items-center md:w-fit">
+          <Button asChild className="w-full md:w-fit shrink-0">
+            <Link href={`/clubs/compare?clubs=${club.clubid}:${reportValue}`}>
+              <ArrowLeftRight className="size-4"/>
+              Compare
+            </Link>
+          </Button>
+        </div>
+      </div>
+      <ClubDashboard
+        data={data}
+        colors={colors}
+        totalBaseSal={totalBaseSal}
+        totalGuarComp={totalGuarComp}
+        reports={clubReports}
+        reportValue={reportValue}
+        clubId={club.clubid}
+      />
     </div>
     );
 }
 
-function formatClubYears(club: Club){
+function formatClubSubtitle(club: Club){
   if (club.clubid == "SJ"){
-    return "1996-2005, 2008-"
+    return "In MLS 1996-2005, 2008-present"
   } else if (club.clubid == "CHV"){
-    return "2005-2014"
+    return "In MLS 2005-2014"
   } else {
-    return club.yearfirst + "-"
+    return `In MLS since ${club.yearfirst}`
   }
 }
 

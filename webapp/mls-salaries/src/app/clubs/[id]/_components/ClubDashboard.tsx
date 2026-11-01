@@ -5,33 +5,39 @@ import { Card, CardContent } from "@/components/ui/card"
 import { ClubPlayersTable } from "./ClubPlayersTable"
 import { clubPlayerColumns, TableClubPlayers } from "./clubPlayerTableColumns"
 import ClubIDChart from "./chart"
+import ClubSelectReport from "./ClubSelectReport"
 
 interface Props {
     data: TableClubPlayers[]
     colors: { primary: string; secondary: string }
+    totalBaseSal: number
+    totalGuarComp: number
+    reports: Record<string, { year: string; season: string }>
+    reportValue: string
+    clubId: string
 }
 
-export default function ClubDashboard({ data, colors }: Props) {
-    const [selectedPositions, setSelectedPositions] = React.useState<string[]>([])
-    const [nameFilter, setNameFilter] = React.useState("")
-
-    const filteredData = data
-        .filter((player) => !selectedPositions.length || selectedPositions.includes(player.position))
-        .filter((player) => player.name.toLowerCase().includes(nameFilter.toLowerCase()))
-
-    const chartData = formatChartData(filteredData)
+export default function ClubDashboard({
+    data,
+    colors,
+    totalBaseSal,
+    totalGuarComp,
+    reports,
+    reportValue,
+    clubId
+}: Props) {
+    const chartData = formatChartData(data)
 
     return (
-        <>
-            <Card className="my-4">
-                <CardContent className="overflow-hidden space-y-2">
+        <div className="flex flex-col gap-4 min-h-0">
+            <Card className="min-h-0 border-0 shadow-none bg-transparent py-0 gap-0 md:border md:shadow-sm md:bg-card md:py-6">
+                <CardContent className="min-h-0 flex flex-col overflow-hidden px-0 md:px-6">
                     <ClubPlayersTable
                         columns={clubPlayerColumns}
-                        data={filteredData}
-                        selectedPositions={selectedPositions}
-                        onPositionsChange={setSelectedPositions}
-                        nameFilter={nameFilter}
-                        onNameFilterChange={setNameFilter}
+                        data={data}
+                        reportSelector={<ClubSelectReport reports={reports} defaultReport={reportValue} clubId={clubId}/>}
+                        totalBaseSal={totalBaseSal}
+                        totalGuarComp={totalGuarComp}
                     />
                 </CardContent>
             </Card>
@@ -40,7 +46,7 @@ export default function ClubDashboard({ data, colors }: Props) {
                     <ClubIDChart data={chartData} colors={colors}/>
                 </CardContent>
             </Card>
-        </>
+        </div>
     )
 }
 

@@ -27,9 +27,14 @@ export function formatData(clubRecords: PlayerRecord[], year: string, season: st
         position: record.position,
         baseSal: record.basesalary,
         guarComp: record.guaranteedcomp,
-        reportYear: reportValue
+        reportYear: reportValue,
+        pctOfPayroll: 0
       })
     }
+  }
+
+  for (const player of data){
+    player.pctOfPayroll = totalGuarComp ? (player.guarComp / totalGuarComp) * 100 : 0
   }
 
   data.sort((a,b) => b.guarComp - a.guarComp)
