@@ -4,7 +4,7 @@
     "clubid": "ATL",
     "yearfirst": "2017",
     "yearfinal": "0",
-    "colorprimary": "#450a0a",
+    "colorprimary": "#7f1d1d",
     "colorsecondary": "#0a0a0a"
   },
   {
@@ -60,7 +60,7 @@
     "clubid": "COL",
     "yearfirst": "1996",
     "yearfinal": "0",
-    "colorprimary": "#450a0a",
+    "colorprimary": "#7f1d1d",
     "colorsecondary": "#7dd3fc"
   },
   {
@@ -92,7 +92,7 @@
     "clubid": "KC",
     "yearfirst": "1996",
     "yearfinal": "0",
-    "colorprimary": "#172554",
+    "colorprimary": "#1e3a8a",
     "colorsecondary": "#7dd3fc"
   },
   {
@@ -148,7 +148,7 @@
     "clubid": "NE",
     "yearfirst": "1996",
     "yearfinal": "0",
-    "colorprimary": "#172554",
+    "colorprimary": "#1e3a8a",
     "colorsecondary": "#dc2626"
   },
   {
@@ -180,7 +180,7 @@
     "clubid": "PHI",
     "yearfirst": "2010",
     "yearfinal": "0",
-    "colorprimary": "#172554",
+    "colorprimary": "#1e3a8a",
     "colorsecondary": "#998950"
   },
   {
@@ -188,7 +188,7 @@
     "clubid": "POR",
     "yearfirst": "2011",
     "yearfinal": "0",
-    "colorprimary": "#052e16",
+    "colorprimary": "#14532d",
     "colorsecondary": "#f59e0b"
   },
   {
@@ -204,7 +204,7 @@
     "clubid": "RSL",
     "yearfirst": "2005",
     "yearfinal": "0",
-    "colorprimary": "#450a0a",
+    "colorprimary": "#7f1d1d",
     "colorsecondary": "#172554"
   },
   {
@@ -212,7 +212,7 @@
     "clubid": "SD",
     "yearfirst": "2025",
     "yearfinal": "0",
-    "colorprimary": "#1e293b",
+    "colorprimary": "#334155",
     "colorsecondary": "#1f2937"
   },
   {
@@ -220,7 +220,7 @@
     "clubid": "SEA",
     "yearfirst": "2009",
     "yearfinal": "0",
-    "colorprimary": "#4ade80",
+    "colorprimary": "#22c55e",
     "colorsecondary": "#0e7490"
   },
   {
@@ -252,7 +252,7 @@
     "clubid": "VAN",
     "yearfirst": "2011",
     "yearfinal": "0",
-    "colorprimary": "#172554",
+    "colorprimary": "#1e3a8a",
     "colorsecondary": "#fafafa"
   }
 ]

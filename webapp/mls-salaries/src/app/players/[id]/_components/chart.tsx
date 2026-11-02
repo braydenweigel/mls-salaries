@@ -8,6 +8,7 @@ import { formatCompactCurrency } from "@/lib/utils"
 import React from "react"
 
 const CHART_AREA_CLIP_ID = "player-chart-area-clip"
+const CHART_AREA_GRADIENT_ID = "player-chart-area-gradient"
 
 type ChartDatum = {
     report: string,
@@ -118,6 +119,12 @@ export default function PlayerIDChart({
                             onClick={handleChartClick}
                         >
                             <Customized component={ChartAreaClipDefs}/>
+                            <defs>
+                                <linearGradient id={CHART_AREA_GRADIENT_ID} x1="0" y1="0" x2="0" y2="1">
+                                    <stop offset="5%" stopColor={colors.primary} stopOpacity={0.8}/>
+                                    <stop offset="95%" stopColor={colors.primary} stopOpacity={0.4}/>
+                                </linearGradient>
+                            </defs>
                             <CartesianGrid vertical={false} fill="var(--secondary)" fillOpacity={1} ry={8}/>
                             <XAxis
                                 dataKey="report"
@@ -142,9 +149,9 @@ export default function PlayerIDChart({
                             <Area
                                 dataKey="guaranteedComp"
                                 type="linear"
-                                fill={colors.primary}
-                                fillOpacity={0.35}
+                                fill={`url(#${CHART_AREA_GRADIENT_ID})`}
                                 stroke={colors.primary}
+                                strokeWidth={2.5}
                                 dot={(dotProps: unknown) => renderDot(dotProps)}
                                 activeDot={{ r: isMobile ? 4 : 5 }}
                             />
@@ -153,6 +160,7 @@ export default function PlayerIDChart({
                                 type="linear"
                                 fill="none"
                                 stroke={colors.primary}
+                                strokeWidth={2.5}
                                 strokeDasharray="5 5"
                                 dot={(dotProps: unknown) => renderDot(dotProps)}
                                 activeDot={{ r: isMobile ? 4 : 5 }}
