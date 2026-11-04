@@ -23,6 +23,7 @@ import {
 import { Button } from "@/components/ui/button";
 import React from "react";
 import { Input } from "@/components/ui/input";
+import { ExportCsvButton } from "@/components/lib/ExportCsvButton";
 import { ArrowUpDown, Columns3, Search } from "lucide-react";
 import { TableClub } from "./clubTableColumns";
 import { cn } from "@/lib/utils";
@@ -38,6 +39,7 @@ interface DataTableProps<TData extends TableClub, TValue>{
     data: TData[]
     reportSelector?: React.ReactNode
     filters?: React.ReactNode
+    exportFilename?: string
 }
 
 const MOBILE_HIDDEN_COLUMNS = new Set(["totalBaseSal"])
@@ -58,7 +60,8 @@ export function ClubTable<TData extends TableClub, TValue>({
     columns,
     data,
     reportSelector,
-    filters
+    filters,
+    exportFilename
 }: DataTableProps<TData, TValue>) {
     const [sorting, setSorting] = React.useState<SortingState>([{id: "totalGuarComp", desc: true}])
     const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>([])
@@ -89,9 +92,20 @@ export function ClubTable<TData extends TableClub, TValue>({
             <div className="shrink-0 flex flex-wrap items-center gap-2 py-2">
                 <React.Fragment key="report-selector">{reportSelector}</React.Fragment>
                 <React.Fragment key="filters">{filters}</React.Fragment>
+                <ExportCsvButton
+                    data={rows.map((row) => row.original)}
+                    columns={[
+                        { key: "clubName", label: "Club" },
+                        { key: "totalBaseSal", label: "Base Salary" },
+                        { key: "totalGuarComp", label: "Guaranteed Compensation" },
+                        { key: "reportYear", label: "Report" },
+                    ]}
+                    filename={exportFilename ?? "clubs.csv"}
+                    buttonClassName="ml-auto hidden md:flex"
+                />
                 <DropdownMenu>
                     <DropdownMenuTrigger asChild>
-                        <Button variant="outline" className="ml-auto hidden md:flex text-xs md:text-sm">
+                        <Button variant="outline" className="hidden md:flex text-xs md:text-sm">
                             <Columns3 className="size-4"/>
                             Columns
                         </Button>
