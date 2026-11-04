@@ -26,7 +26,13 @@ export default function ClubDashboard({
     reportValue,
     clubId
 }: Props) {
-    const chartData = formatChartData(data)
+    const [positionFilter, setPositionFilter] = React.useState<string[]>([])
+
+    const filteredData = positionFilter.length
+        ? data.filter((player) => positionFilter.includes(player.position))
+        : data
+
+    const chartData = formatChartData(filteredData)
 
     return (
         <div className="flex flex-col gap-4 min-h-0">
@@ -34,12 +40,14 @@ export default function ClubDashboard({
                 <CardContent className="min-h-0 flex flex-col overflow-hidden px-0 md:px-6">
                     <ClubPlayersTable
                         columns={clubPlayerColumns}
-                        data={data}
+                        data={filteredData}
                         reportSelector={<ClubSelectReport reports={reports} defaultReport={reportValue} clubId={clubId}/>}
                         totalBaseSal={totalBaseSal}
                         totalGuarComp={totalGuarComp}
                         accentColor={colors.primary}
                         exportFilename={`${clubId}-roster-${reportValue}.csv`}
+                        positionFilter={positionFilter}
+                        onPositionFilterChange={setPositionFilter}
                     />
                 </CardContent>
             </Card>

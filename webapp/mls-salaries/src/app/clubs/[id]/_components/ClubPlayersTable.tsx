@@ -43,6 +43,8 @@ interface DataTableProps<TData extends TableClubPlayers, TValue>{
     totalGuarComp: number
     accentColor?: string
     exportFilename?: string
+    positionFilter: string[]
+    onPositionFilterChange: (value: string[]) => void
 }
 
 const MOBILE_HIDDEN_COLUMNS = new Set(["position", "baseSal", "pctOfPayroll"])
@@ -61,7 +63,9 @@ export function ClubPlayersTable<TData extends TableClubPlayers, TValue>({
     totalBaseSal,
     totalGuarComp,
     accentColor,
-    exportFilename
+    exportFilename,
+    positionFilter,
+    onPositionFilterChange
 }: DataTableProps<TData, TValue>) {
     const [sorting, setSorting] = React.useState<SortingState>([{id: "guarComp", desc: true}])
     const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>([])
@@ -103,8 +107,8 @@ export function ClubPlayersTable<TData extends TableClubPlayers, TValue>({
                     />
                 </div>
                 <PositionFilter
-                    value={(table.getColumn("position")?.getFilterValue() as string[]) ?? []}
-                    onChange={(value) => table.getColumn("position")?.setFilterValue(value.length ? value : undefined)}
+                    value={positionFilter}
+                    onChange={onPositionFilterChange}
                     applyColor={accentColor}
                 />
                 <ExportCsvButton
