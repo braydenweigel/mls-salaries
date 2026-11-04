@@ -3,13 +3,14 @@
 import React from "react"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
+import { ExportCsvButton } from "@/components/lib/ExportCsvButton"
 import { ClubFilter } from "@/components/lib/ClubFilter"
 import { ClubTable } from "./ClubTable"
 import { clubColumns, TableClub } from "./clubTableColumns"
 import ClubsBarChart from "./ClubsBarChart"
 import ClubsSelectReport from "./ClubsSelectReport"
 import Link from "next/link"
-import { ArrowLeftRight, Download, Shuffle } from "lucide-react"
+import { ArrowLeftRight, Shuffle } from "lucide-react"
 
 interface Props {
     data: TableClub[]
@@ -57,10 +58,16 @@ export default function ClubsDashboard({
                     </p>
                 </div>
                 <div className="hidden md:flex items-center gap-2 shrink-0">
-                    <Button variant="outline" className="text-xs md:text-sm">
-                        <Download className="size-4"/>
-                        Export CSV
-                    </Button>
+                    <ExportCsvButton
+                        data={filteredData}
+                        columns={[
+                            { key: "clubName", label: "Club" },
+                            { key: "totalBaseSal", label: "Base Salary" },
+                            { key: "totalGuarComp", label: "Guaranteed Compensation" },
+                            { key: "reportYear", label: "Report" },
+                        ]}
+                        filename={`clubs-${reportValue}.csv`}
+                    />
                     <Button asChild className="text-xs md:text-sm">
                         <Link href="/clubs/compare">
                             <ArrowLeftRight className="size-4"/>

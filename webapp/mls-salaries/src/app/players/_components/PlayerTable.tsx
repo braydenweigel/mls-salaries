@@ -27,6 +27,7 @@ import React from "react";
 import { Input } from "@/components/ui/input";
 import { PositionFilter } from "@/components/lib/PositionFilter";
 import { ClubFilter } from "@/components/lib/ClubFilter";
+import { ExportCsvButton } from "@/components/lib/ExportCsvButton";
 import { ArrowLeft, ArrowRight, ArrowUpDown, Columns3, Search } from "lucide-react";
 import SelectNumRows from "./SelectNumRows";
 import { Label } from "@/components/ui/label";
@@ -43,6 +44,7 @@ interface DataTableProps<TData extends TablePlayer, TValue>{
     columns: ColumnDef<TData, TValue>[];
     data: TData[]
     reportSelector?: React.ReactNode
+    exportFilename?: string
 }
 
 const MOBILE_HIDDEN_COLUMNS = new Set(["club", "position", "baseSal"])
@@ -80,7 +82,8 @@ function useIsMobile() {
 export function PlayerTable<TData extends TablePlayer, TValue>({
     columns,
     data,
-    reportSelector
+    reportSelector,
+    exportFilename
 }: DataTableProps<TData, TValue>) {
     const isMobile = useIsMobile()
     const [sorting, setSorting] = React.useState<SortingState>([{id: "guarComp", desc: true}])
@@ -152,9 +155,22 @@ export function PlayerTable<TData extends TablePlayer, TValue>({
                     onChange={(value) => table.getColumn("club")?.setFilterValue(value.length ? value : undefined)}
                     clubs={clubs}
                 />
+                <ExportCsvButton
+                    data={table.getSortedRowModel().rows.map((row) => row.original)}
+                    columns={[
+                        { key: "name", label: "Player" },
+                        { key: "club", label: "Club" },
+                        { key: "position", label: "Position" },
+                        { key: "baseSal", label: "Base Salary" },
+                        { key: "guarComp", label: "Guaranteed Compensation" },
+                        { key: "reportYear", label: "Report" },
+                    ]}
+                    filename={exportFilename ?? "players.csv"}
+                    buttonClassName="ml-auto hidden md:flex"
+                />
                 <DropdownMenu>
                     <DropdownMenuTrigger asChild>
-                        <Button variant="outline" className="ml-auto hidden md:flex text-xs md:text-sm">
+                        <Button variant="outline" className="hidden md:flex text-xs md:text-sm">
                             <Columns3 className="size-4"/>
                             Columns
                         </Button>

@@ -4,7 +4,8 @@ import {
 } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
-import { ArrowLeftRight, ChevronLeft, Download } from 'lucide-react'
+import { ExportCsvButton } from '@/components/lib/ExportCsvButton'
+import { ArrowLeftRight, ChevronLeft } from 'lucide-react'
 import Link from 'next/link'
 import { isValidClub, isValidPlayer} from '@/lib/storeUtils'
 import { cache } from "react"
@@ -59,6 +60,13 @@ export default async function PlayerPage({ params }: { params: Promise<{ id: str
   const initials = getInitials(name)
   const seasonRange = getSeasonRanges(playerRecords)
   const data = formatData(playerRecords)
+  const exportData = playerRecords.map((record, index) => ({
+    period: `${record.recordseason} ${record.recordyear}`,
+    club: playerClubs[index].clubname,
+    position: POSITION_LABELS[record.position] ?? record.position,
+    baseSalary: record.basesalary ? record.basesalary : record.guaranteedcomp,
+    guaranteedComp: record.guaranteedcomp,
+  }))
 
   const colors = {
     primary: playerClubs[0].colorprimary,
@@ -95,10 +103,19 @@ export default async function PlayerPage({ params }: { params: Promise<{ id: str
         </div>
       </div>
       <div className="flex flex-col gap-2 md:flex-row md:items-center md:w-fit">
-        <Button variant="outline" className="hidden md:flex text-xs md:text-sm">
-          <Download className="size-4"/>
-          Export CSV
-        </Button>
+        <ExportCsvButton
+          data={exportData}
+          columns={[
+            { key: "period", label: "Report" },
+            { key: "club", label: "Club" },
+            { key: "position", label: "Position" },
+            { key: "baseSalary", label: "Base Salary" },
+            { key: "guaranteedComp", label: "Guaranteed Compensation" },
+          ]}
+          filename={`${name.replace(/\s+/g, "-").toLowerCase()}-salary-history.csv`}
+          buttonClassName="hidden md:flex"
+          accentColor={colors.primary}
+        />
         <Button asChild className="w-full md:w-fit shrink-0" style={{ backgroundColor: colors.primary }}>
           <Link href={`/players/compare?players=${player.playerid}`}>
             <ArrowLeftRight className="size-4"/>

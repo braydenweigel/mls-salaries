@@ -24,7 +24,8 @@ import { Button } from "@/components/ui/button";
 import React from "react";
 import { Input } from "@/components/ui/input";
 import { PositionFilter } from "@/components/lib/PositionFilter";
-import { ArrowUpDown, Download, Search } from "lucide-react";
+import { ExportCsvButton } from "@/components/lib/ExportCsvButton";
+import { ArrowUpDown, Search } from "lucide-react";
 import { TableClubPlayers } from "./clubPlayerTableColumns";
 import { cn } from "@/lib/utils";
 import {
@@ -40,7 +41,8 @@ interface DataTableProps<TData extends TableClubPlayers, TValue>{
     reportSelector?: React.ReactNode
     totalBaseSal: number
     totalGuarComp: number
-    positionFilterColor?: string
+    accentColor?: string
+    exportFilename?: string
 }
 
 const MOBILE_HIDDEN_COLUMNS = new Set(["position", "baseSal", "pctOfPayroll"])
@@ -58,7 +60,8 @@ export function ClubPlayersTable<TData extends TableClubPlayers, TValue>({
     reportSelector,
     totalBaseSal,
     totalGuarComp,
-    positionFilterColor
+    accentColor,
+    exportFilename
 }: DataTableProps<TData, TValue>) {
     const [sorting, setSorting] = React.useState<SortingState>([{id: "guarComp", desc: true}])
     const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>([])
@@ -102,12 +105,22 @@ export function ClubPlayersTable<TData extends TableClubPlayers, TValue>({
                 <PositionFilter
                     value={(table.getColumn("position")?.getFilterValue() as string[]) ?? []}
                     onChange={(value) => table.getColumn("position")?.setFilterValue(value.length ? value : undefined)}
-                    applyColor={positionFilterColor}
+                    applyColor={accentColor}
                 />
-                <Button variant="outline" className="ml-auto hidden md:flex text-xs md:text-sm">
-                    <Download className="size-4"/>
-                    Export CSV
-                </Button>
+                <ExportCsvButton
+                    data={rows.map((row) => ({ ...row.original, pctOfPayroll: Math.round(row.original.pctOfPayroll * 10) / 10 }))}
+                    columns={[
+                        { key: "name", label: "Player" },
+                        { key: "position", label: "Position" },
+                        { key: "baseSal", label: "Base Salary" },
+                        { key: "guarComp", label: "Guaranteed Compensation" },
+                        { key: "pctOfPayroll", label: "% of Payroll" },
+                        { key: "reportYear", label: "Report" },
+                    ]}
+                    filename={exportFilename ?? "club-roster.csv"}
+                    buttonClassName="ml-auto hidden md:flex"
+                    accentColor={accentColor}
+                />
                 <DropdownMenu>
                     <DropdownMenuTrigger asChild>
                         <Button variant="outline" className="ml-auto flex md:hidden text-xs">

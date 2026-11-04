@@ -6,7 +6,7 @@ import { isValidClub } from "@/lib/storeUtils"
 import { CURRENT_YEAR, reports } from "@/lib/globals"
 import React from "react"
 import Link from "next/link"
-import { ArrowLeftRight, Download, Shuffle } from "lucide-react"
+import { ArrowLeftRight, Shuffle } from "lucide-react"
 import records from "@/lib/data/records.json"
 import clubs from "@/lib/data/clubs.json"
 import type { PlayerRecord, Club } from "@/lib/data/types"
@@ -53,10 +53,6 @@ export default async function Players({ searchParams }: { searchParams: Promise<
           </p>
         </div>
         <div className="hidden md:flex items-center gap-2 shrink-0">
-          <Button variant="outline" className="text-xs md:text-sm">
-            <Download className="size-4"/>
-            Export CSV
-          </Button>
           <Button asChild className="text-xs md:text-sm">
             <Link href="/players/compare">
               <ArrowLeftRight className="size-4"/>
@@ -71,6 +67,7 @@ export default async function Players({ searchParams }: { searchParams: Promise<
             columns={playerColumns}
             data={data}
             reportSelector={<PlayersSelectReport reports={reports} defaultReport={reportValue}/>}
+            exportFilename={`players-${reportValue}.csv`}
           />
         </CardContent>
       </Card>

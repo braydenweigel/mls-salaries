@@ -38,7 +38,8 @@ export default function ClubDashboard({
                         reportSelector={<ClubSelectReport reports={reports} defaultReport={reportValue} clubId={clubId}/>}
                         totalBaseSal={totalBaseSal}
                         totalGuarComp={totalGuarComp}
-                        positionFilterColor={colors.primary}
+                        accentColor={colors.primary}
+                        exportFilename={`${clubId}-roster-${reportValue}.csv`}
                     />
                 </CardContent>
             </Card>

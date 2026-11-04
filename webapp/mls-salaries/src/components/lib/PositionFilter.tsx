@@ -65,6 +65,7 @@ export function PositionFilter({ value, onChange, applyColor }: Props) {
                         <Checkbox
                             checked={selected.includes(pos)}
                             onCheckedChange={() => toggle(pos)}
+                            style={applyColor && selected.includes(pos) ? { backgroundColor: applyColor, borderColor: applyColor } : undefined}
                         />
                         <span>{pos}</span>
                         </label>
