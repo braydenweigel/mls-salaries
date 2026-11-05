@@ -4,7 +4,7 @@ import { Club, PlayerRecord } from "@/lib/data/types";
 import { useEffect, useRef, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Button } from "@/components/ui/button";
-import { Card } from "@/components/ui/card";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import AddClubsDialog from "./_components/add-clubs-dialog";
 import CompareClubsHeader from "./_components/compare-clubs-header";
 import CompareClubsTable from "./_components/compare-clubs-table";
@@ -12,7 +12,9 @@ import CompareClubsChart from "./_components/compare-clubs-chart";
 import { initialClubList } from "@/lib/clubs";
 import { buildClubListFromIds, getClubIdsFromList } from "@/lib/compare-clubs-utils";
 import { Empty, EmptyDescription, EmptyHeader, EmptyMedia, EmptyTitle } from "@/components/ui/empty";
-import { Shield } from "lucide-react";
+import { Check, Link2, Shield } from "lucide-react";
+import Link from "next/link";
+import { cn } from "@/lib/utils";
 
 export type ClubData = {
   club: Club,
@@ -40,11 +42,17 @@ export default function CompareClubs() {
   )
   const [addClubsOpen, setAddClubsOpen] = useState(false)
   const isInitialRender = useRef(true)
-  const headerScrollRef = useRef<HTMLDivElement>(null)
+  const [copied, setCopied] = useState(false)
 
-  const handleTableScroll = (scrollLeft: number) => {
-    if (headerScrollRef.current) headerScrollRef.current.style.transform = `translateX(-${scrollLeft}px)`
-  }
+  // AddClubsDialog only renders while numClubs < 4; if a 4th club is added from
+  // inside the (still open) dialog, it unmounts immediately without ever calling
+  // onOpenChange(false), which would otherwise leave addClubsOpen stuck true with no
+  // dialog left on screen - and the whole page permanently pointer-events-none below.
+  useEffect(() => {
+    if (clubList.numClubs >= 4) {
+      setAddClubsOpen(false)
+    }
+  }, [clubList.numClubs])
 
   useEffect(() => {
     if (isInitialRender.current) {
@@ -69,43 +77,104 @@ export default function CompareClubs() {
     setClubList(initialClubList)
   }
 
+  const handleCopyLink = async () => {
+    try {
+      await navigator.clipboard.writeText(window.location.href)
+      setCopied(true)
+      setTimeout(() => setCopied(false), 1500)
+    } catch {
+      // clipboard unavailable, ignore
+    }
+  }
+
   const isEmpty = clubList.numClubs === 0
+  // AddClubsDialog (and the open dialog it renders) only exists in the tree while
+  // numClubs < 4 - this must stay in sync with that so the guard below never gets stuck
+  // on with no dialog actually present to interact with or close.
+  const addClubsDialogVisible = addClubsOpen && clubList.numClubs < 4
 
   return (
-    <div className={`flex flex-col ${isEmpty ? "flex-1 min-h-0 items-center justify-center" : "gap-4"}`}>
-      <div className={`flex items-center ${isEmpty ? "order-2 justify-center" : "order-1 justify-between"}`}>
-        <AddClubsDialog clubList={clubList} setClubList={setClubList} open={addClubsOpen} setOpen={setAddClubsOpen}/>
-        {!isEmpty && <Button variant="destructive" onClick={handleReset}>Reset</Button>}
+    // pointer-events-none while the add-club dialog is open: don't rely on Radix's own
+    // body-level pointer-events lock, which is implemented with a variable shared across
+    // every Dialog instance in the app and can be left stuck/released early by React Strict
+    // Mode's double-invoked effects or a Fast Refresh remount, letting clicks (e.g. a card's
+    // remove button) reach through to the page behind the dialog. The dialog itself renders
+    // via a portal to document.body, so it's not a DOM descendant of this div and is unaffected.
+    <div className={cn("flex flex-col gap-4", addClubsDialogVisible && "pointer-events-none")}>
+      <div className="flex items-center gap-1.5 text-sm text-muted-foreground">
+        <Link href="/clubs" className="hover:underline">Clubs</Link>
+        <span>/</span>
+        <span className="text-foreground">Compare</span>
       </div>
-      <div className={isEmpty ? "order-1" : "order-2"}>
-        {isEmpty ? (
-          <Empty>
-            <EmptyHeader>
-              <EmptyMedia variant="icon">
-                <Shield />
-              </EmptyMedia>
-              <EmptyTitle>No Clubs Added</EmptyTitle>
-              <EmptyDescription>Add clubs to start comparing their stats.</EmptyDescription>
-            </EmptyHeader>
-          </Empty>
-        ) : (
-          <div className="flex flex-col gap-4">
-            <Card className="flex flex-col w-full min-h-0 h-[70vh] overflow-x-hidden gap-0">
-              <div className="border-b pb-2">
-                <div ref={headerScrollRef} className="flex flex-row w-full justify-start">
-                  {clubList.data.map((club) => (
-                    club.club ? <CompareClubsHeader key={club.stackID + club.club.reportValue + club.club.club.clubname} clubList={clubList} setClubList={setClubList} club={club.club} id={club.stackID}/> : null
-                  ))}
-                </div>
-              </div>
-              <CompareClubsTable clubList={clubList} onScroll={handleTableScroll}/>
-            </Card>
-            <Card className="hidden md:block">
-              <CompareClubsChart clubList={clubList}/>
-            </Card>
+      <div className="flex items-start justify-between gap-4">
+        <div>
+          <h1 className="text-2xl md:text-3xl font-bold">Compare clubs</h1>
+          <p className="text-sm text-muted-foreground mt-1">
+            Put up to four club payrolls side by side, each from any release.
+          </p>
+        </div>
+        {!isEmpty && (
+          <div className="flex items-center gap-2 shrink-0">
+            <Button variant="ghost" onClick={handleReset} className="text-xs md:text-sm">Clear all</Button>
+            <Button variant="outline" onClick={handleCopyLink} className="text-xs md:text-sm">
+              {copied ? <Check className="size-4"/> : <Link2 className="size-4"/>}
+              {copied ? "Copied" : "Copy link"}
+            </Button>
           </div>
         )}
       </div>
+
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
+        {clubList.data.map((entry) => (
+          entry.club && (
+            <CompareClubsHeader
+              key={entry.stackID + entry.club.reportValue + entry.club.club.clubname}
+              clubList={clubList}
+              setClubList={setClubList}
+              club={entry.club}
+              id={entry.stackID}
+            />
+          )
+        ))}
+        {clubList.numClubs < 4 && (
+          <AddClubsDialog
+            clubList={clubList}
+            setClubList={setClubList}
+            open={addClubsOpen}
+            setOpen={setAddClubsOpen}
+            className={isEmpty ? "col-span-full" : undefined}
+          />
+        )}
+      </div>
+
+      {isEmpty ? (
+        <Empty className="border-dashed">
+          <EmptyHeader>
+            <EmptyMedia variant="icon">
+              <Shield/>
+            </EmptyMedia>
+            <EmptyTitle>Pick clubs to compare</EmptyTitle>
+            <EmptyDescription>
+              Add up to four clubs to compare their payrolls.
+            </EmptyDescription>
+          </EmptyHeader>
+        </Empty>
+      ) : (
+        <div className="flex flex-col gap-4">
+          <Card>
+            <CardHeader>
+              <CardTitle>Roster payroll distribution</CardTitle>
+              <CardDescription>
+                Compares player pay across rosters, from lowest to highest earner. Hover any bar for details.
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <CompareClubsChart clubList={clubList}/>
+            </CardContent>
+          </Card>
+          <CompareClubsTable clubList={clubList}/>
+        </div>
+      )}
     </div>
   );
 }

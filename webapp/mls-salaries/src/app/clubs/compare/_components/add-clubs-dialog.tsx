@@ -8,15 +8,17 @@ import { Plus } from "lucide-react"
 import { Input } from "@/components/ui/input"
 import AddClubsItem from "./add-clubs-item"
 import { initialClubList } from "@/lib/clubs"
+import { cn } from "@/lib/utils"
 
 type AddClubsDialogProps = {
     clubList: ClubList
     setClubList: React.Dispatch<React.SetStateAction<ClubList>>
     open: boolean
     setOpen: React.Dispatch<React.SetStateAction<boolean>>
+    className?: string
 }
 
-export default function AddClubsDialog({clubList, setClubList, open, setOpen}: AddClubsDialogProps){
+export default function AddClubsDialog({clubList, setClubList, open, setOpen, className}: AddClubsDialogProps){
     const [filter, setFilter] = useState("")
 
     const allClubs = clubs as Club[]
@@ -42,10 +44,19 @@ export default function AddClubsDialog({clubList, setClubList, open, setOpen}: A
     return (
         <Dialog onOpenChange={setOpen} open={open}>
             <DialogTrigger asChild>
-                <Button variant="outline">
-                    <Plus className=" h-[1.2rem] w-[1.2rem] scale-100 transition-all" />
-                    <span>Add Club</span>
-                </Button>
+                <button
+                    type="button"
+                    className={cn(
+                        "flex h-full min-h-[108px] w-full flex-col items-center justify-center gap-2 rounded-xl border border-dashed px-4 py-6 text-center transition-colors hover:bg-muted/50",
+                        className
+                    )}
+                >
+                    <span className="flex size-9 items-center justify-center rounded-full bg-muted">
+                        <Plus className="size-4"/>
+                    </span>
+                    <span className="text-sm font-semibold">{clubList.numClubs === 0 ? "Add your first club" : "Add club"}</span>
+                    <span className="text-xs text-muted-foreground">{4 - clubList.numClubs} of 4 slots open</span>
+                </button>
             </DialogTrigger>
             <DialogContent className="h-[80vh] flex flex-col">
               <DialogHeader className="h-fit">

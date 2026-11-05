@@ -56,12 +56,13 @@ export default function CompareClubsChart({clubList}: CompareClubsChartProps){
                     clip-path: url(#${CHART_BAR_CLIP_ID});
                 }
             `}</style>
-            <ChartContainer config={chartConfig} className="px-4">
+            <ChartContainer config={chartConfig} className="px-4 aspect-auto h-[240px]">
                 <BarChart data={data} barGap={0}>
                     <Customized component={ChartBarClipDefs}/>
                     <CartesianGrid vertical={false} fill="var(--secondary)" fillOpacity={1} ry={8}/>
                     <XAxis
                         tick={false}
+                        height={20}
                     />
                     <YAxis
                         type="number"
