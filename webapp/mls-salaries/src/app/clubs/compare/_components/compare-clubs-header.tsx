@@ -71,7 +71,7 @@ export default function CompareClubsHeader({clubList, setClubList, club, id}: Co
                 </Button>
             </div>
 
-            <div className="flex items-stretch gap-1">
+            <div className="hidden sm:flex items-stretch gap-1">
                 <Button
                     variant="outline"
                     className="h-auto w-7 shrink-0 rounded-md px-0"
@@ -98,7 +98,40 @@ export default function CompareClubsHeader({clubList, setClubList, club, id}: Co
                 </Button>
             </div>
 
-            <div>
+            <div className="sm:hidden flex items-center justify-between gap-2">
+                <div>
+                    <p className="text-sm font-bold tabular-nums">${club.guarComp.toLocaleString()}</p>
+                    <p className="text-xs text-muted-foreground">Base ${club.baseSalary.toLocaleString()}</p>
+                </div>
+                <div className="flex items-stretch gap-1 shrink-0">
+                    <Button
+                        variant="outline"
+                        className="h-auto w-6 shrink-0 rounded-md px-0"
+                        onClick={() => previousReport && setReportValue(previousReport)}
+                        disabled={!previousReport}
+                        aria-label="Previous release"
+                    >
+                        <ChevronLeft className="size-3.5"/>
+                    </Button>
+                    <SelectReport
+                        reports={clubReports}
+                        defaultReport={reportValue}
+                        onReportValueChange={(report) => setReportValue(report)}
+                        size="sm"
+                        className="w-[108px] text-[11px]"
+                    />
+                    <Button
+                        variant="outline"
+                        className="h-auto w-6 shrink-0 rounded-md px-0"
+                        onClick={() => nextReport && setReportValue(nextReport)}
+                        disabled={!nextReport}
+                        aria-label="Next release"
+                    >
+                        <ChevronRight className="size-3.5"/>
+                    </Button>
+                </div>
+            </div>
+            <div className="hidden sm:block">
                 <p className="text-xs text-muted-foreground">Total guaranteed comp.</p>
                 <p className="text-lg font-bold tabular-nums">${club.guarComp.toLocaleString()}</p>
                 <p className="text-xs text-muted-foreground">Base ${club.baseSalary.toLocaleString()}</p>

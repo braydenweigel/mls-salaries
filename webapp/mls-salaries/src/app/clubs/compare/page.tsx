@@ -101,22 +101,22 @@ export default function CompareClubs() {
     // remove button) reach through to the page behind the dialog. The dialog itself renders
     // via a portal to document.body, so it's not a DOM descendant of this div and is unaffected.
     <div className={cn("flex flex-col gap-4", addClubsDialogVisible && "pointer-events-none")}>
-      <div className="flex items-center gap-1.5 text-sm text-muted-foreground">
+      <div className="hidden sm:flex items-center gap-1.5 text-sm text-muted-foreground">
         <Link href="/clubs" className="hover:underline">Clubs</Link>
         <span>/</span>
         <span className="text-foreground">Compare</span>
       </div>
-      <div className="flex items-start justify-between gap-4">
+      <div className="flex items-center justify-between gap-4 sm:items-start">
         <div>
           <h1 className="text-2xl md:text-3xl font-bold">Compare clubs</h1>
-          <p className="text-sm text-muted-foreground mt-1">
-            Put up to four club payrolls side by side, each from any release.
+          <p className="hidden sm:block text-sm text-muted-foreground mt-1">
+            Put up to four club payrolls side by side, each from any report.
           </p>
         </div>
         {!isEmpty && (
           <div className="flex items-center gap-2 shrink-0">
             <Button variant="ghost" onClick={handleReset} className="text-xs md:text-sm">Clear all</Button>
-            <Button variant="outline" onClick={handleCopyLink} className="text-xs md:text-sm">
+            <Button variant="outline" onClick={handleCopyLink} className="hidden sm:flex text-xs md:text-sm">
               {copied ? <Check className="size-4"/> : <Link2 className="size-4"/>}
               {copied ? "Copied" : "Copy link"}
             </Button>
@@ -124,7 +124,7 @@ export default function CompareClubs() {
         )}
       </div>
 
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
         {clubList.data.map((entry) => (
           entry.club && (
             <CompareClubsHeader
@@ -161,7 +161,7 @@ export default function CompareClubs() {
         </Empty>
       ) : (
         <div className="flex flex-col gap-4">
-          <Card>
+          <Card className="hidden sm:block">
             <CardHeader>
               <CardTitle>Roster payroll distribution</CardTitle>
               <CardDescription>
