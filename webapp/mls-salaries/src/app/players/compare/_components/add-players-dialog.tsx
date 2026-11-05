@@ -8,15 +8,17 @@ import { Plus } from "lucide-react"
 import { Input } from "@/components/ui/input"
 import AddPlayersItem from "./add-players-item"
 import { initialPlayerList } from "@/lib/players"
+import { cn } from "@/lib/utils"
 
 type AddPlayersDialogProps = {
     playerList: PlayerList
     setPlayerList: React.Dispatch<React.SetStateAction<PlayerList>>
     open: boolean
     setOpen: React.Dispatch<React.SetStateAction<boolean>>
+    className?: string
 }
 
-export default function AddClubsDialog({playerList, setPlayerList, open, setOpen}: AddPlayersDialogProps){
+export default function AddClubsDialog({playerList, setPlayerList, open, setOpen, className}: AddPlayersDialogProps){
     const [filter, setFilter] = useState("")
 
     const allPlayers = [...players].sort(
@@ -45,10 +47,19 @@ export default function AddClubsDialog({playerList, setPlayerList, open, setOpen
     return (
         <Dialog onOpenChange={setOpen} open={open}>
             <DialogTrigger asChild>
-                <Button variant="outline">
-                    <Plus className=" h-[1.2rem] w-[1.2rem] scale-100 transition-all" />
-                    <span>Add Player</span>
-                </Button>
+                <button
+                    type="button"
+                    className={cn(
+                        "flex h-full min-h-[108px] w-full flex-col items-center justify-center gap-2 rounded-xl border border-dashed px-4 py-6 text-center transition-colors hover:bg-muted/50",
+                        className
+                    )}
+                >
+                    <span className="flex size-9 items-center justify-center rounded-full bg-muted">
+                        <Plus className="size-4"/>
+                    </span>
+                    <span className="text-sm font-semibold">{playerList.numPlayers === 0 ? "Add your first player" : "Add player"}</span>
+                    <span className="text-xs text-muted-foreground">{4 - playerList.numPlayers} of 4 slots open</span>
+                </button>
             </DialogTrigger>
             <DialogContent className="h-[80vh] flex flex-col">
                 <DialogHeader className="h-fit">

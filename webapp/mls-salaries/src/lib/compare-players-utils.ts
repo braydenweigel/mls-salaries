@@ -55,6 +55,58 @@ export function buildPlayerListFromIds(playerIds: string[]): PlayerList {
     return newList
 }
 
+export const compareColors = [
+    "var(--chart-1)",
+    "var(--chart-2)",
+    "var(--chart-3)",
+    "var(--chart-4)"
+]
+
+function reportSortKey(record: PlayerRecord){
+    return Number(record.recordyear) + (record.recordseason === "Fall" ? 0.5 : 0)
+}
+
+// Mirrors getSeasonRanges in /players/[id]/page.tsx, which splits a player's
+// releases into separate ranges wherever there's a gap (e.g. a season out of the league).
+function getPlayerSeasonRanges(playerRecords: PlayerRecord[]){
+    const reportKeys = Object.keys(reports).sort((a, b) => Number(a) - Number(b))
+    const ranges: { start: { year: string, season: string }, end: { year: string, season: string } }[] = []
+    let current: { start: { year: string, season: string }, end: { year: string, season: string } } | null = null
+
+    for (const key of reportKeys){
+        const report = reports[key]
+        const hasRecord = playerRecords.some((record) => record.recordyear === report.year && record.recordseason === report.season)
+
+        if (hasRecord){
+            current = current ? { start: current.start, end: report } : { start: report, end: report }
+        } else if (current){
+            ranges.push(current)
+            current = null
+        }
+    }
+
+    if (current) ranges.push(current)
+
+    return ranges
+        .map((range) => range.start.year === range.end.year && range.start.season === range.end.season
+            ? `${range.start.year} ${range.start.season}`
+            : `${range.start.year} ${range.start.season} – ${range.end.year} ${range.end.season}`)
+        .join(", ")
+}
+
+export function getPlayerReleaseStats(player: PlayerData){
+    const sorted = [...player.records].sort((a, b) => reportSortKey(a) - reportSortKey(b))
+    const latest = sorted[sorted.length - 1]
+
+    return {
+        count: sorted.length,
+        rangeLabel: getPlayerSeasonRanges(player.records),
+        latestGuaranteed: latest.guaranteedcomp,
+        // records.json has correctly ordered first/last names, unlike players.json
+        displayName: `${latest.firstname} ${latest.lastname}`,
+    }
+}
+
 export function getPlayerIdsFromList(playerList: PlayerList): string[] {
     return playerList.data
         .filter((d) => d.player)

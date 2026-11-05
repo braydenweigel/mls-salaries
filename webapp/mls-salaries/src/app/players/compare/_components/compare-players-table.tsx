@@ -1,25 +1,14 @@
-import React, { useEffect, useState } from "react"
-import { PlayerData, PlayerList } from "../page"
-import { Button } from "@/components/ui/button"
-import { X } from "lucide-react"
+import { Dispatch, SetStateAction, useEffect, useState } from "react"
+import { PlayerList } from "../page"
+import { Card } from "@/components/ui/card"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { reports } from "@/lib/globals"
-import { removePlayerFromList } from "@/lib/compare-players-utils"
+import { compareColors as colors } from "@/lib/compare-players-utils"
 import { formatCompactCurrency } from "@/lib/utils"
 import Link from "next/link"
 
-
-type ComparePlayersHeaderProps = {
-    playerList: PlayerList
-    setPlayerList: React.Dispatch<React.SetStateAction<PlayerList>>
-    player: PlayerData
-    id: "a" | "b" | "c" | "d"
-    index: number
-}
-
 type ComparePlayersTableProps = {
     playerList: PlayerList
-    setPlayerList: React.Dispatch<React.SetStateAction<PlayerList>>
 }
 
 type ComparePlayersRowProps = {
@@ -27,17 +16,16 @@ type ComparePlayersRowProps = {
     reportValue: string
     isMobile: boolean
     hoveredReport: string | null
-    setHoveredReport: React.Dispatch<React.SetStateAction<string | null>>
+    setHoveredReport: Dispatch<SetStateAction<string | null>>
 }
 
 const YEAR_COLUMN_WIDTH = { mobile: 70, desktop: 120 }
 const PLAYER_COLUMN_MIN_WIDTH = { mobile: 110, desktop: 150 }
 
-export default function ComparePlayersTable({playerList, setPlayerList}: ComparePlayersTableProps){
+export default function ComparePlayersTable({playerList}: ComparePlayersTableProps){
     const isMobile = useIsMobile()
     const [hoveredReport, setHoveredReport] = useState<string | null>(null)
     const reportsList = []
-
 
     for (const key in reports){
         if (Number(key) >= Number(playerList.min) && Number(key) <= Number(playerList.max)){
@@ -46,7 +34,6 @@ export default function ComparePlayersTable({playerList, setPlayerList}: Compare
     }
 
     reportsList.sort((a, b) => Number(b) - Number(a))
-    console.log(reportsList)
 
     // Native table-layout: fixed rescales "fixed" columns based on content whenever
     // the table's own width is auto, so column sizing is driven by CSS Grid instead
@@ -58,54 +45,53 @@ export default function ComparePlayersTable({playerList, setPlayerList}: Compare
     const gridTemplateColumns = `${yearWidth}px repeat(${playerList.numPlayers}, minmax(${playerMinWidth}px, 1fr))`
 
     return (
-        <Table className="px-4" style={{display: "grid", gridTemplateColumns}}>
-            <TableHeader className="contents">
-                <TableRow className="contents">
-                    <TableHead className="p-0 whitespace-normal border-b">
-                        <div className="flex h-full items-center px-2 py-1">Year</div>
-                    </TableHead>
-                    {playerList.data.map((p, index) => (
-                        p.player ?
-                        <ComparePlayersHeader
-                            key={p.stackID + p.player.player.playerid}
-                            playerList={playerList} setPlayerList={setPlayerList}
-                            player={p.player} id={p.stackID} index={index}/>
-                        : null
+        <Card className="flex flex-col w-full min-h-0 max-h-[70vh] overflow-hidden gap-3 py-4">
+            <div className="shrink-0 flex items-center justify-between gap-2 px-4 md:px-6">
+                <p className="hidden sm:block text-sm text-muted-foreground">Guaranteed comp., with base salary below</p>
+            </div>
+            <div className="min-h-0 overflow-auto">
+                <Table className="px-4" style={{display: "grid", gridTemplateColumns}}>
+                    <TableHeader className="contents">
+                        <TableRow className="contents">
+                            <TableHead className="p-0 whitespace-normal border-b">
+                                <div className="flex h-full items-center px-2 py-1">Release</div>
+                            </TableHead>
+                            {playerList.data.map((p, index) => (
+                                p.player ?
+                                <ComparePlayersHeader
+                                    key={p.stackID + p.player.player.playerid}
+                                    player={p.player} color={colors[index]}/>
+                                : null
+                            ))}
+                        </TableRow>
+                    </TableHeader>
+                    <TableBody className="contents">
+                    {reportsList.map((report) => (
+                        <ComparePlayersRow key={report} playerList={playerList} reportValue={report} isMobile={isMobile}
+                            hoveredReport={hoveredReport} setHoveredReport={setHoveredReport}/>
                     ))}
-                </TableRow>
-            </TableHeader>
-            <TableBody className="contents">
-            {reportsList.map((report) => (
-                <ComparePlayersRow key={report} playerList={playerList} reportValue={report} isMobile={isMobile}
-                    hoveredReport={hoveredReport} setHoveredReport={setHoveredReport}/>
-            ))}
-            </TableBody>
-        </Table>
+                    </TableBody>
+                </Table>
+            </div>
+        </Card>
     )
 }
 
-function ComparePlayersHeader({playerList, setPlayerList, player, id, index}: ComparePlayersHeaderProps){
+type ComparePlayersHeaderProps = {
+    player: NonNullable<PlayerList["data"][number]["player"]>
+    color: string
+}
 
-    const handlePlayerDelete = () => {
-       setPlayerList(removePlayerFromList(playerList, id))
-    }
-
+function ComparePlayersHeader({player, color}: ComparePlayersHeaderProps){
     return (
         <TableHead className="p-0 whitespace-normal align-top border-b">
-            <div className={"flex h-full items-center justify-center gap-2 rounded-md px-1 py-1"}>
-                <Link href={`/players/${player.player.playerid}`}><p className="min-w-0 font-semibold wrap-break-word text-center text-xs md:text-base hover:underline">
-                    {player.player.lastname} {player.player.firstname}
-                </p></Link>
-                <Button
-                    variant="outline"
-                    size="icon"
-                    className="size-4 md:size-6 shrink-0 rounded-sm"
-                    style={{borderColor: "var(--destructive)"}}
-                    onClick={handlePlayerDelete}
-                    aria-label={`Remove ${player.player.firstname} ${player.player.lastname}`}
-                >
-                    <X className="size-2.5 md:size-3.5" color="var(--destructive)"/>
-                </Button>
+            <div className="flex h-full items-center justify-center gap-1.5 rounded-md px-1 py-1">
+                <span className="size-2 shrink-0 rounded-full" style={{ backgroundColor: color }}/>
+                <Link href={`/players/${player.player.playerid}`}>
+                    <p className="min-w-0 font-semibold wrap-break-word text-center text-xs md:text-base hover:underline">
+                        {player.records[0]?.firstname} {player.records[0]?.lastname}
+                    </p>
+                </Link>
             </div>
         </TableHead>
     )
@@ -123,7 +109,7 @@ function ComparePlayersRow({playerList, reportValue, isMobile, hoveredReport, se
     return (
         <TableRow key={reportValue} className="contents">
             <TableCell
-                className={`whitespace-normal text-xs md:text-sm border-b transition-colors ${isHovered ? "bg-muted/50" : ""}`}
+                className={`whitespace-normal text-xs md:text-sm py-3 md:py-4 border-b transition-colors ${isHovered ? "bg-muted/50" : ""}`}
                 {...cellProps}
             >
                 {report.year} {report.season}
@@ -136,16 +122,16 @@ function ComparePlayersRow({playerList, reportValue, isMobile, hoveredReport, se
                 return (
                     <TableCell
                         key={p.player.player.playerid + reportValue + index}
-                        className={`whitespace-normal border-b transition-colors ${isHovered ? "bg-muted/50" : ""}`}
+                        className={`whitespace-normal py-3 md:py-4 border-b transition-colors ${isHovered ? "bg-muted/50" : ""}`}
                         {...cellProps}
                     >
                         {match ?
                             <div className="flex flex-col">
-                                <p className="text-center text-xs md:text-base font">{formatSalary(match.guaranteedcomp, isMobile)}</p>
-                                <p className="text-center text-[10px] md:text-xs">{formatSalary(match.basesalary, isMobile)}</p>
+                                <p className="text-center text-xs md:text-base font-semibold">{formatSalary(match.guaranteedcomp, isMobile)}</p>
+                                <p className="text-center text-[10px] md:text-xs text-muted-foreground">Base {formatSalary(match.basesalary, isMobile)}</p>
                             </div>
                             : <div className="flex flex-col">
-                                <p className="text-center text-xs md:text-base font text-muted-foreground">---</p>
+                                <p className="text-center text-xs md:text-base font-semibold text-muted-foreground">---</p>
                                 <p className="text-center text-[10px] md:text-xs invisible">---</p>
                             </div>
                         }

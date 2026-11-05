@@ -1,8 +1,11 @@
-import { Fragment } from "react"
+import { Fragment, useState } from "react"
+import { Card, CardAction, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { ChartConfig, ChartContainer, ChartLegend, ChartTooltip } from "@/components/ui/chart"
 import { PlayerData, PlayerList } from "../page"
 import { Area, AreaChart, CartesianGrid, Customized, TextProps, TooltipProps, XAxis, YAxis } from "recharts"
 import { reports } from "@/lib/globals"
+import { compareColors as colors } from "@/lib/compare-players-utils"
+import { cn } from "@/lib/utils"
 
 const CHART_AREA_CLIP_ID = "compare-players-chart-area-clip"
 
@@ -10,11 +13,11 @@ type ComparePlayersChartProps = {
     playerList: PlayerList
 }
 
-const colors = [
-    "var(--chart-1)",
-    "var(--chart-2)",
-    "var(--chart-3)",
-    "var(--chart-4)"
+type Metric = "guarComp" | "baseSal"
+
+const METRIC_OPTIONS: { value: Metric; label: string }[] = [
+    { value: "guarComp", label: "Guaranteed comp." },
+    { value: "baseSal", label: "Base salary" },
 ]
 
 type ComparePlayersChartData = {
@@ -50,75 +53,98 @@ const emptyRow: ComparePlayersChartData = {
 }
 
 export default function ComparePlayersChart({playerList}: ComparePlayersChartProps){
+    const [metric, setMetric] = useState<Metric>("guarComp")
+
     const chartConfig: ChartConfig = {
         baseSal_a: { label: "Base Salary" }, guarComp_a: { label: "Guaranteed Compensation" },
         baseSal_b: { label: "Base Salary" }, guarComp_b: { label: "Guaranteed Compensation" },
         baseSal_c: { label: "Base Salary" }, guarComp_c: { label: "Guaranteed Compensation" },
         baseSal_d: { label: "Base Salary" }, guarComp_d: { label: "Guaranteed Compensation" },
-    } 
+    }
 
     const data = formatChartData(playerList)
     const ticks: string[] = []
     data.map(d => {
         if (reports[d.report].season === "Fall"){
             ticks.push(d.report)
-        } 
+        }
     })
 
     return (
-      <div className="compare-players-chart">
-          <style>{`
-              .compare-players-chart .recharts-area-area {
-                  clip-path: url(#${CHART_AREA_CLIP_ID});
-              }
-          `}</style>
-          <ChartContainer config={chartConfig} className="px-4">
-              <AreaChart data={data} margin={{ right: 16}}>
-                  <Customized component={ChartAreaClipDefs}/>
-                  <CartesianGrid vertical={false} fill="var(--secondary)" fillOpacity={1} ry={8}/>
-                  <XAxis
-                      dataKey="report"
-                      type="number"
-                      domain={['dataMin', 'dataMax']}
-                      tickLine={false}
-                      axisLine={false}
-                      interval={0} // ensures all ticks show
-                      ticks={ticks}
-                      tick={<CustomTick/>}
-                  />
-                  <YAxis
-                      type="number"
-                      tickLine={false}
-                      axisLine={false}
-                      width={80}
-                      tickFormatter={(value: number) => {return `$${value.toLocaleString()}`}}
-                  />
-                  {playerList.data.map((player, index) => (
-                      player.player &&
-                          <Fragment key={player.stackID}>
-                              <Area
-                                  dataKey={`baseSal_${player.stackID}`}
-                                  type="linear"
-                                  stroke={colors[index]}
-                                  fill={colors[index]}
-                                  fillOpacity={0.03}
-                                  dot={{ r: 4 }}
-                              />
-                              <Area
-                                  dataKey={`guarComp_${player.stackID}`}
-                                  type="linear"
-                                  stroke={colors[index]}
-                                  fill={colors[index]}
-                                  fillOpacity={0.03}
-                                  dot={{ r: 4 }}
-                              />
-                          </Fragment>
-                  ))}
-                  <ChartTooltip cursor={false} content={<CustomTooltip/>}/>
-                  <ChartLegend content={<CustomLegend players={playerList.data}/>}/>
-              </AreaChart>
-          </ChartContainer>
-      </div>
+      <Card className="hidden md:block">
+          <CardHeader>
+              <CardTitle>Salary over time</CardTitle>
+              <CardDescription>
+                  {metric === "guarComp" ? "Guaranteed compensation" : "Base salary"} by release. Gaps mean the player wasn&apos;t in that report.
+              </CardDescription>
+              <CardAction>
+                  <div className="flex items-center gap-1 rounded-md bg-muted p-1">
+                      {METRIC_OPTIONS.map((option) => (
+                          <button
+                              key={option.value}
+                              type="button"
+                              onClick={() => setMetric(option.value)}
+                              className={cn(
+                                  "rounded-sm px-3 py-1.5 text-xs font-medium transition-colors",
+                                  metric === option.value ? "bg-background shadow-sm" : "text-muted-foreground hover:text-foreground"
+                              )}
+                          >
+                              {option.label}
+                          </button>
+                      ))}
+                  </div>
+              </CardAction>
+          </CardHeader>
+          <CardContent>
+              <div className="compare-players-chart">
+                  <style>{`
+                      .compare-players-chart .recharts-area-area {
+                          clip-path: url(#${CHART_AREA_CLIP_ID});
+                      }
+                  `}</style>
+                  <ChartContainer config={chartConfig} className="px-4 aspect-auto h-[280px] pt-2">
+                      <AreaChart data={data} margin={{ right: 16}}>
+                          <Customized component={ChartAreaClipDefs}/>
+                          <CartesianGrid vertical={false} fill="var(--secondary)" fillOpacity={1} ry={8}/>
+                          <XAxis
+                              dataKey="report"
+                              type="number"
+                              domain={['dataMin', 'dataMax']}
+                              tickLine={false}
+                              axisLine={false}
+                              interval={0} // ensures all ticks show
+                              ticks={ticks}
+                              tick={<CustomTick/>}
+                          />
+                          <YAxis
+                              type="number"
+                              tickLine={false}
+                              axisLine={false}
+                              width={80}
+                              tickFormatter={(value: number) => {return `$${value.toLocaleString()}`}}
+                          />
+                          {playerList.data.map((player, index) => (
+                              player.player &&
+                                  <Fragment key={player.stackID}>
+                                      <Area
+                                          dataKey={`${metric}_${player.stackID}`}
+                                          type="linear"
+                                          stroke={colors[index]}
+                                          strokeWidth={2}
+                                          fill={colors[index]}
+                                          fillOpacity={0}
+                                          dot={{ r: 4 }}
+                                          connectNulls={false}
+                                      />
+                                  </Fragment>
+                          ))}
+                          <ChartTooltip cursor={false} content={<CustomTooltip metric={metric}/>}/>
+                          <ChartLegend content={<CustomLegend players={playerList.data}/>}/>
+                      </AreaChart>
+                  </ChartContainer>
+              </div>
+          </CardContent>
+      </Card>
     )
 }
 
@@ -160,7 +186,7 @@ function formatChartData(playerList: PlayerList){
                     const match = player.player.records.find((record) => record.recordyear === report.year && record.recordseason === report.season)
 
                     if (match){
-                        row[`name_${player.stackID}`] = player.player.player.lastname + " " + player.player.player.firstname
+                        row[`name_${player.stackID}`] = match.firstname + " " + match.lastname
 
                         let bS = 0
                         let gC = 0
@@ -191,7 +217,11 @@ type CustomTooltipEntry = {
   payload?: ComparePlayersChartData
 }
 
-const CustomTooltip = ({ active, payload }: TooltipProps<number, string>) => {
+type CustomTooltipProps = TooltipProps<number, string> & {
+  metric: "guarComp" | "baseSal"
+}
+
+const CustomTooltip = ({ active, payload, metric }: CustomTooltipProps) => {
   if (!active || !payload?.length) return null
 
   return (
@@ -221,13 +251,9 @@ const CustomTooltip = ({ active, payload }: TooltipProps<number, string>) => {
         if (!row) return null
 
         const name = row[`name_${suffix}` as keyof ComparePlayersChartData] as string | null
-        const base = row[`baseSal_${suffix}` as keyof ComparePlayersChartData] as number | null
-        const guar = row[`guarComp_${suffix}` as keyof ComparePlayersChartData] as number | null
+        const value = row[`${metric}_${suffix}` as keyof ComparePlayersChartData] as number | null
 
-        const total = guar ?? base ?? 0
-
-        // Only show once per player (avoid duplicate base/guar entries)
-        if (!dataKey.startsWith("guarComp")) return null
+        if (name === null || value === null) return null
 
         return (
           <div key={index} className="flex items-center gap-2">
@@ -238,7 +264,7 @@ const CustomTooltip = ({ active, payload }: TooltipProps<number, string>) => {
             />
 
             <div className="flex flex-row w-full justify-between">
-              <p>{name}:&nbsp;</p> <p> ${total.toLocaleString()}</p>
+              <p>{name}:&nbsp;</p> <p> ${value.toLocaleString()}</p>
             </div>
           </div>
         )
@@ -271,8 +297,8 @@ const CustomLegend = ({ players }: CustomLegendProps) => {
               style={{ backgroundColor: colors[index] }}
             />
 
-            {/* club name */}
-            <span>{player.player.player.lastname} {player.player.player.firstname}</span>
+            {/* player name */}
+            <span>{player.player.records[0]?.firstname} {player.player.records[0]?.lastname}</span>
           </div>
         ) : null
       )}
