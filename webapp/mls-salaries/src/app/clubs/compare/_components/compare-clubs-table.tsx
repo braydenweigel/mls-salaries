@@ -4,6 +4,8 @@ import { Card } from "@/components/ui/card"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { PlayerRecord } from "@/lib/data/types"
 import { formatCompactCurrency } from "@/lib/utils"
+import { ExportCsvButton } from "@/components/lib/ExportCsvButton"
+import { reports } from "@/lib/globals"
 
 type CompareClubsTableProps = {
     clubList: ClubList
@@ -18,11 +20,36 @@ export default function CompareClubsTable({clubList}: CompareClubsTableProps){
     const maxPlayers = getMaxPlayers(clubList)
     const gridTemplateColumns = `${RANK_COLUMN_WIDTH}px repeat(${populatedClubs.length}, minmax(${CLUB_COLUMN_MIN_WIDTH}px, 1fr))`
     const mobileGridTemplateColumns = `${MOBILE_RANK_COLUMN_WIDTH}px repeat(${populatedClubs.length}, 1fr)`
+    const exportData = populatedClubs.flatMap((entry) => (
+        entry.club ? entry.club.players.map((player, index) => ({
+            rank: index + 1,
+            club: entry.club!.club.clubname,
+            player: formatPlayerName(player),
+            guaranteedComp: player.guaranteedcomp,
+            baseSalary: player.basesalary,
+            report: entry.club!.reportValue,
+        })) : []
+    ))
+    const exportFilename = `${populatedClubs.map((entry) => entry.club && formatReportCode(entry.club.club.clubid, entry.club.reportValue)).join("_")}.csv`
 
     return (
+        <>
         <Card className="flex flex-col w-full gap-3 border-0 shadow-none bg-transparent py-0 sm:min-h-0 sm:max-h-[70vh] sm:overflow-hidden sm:border sm:shadow-sm sm:bg-card sm:py-4">
             <div className="shrink-0 flex items-center justify-between gap-2 px-4 md:px-6">
                 <p className="hidden sm:block text-sm text-muted-foreground">Guaranteed comp., with base salary below</p>
+                <ExportCsvButton
+                    data={exportData}
+                    columns={[
+                        { key: "rank", label: "Rank" },
+                        { key: "club", label: "Club" },
+                        { key: "player", label: "Player" },
+                        { key: "guaranteedComp", label: "Guaranteed Compensation" },
+                        { key: "baseSalary", label: "Base Salary" },
+                        { key: "report", label: "Report" },
+                    ]}
+                    filename={exportFilename}
+                    buttonClassName="hidden sm:flex ml-auto"
+                />
             </div>
 
             {/* mobile: plain list with a header row and row dividers, styled like the /clubs mobile table */}
@@ -143,12 +170,18 @@ export default function CompareClubsTable({clubList}: CompareClubsTableProps){
                         </TableRow>
                     </TableBody>
                 </Table>
-                <p className="px-4 md:px-6 py-3 text-xs text-muted-foreground">
-                    Guaranteed compensation is base salary plus signing and guaranteed bonuses, annualized over the contract.
-                </p>
             </div>
         </Card>
+        <p className="hidden sm:block text-xs text-muted-foreground">
+            Guaranteed compensation is base salary plus signing and guaranteed bonuses, annualized over the contract.
+        </p>
+        </>
     )
+}
+
+function formatReportCode(clubid: string, reportValue: string){
+    const report = reports[reportValue]
+    return `${clubid}-${report.season[0]}${report.year.slice(-2)}`
 }
 
 function formatPlayerName(player: PlayerRecord){
