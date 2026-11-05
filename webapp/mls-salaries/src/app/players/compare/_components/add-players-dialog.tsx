@@ -50,7 +50,20 @@ export default function AddClubsDialog({playerList, setPlayerList, open, setOpen
                 <button
                     type="button"
                     className={cn(
-                        "flex h-full min-h-[108px] w-full flex-col items-center justify-center gap-2 rounded-xl border border-dashed px-4 py-6 text-center transition-colors hover:bg-muted/50",
+                        "sm:hidden flex w-fit items-center gap-1.5 rounded-full border border-dashed px-3 py-1.5 text-sm transition-colors hover:bg-muted/50",
+                        className
+                    )}
+                >
+                    <Plus className="size-3.5"/>
+                    <span className="font-medium">Add</span>
+                    <span className="text-muted-foreground">{4 - playerList.numPlayers} left</span>
+                </button>
+            </DialogTrigger>
+            <DialogTrigger asChild>
+                <button
+                    type="button"
+                    className={cn(
+                        "hidden sm:flex h-full min-h-[108px] w-full flex-col items-center justify-center gap-2 rounded-xl border border-dashed px-4 py-6 text-center transition-colors hover:bg-muted/50",
                         className
                     )}
                 >

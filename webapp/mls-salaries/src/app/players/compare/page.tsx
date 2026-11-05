@@ -108,22 +108,22 @@ export default function ComparePlayers() {
     // remove button) reach through to the page behind the dialog. The dialog itself renders
     // via a portal to document.body, so it's not a DOM descendant of this div and is unaffected.
     <div className={cn("flex flex-col gap-4", addPlayersDialogVisible && "pointer-events-none")}>
-      <div className="flex items-center gap-1.5 text-sm text-muted-foreground">
+      <div className="hidden sm:flex items-center gap-1.5 text-sm text-muted-foreground">
         <Link href="/players" className="hover:underline">Players</Link>
         <span>/</span>
         <span className="text-foreground">Compare</span>
       </div>
-      <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
+      <div className="flex items-center justify-between gap-4 sm:flex-row sm:items-start">
         <div>
           <h1 className="text-2xl md:text-3xl font-bold">Compare players</h1>
-          <p className="text-sm text-muted-foreground mt-1">
+          <p className="hidden sm:block text-sm text-muted-foreground mt-1">
             See up to four players&apos; salaries side by side.
           </p>
         </div>
         {!isEmpty && (
           <div className="flex items-center gap-2 shrink-0">
             <Button variant="ghost" onClick={handleReset} className="text-xs md:text-sm">Clear all</Button>
-            <Button variant="outline" onClick={handleCopyLink} className="text-xs md:text-sm">
+            <Button variant="outline" onClick={handleCopyLink} className="hidden sm:flex text-xs md:text-sm">
               {copied ? <Check className="size-4"/> : <Link2 className="size-4"/>}
               {copied ? "Copied" : "Copy link"}
             </Button>
@@ -131,7 +131,7 @@ export default function ComparePlayers() {
         )}
       </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+      <div className="flex flex-wrap items-center gap-2 sm:grid sm:grid-cols-2 lg:grid-cols-4 sm:gap-3">
         {playerList.data.map((entry, index) => (
           entry.player && (
             <PlayerSummaryCard
