@@ -5,6 +5,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { reports } from "@/lib/globals"
 import { compareColors as colors } from "@/lib/compare-players-utils"
 import { formatCompactCurrency } from "@/lib/utils"
+import { ExportCsvButton } from "@/components/lib/ExportCsvButton"
 import Link from "next/link"
 
 type ComparePlayersTableProps = {
@@ -40,12 +41,43 @@ export default function ComparePlayersTable({playerList}: ComparePlayersTablePro
     // their minimum, overflowing (and scrolling) once there's no room left.
     const gridTemplateColumns = `${YEAR_COLUMN_WIDTH}px repeat(${playerList.numPlayers}, minmax(${PLAYER_COLUMN_MIN_WIDTH}px, 1fr))`
     const mobileGridTemplateColumns = `repeat(${playerList.numPlayers}, 1fr)`
+    const exportData = reportsList.flatMap((reportValue) => {
+        const report = reports[reportValue]
+
+        return playerList.data.flatMap((p) => {
+            if (!p.player) return []
+
+            const match = p.player.records.find((record) => record.recordyear === report.year && record.recordseason === report.season)
+
+            return [{
+                report: `${report.year} ${report.season}`,
+                player: `${p.player.records[0]?.firstname} ${p.player.records[0]?.lastname}`,
+                guaranteedComp: match ? match.guaranteedcomp : null,
+                baseSalary: match ? match.basesalary : null,
+            }]
+        })
+    })
+    const exportFilename = `Compare_${playerList.data
+        .filter((p) => p.player)
+        .map((p) => p.player!.records[0]?.lastname || p.player!.records[0]?.firstname)
+        .join("_")}.csv`
 
     return (
         <Card className="flex flex-col w-full gap-3 border-0 shadow-none bg-transparent py-0 sm:min-h-0 sm:max-h-[70vh] sm:overflow-hidden sm:border sm:shadow-sm sm:bg-card sm:py-4">
             <div className="shrink-0 flex items-center justify-between gap-2 px-4 md:px-6">
                 <p className="sm:hidden text-xs text-muted-foreground">Guaranteed · Base</p>
                 <p className="hidden sm:block text-sm text-muted-foreground">Guaranteed comp., with base salary below</p>
+                <ExportCsvButton
+                    data={exportData}
+                    columns={[
+                        { key: "report", label: "Report" },
+                        { key: "player", label: "Player" },
+                        { key: "guaranteedComp", label: "Guaranteed Compensation" },
+                        { key: "baseSalary", label: "Base Salary" },
+                    ]}
+                    filename={exportFilename}
+                    buttonClassName="hidden sm:flex ml-auto"
+                />
             </div>
 
             {/* mobile: grouped list, one full-width release heading per section with 3 colored value columns below */}
