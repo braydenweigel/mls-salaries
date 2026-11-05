@@ -4,7 +4,7 @@ import { Card } from "@/components/ui/card"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { reports } from "@/lib/globals"
 import { compareColors as colors } from "@/lib/compare-players-utils"
-import { cn, formatCompactCurrency } from "@/lib/utils"
+import { formatCompactCurrency } from "@/lib/utils"
 import Link from "next/link"
 
 type ComparePlayersTableProps = {
@@ -42,29 +42,29 @@ export default function ComparePlayersTable({playerList}: ComparePlayersTablePro
     const mobileGridTemplateColumns = `repeat(${playerList.numPlayers}, 1fr)`
 
     return (
-        <Card className="flex flex-col w-full min-h-0 max-h-[70vh] overflow-hidden gap-3 py-4">
+        <Card className="flex flex-col w-full gap-3 border-0 shadow-none bg-transparent py-0 sm:min-h-0 sm:max-h-[70vh] sm:overflow-hidden sm:border sm:shadow-sm sm:bg-card sm:py-4">
             <div className="shrink-0 flex items-center justify-between gap-2 px-4 md:px-6">
                 <p className="sm:hidden text-xs text-muted-foreground">Guaranteed · Base</p>
                 <p className="hidden sm:block text-sm text-muted-foreground">Guaranteed comp., with base salary below</p>
             </div>
 
             {/* mobile: grouped list, one full-width release heading per section with 3 colored value columns below */}
-            <div className="sm:hidden min-h-0 overflow-y-auto">
+            <div className="sm:hidden">
                 <div className="grid gap-x-2 px-4 pb-2 border-b" style={{ gridTemplateColumns: mobileGridTemplateColumns }}>
                     {playerList.data.map((p, index) => (
                         p.player && (
-                            <div key={p.stackID} className="flex items-center justify-center gap-1.5 min-w-0">
+                            <div key={p.stackID} className="flex items-center gap-1.5 min-w-0">
                                 <span className="size-2 shrink-0 rounded-full" style={{ backgroundColor: colors[index] }}/>
                                 <span className="text-sm font-semibold truncate">{p.player.records[0]?.lastname || p.player.records[0]?.firstname}</span>
                             </div>
                         )
                     ))}
                 </div>
-                {reportsList.map((reportValue, i) => {
+                {reportsList.map((reportValue) => {
                     const report = reports[reportValue]
 
                     return (
-                        <div key={reportValue} className={cn("px-4 py-3", i % 2 === 0 && "bg-muted/40")}>
+                        <div key={reportValue} className="border-b px-4 py-3">
                             <p className="text-xs mb-2">{report.year} {report.season}</p>
                             <div className="grid gap-x-2" style={{ gridTemplateColumns: mobileGridTemplateColumns }}>
                                 {playerList.data.map((p) => {
@@ -73,7 +73,7 @@ export default function ComparePlayersTable({playerList}: ComparePlayersTablePro
                                     const match = p.player.records.find((record) => record.recordyear === report.year && record.recordseason === report.season)
 
                                     return (
-                                        <div key={p.player.player.playerid} className="text-center">
+                                        <div key={p.player.player.playerid}>
                                             {match ? (
                                                 <>
                                                     <p className="text-sm font-bold">{formatCompactCurrency(match.guaranteedcomp)}</p>
@@ -97,7 +97,7 @@ export default function ComparePlayersTable({playerList}: ComparePlayersTablePro
                     <TableHeader className="contents">
                         <TableRow className="contents">
                             <TableHead className="p-0 whitespace-normal border-b">
-                                <div className="flex h-full items-center px-2 py-1">Release</div>
+                                <div className="flex h-full items-center px-2 py-1">Report</div>
                             </TableHead>
                             {playerList.data.map((p, index) => (
                                 p.player ?
@@ -128,10 +128,10 @@ type ComparePlayersHeaderProps = {
 function ComparePlayersHeader({player, color}: ComparePlayersHeaderProps){
     return (
         <TableHead className="p-0 whitespace-normal align-top border-b">
-            <div className="flex h-full items-center justify-center gap-1.5 rounded-md px-1 py-1">
+            <div className="flex h-full items-center gap-1.5 rounded-md px-1 py-1">
                 <span className="size-2 shrink-0 rounded-full" style={{ backgroundColor: color }}/>
                 <Link href={`/players/${player.player.playerid}`}>
-                    <p className="min-w-0 font-semibold wrap-break-word text-center text-base hover:underline">
+                    <p className="min-w-0 font-semibold wrap-break-word text-left text-base hover:underline">
                         {player.records[0]?.firstname} {player.records[0]?.lastname}
                     </p>
                 </Link>
@@ -170,12 +170,12 @@ function ComparePlayersRow({playerList, reportValue, hoveredReport, setHoveredRe
                     >
                         {match ?
                             <div className="flex flex-col">
-                                <p className="text-center text-base font-semibold">${match.guaranteedcomp.toLocaleString()}</p>
-                                <p className="text-center text-xs text-muted-foreground">Base ${match.basesalary.toLocaleString()}</p>
+                                <p className="text-left text-base font-semibold">${match.guaranteedcomp.toLocaleString()}</p>
+                                <p className="text-left text-xs text-muted-foreground">Base ${match.basesalary.toLocaleString()}</p>
                             </div>
                             : <div className="flex flex-col">
-                                <p className="text-center text-base font-semibold text-muted-foreground">---</p>
-                                <p className="text-center text-xs invisible">---</p>
+                                <p className="text-left text-base font-semibold text-muted-foreground">---</p>
+                                <p className="text-left text-xs invisible">---</p>
                             </div>
                         }
                     </TableCell>

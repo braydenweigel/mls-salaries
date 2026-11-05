@@ -227,7 +227,7 @@ export default function ComparePlayersChart({playerList}: ComparePlayersChartPro
               </div>
               {isMobile && (
                   <p className="text-xs text-muted-foreground mt-2">
-                      Tap the chart to pick a release. Gaps mean the player wasn&apos;t in that release.
+                      Tap the chart to pick a report. Gaps mean the player wasn&apos;t in that report.
                   </p>
               )}
           </CardContent>

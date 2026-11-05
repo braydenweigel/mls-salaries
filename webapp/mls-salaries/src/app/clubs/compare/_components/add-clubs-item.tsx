@@ -4,7 +4,7 @@ import { CURRENT_YEAR, reports } from "@/lib/globals"
 import SelectReport from "@/components/lib/SelectReport"
 import { Button } from "@/components/ui/button"
 import { Plus, X } from "lucide-react"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { addClubToList, removeClubFromList } from "@/lib/compare-clubs-utils"
 
 type AddClubsItemProps = {
@@ -17,6 +17,7 @@ export default function AddClubsItem({clubList, setClubList, club}: AddClubsItem
     const defaultReport = club.clubid == "CHV" ? "2014.5" : CURRENT_YEAR
     const [reportValue, setReportValue] = useState(defaultReport)
     const clubReports = getClubReports(club)
+    const isMobile = useIsMobile()
 
     const existingEntry = clubList.data.find((d) => d.club?.club.clubid === club.clubid && d.club?.reportValue === reportValue)
 
@@ -32,18 +33,18 @@ export default function AddClubsItem({clubList, setClubList, club}: AddClubsItem
 
     return (
         <div className="flex flex-row w-full items-center justify-between gap-2 py-1 md:py-2">
-            <p className="min-w-0 flex-1 truncate text-xs">{club.clubname}</p>
+            <p className="min-w-0 flex-1 truncate text-xs md:text-base">{club.clubname}</p>
             <div className="flex flex-row items-center shrink-0">
                 <SelectReport
                     reports={clubReports}
                     defaultReport={defaultReport}
                     onReportValueChange={(report) => setReportValue(report)}
-                    size="sm"
-                    className="w-[120px] text-[11px]"
+                    size={isMobile ? "sm" : "default"}
+                    className={isMobile ? "w-[120px] text-[11px]" : "w-[180px] text-sm"}
                 />
                 {existingEntry ?
-                    <Button variant="outline" size="icon-sm" style={{borderColor: "var(--destructive)"}} onClick={handleRemoveClub} className="mx-1 md:mx-2"><X color="var(--destructive)"/></Button>
-                    : <Button variant="outline" size="icon-sm" disabled={!(clubList.numClubs < 4)} onClick={handleAddClub} className="mx-1 md:mx-2"><Plus/></Button>
+                    <Button variant="outline" size={isMobile ? "icon-sm" : "icon"} style={{borderColor: "var(--destructive)"}} onClick={handleRemoveClub} className="mx-1 md:mx-2"><X color="var(--destructive)"/></Button>
+                    : <Button variant="outline" size={isMobile ? "icon-sm" : "icon"} disabled={!(clubList.numClubs < 4)} onClick={handleAddClub} className="mx-1 md:mx-2"><Plus/></Button>
                 }
             </div>
         </div>
@@ -63,4 +64,20 @@ function getClubReports(club: Club){
   }
 
   return clubReports
+}
+
+function useIsMobile() {
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const media = window.matchMedia("(max-width: 768px)");
+    setIsMobile(media.matches);
+
+    const listener = () => setIsMobile(media.matches);
+    media.addEventListener("change", listener);
+
+    return () => media.removeEventListener("change", listener);
+  }, []);
+
+  return isMobile;
 }
