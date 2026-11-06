@@ -3,6 +3,8 @@
 import { ChartConfig, ChartContainer, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart"
 import { Area, AreaChart, CartesianGrid, Customized, TextProps, XAxis, YAxis} from "recharts"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
+import { Button } from "@/components/ui/button"
+import { ChevronLeft, ChevronRight } from "lucide-react"
 import { reports } from "@/lib/globals"
 import { formatCompactCurrency } from "@/lib/utils"
 import React from "react"
@@ -35,6 +37,9 @@ export default function PlayerIDChart({
     const [selectedReport, setSelectedReport] = React.useState(lastReport)
 
     const selected = data.find(d => d.report === selectedReport) ?? data[data.length - 1]
+    const selectedIndex = data.findIndex(d => d.report === selected?.report)
+    const previousReport = selectedIndex > 0 ? data[selectedIndex - 1].report : null
+    const nextReport = selectedIndex >= 0 && selectedIndex < data.length - 1 ? data[selectedIndex + 1].report : null
 
     const chartConfig: ChartConfig = {
         baseSalary: {
@@ -92,18 +97,32 @@ export default function PlayerIDChart({
             </CardHeader>
             <CardContent className="px-4 md:px-6">
                 {isMobile && selected && (
-                    <div className="flex items-center justify-between gap-2 rounded-lg bg-muted px-3 py-2 mb-3 text-sm">
-                        <span className="font-semibold">{reports[selected.report].season} {reports[selected.report].year}</span>
-                        <div className="flex items-center gap-3">
-                            <span className="flex items-center gap-1.5 font-semibold">
-                                <span className="size-2 shrink-0 rounded-full" style={{ backgroundColor: colors.primary }}/>
-                                ${selected.guaranteedComp.toLocaleString()}
-                            </span>
-                            <span className="flex items-center gap-1.5 text-muted-foreground">
-                                <span className="size-2 shrink-0 rounded-full" style={{ backgroundColor: colors.primary }}/>
-                                ${selected.baseSalary.toLocaleString()}
-                            </span>
+                    <div className="flex items-stretch gap-1 mb-3">
+                        <Button
+                            variant="outline"
+                            className="h-auto w-7 shrink-0 rounded-md px-0"
+                            onClick={() => previousReport && setSelectedReport(previousReport)}
+                            disabled={!previousReport}
+                            aria-label="Previous release"
+                        >
+                            <ChevronLeft className="size-4"/>
+                        </Button>
+                        <div className="flex min-w-0 flex-1 items-center justify-between gap-2 rounded-lg bg-muted px-3 py-2 text-sm">
+                            <span className="shrink-0 whitespace-nowrap font-semibold">{reports[selected.report].season} {reports[selected.report].year}</span>
+                            <div className="flex flex-col items-end">
+                                <span className="font-semibold">${selected.guaranteedComp.toLocaleString()}</span>
+                                <span className="text-xs text-muted-foreground">Base ${selected.baseSalary.toLocaleString()}</span>
+                            </div>
                         </div>
+                        <Button
+                            variant="outline"
+                            className="h-auto w-7 shrink-0 rounded-md px-0"
+                            onClick={() => nextReport && setSelectedReport(nextReport)}
+                            disabled={!nextReport}
+                            aria-label="Next release"
+                        >
+                            <ChevronRight className="size-4"/>
+                        </Button>
                     </div>
                 )}
                 <div className="player-salary-chart">
