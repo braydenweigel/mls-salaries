@@ -36,13 +36,10 @@ export default function HeroSearch(){
         `${player.lastname} ${player.firstname}`.toLowerCase().includes(f)
     ).slice(0, 4)
 
-    const topHref = matchedPlayers.length > 0
-        ? `/players/${matchedPlayers[0].playerid}`
-        : matchedClubs.length > 0 ? `/clubs/${matchedClubs[0].clubid}` : null
-
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault()
-        if (topHref) router.push(topHref)
+        const trimmed = query.trim()
+        router.push(trimmed ? `/search?q=${encodeURIComponent(trimmed)}` : "/search")
     }
 
     return (
