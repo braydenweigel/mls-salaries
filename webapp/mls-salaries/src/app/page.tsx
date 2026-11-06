@@ -2,94 +2,16 @@ import { ClubReportsSelector, PlayerReportSelector } from "@/components/lib/repo
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Metadata } from "next";
 import Link from "next/link";
-import React from "react";
-import records from "@/lib/data/records.json";
-import clubsData from "@/lib/data/clubs.json";
-import type { PlayerRecord, Club } from "@/lib/data/types";
-import { filterRecordsByReport } from "@/lib/data/filters";
-import { CURRENT_YEAR, reports, clubs as clubsObject } from "@/lib/globals";
-import { isValidClub } from "@/lib/storeUtils";
-import LeagueSalaryChart from "./_components/LeagueSalaryChart";
-import LeagueSalaryTable from "./_components/LeagueSalaryTable";
-import LeagueAverageChart from "./_components/LeagueAverageChart";
-
-function median(values: number[]): number {
-  if (values.length === 0) return 0;
-  const sorted = [...values].sort((a, b) => a - b);
-  const mid = Math.floor(sorted.length / 2);
-  return sorted.length % 2 !== 0 ? sorted[mid] : (sorted[mid - 1] + sorted[mid]) / 2;
-}
+import { reports } from "@/lib/globals";
 
 export const metadata: Metadata = {
   title: "Home - MLS Salaries",
 };
 
 export default function Home() {
-  const { year, season } = reports[CURRENT_YEAR];
-  const playerRecords = filterRecordsByReport(records as PlayerRecord[], year, season);
-
-
-  let topPlayer: PlayerRecord | null = null;
-  for (const record of playerRecords) {
-    if (!topPlayer || record.guaranteedcomp > topPlayer.guaranteedcomp) {
-      topPlayer = record;
-    }
-  }
-
-  const clubTotals = structuredClone(clubsObject);
-  for (const record of playerRecords) {
-    clubTotals[record.club].totalGuarComp += record.guaranteedcomp;
-  }
-  let topClubId: string | null = null;
-  for (const id of Object.keys(clubTotals)) {
-    if (!topClubId || clubTotals[id].totalGuarComp > clubTotals[topClubId].totalGuarComp) {
-      topClubId = id;
-    }
-  }
-
   const reportYears = Object.values(reports).map((r) => Number(r.year));
   const firstYear = Math.min(...reportYears);
   const lastYear = Math.max(...reportYears);
-
-  const valuesByReport = new Map<string, { base: number[]; guar: number[] }>();
-  for (const record of records as PlayerRecord[]) {
-    const key = `${record.recordyear}-${record.recordseason}`;
-    const entry = valuesByReport.get(key) ?? { base: [], guar: [] };
-    entry.base.push(record.basesalary);
-    entry.guar.push(record.guaranteedcomp);
-    valuesByReport.set(key, entry);
-  }
-
-  const reportRows = Object.entries(reports)
-    .map(([reportKey, { year: reportYear, season: reportSeason }]) => {
-      const entry = valuesByReport.get(`${reportYear}-${reportSeason}`) ?? { base: [], guar: [] };
-      const count = entry.base.length;
-      const totalBase = entry.base.reduce((sum, v) => sum + v, 0);
-      const totalGuar = entry.guar.reduce((sum, v) => sum + v, 0);
-
-      return {
-        reportKey,
-        year: reportYear,
-        season: reportSeason,
-        totalBase,
-        totalGuar,
-        avgBase: count ? totalBase / count : 0,
-        avgGuar: count ? totalGuar / count : 0,
-        medianBase: median(entry.base),
-        medianGuar: median(entry.guar),
-      };
-    })
-    .sort((a, b) => Number(b.reportKey) - Number(a.reportKey));
-
-  const chartData = reportRows
-    .map((row) => ({
-      report: row.reportKey,
-      baseSalary: row.totalBase,
-      guaranteedComp: row.totalGuar,
-    }))
-    .sort((a, b) => Number(a.report) - Number(b.report));
-
-  const averageChartData = [...reportRows].sort((a, b) => Number(a.reportKey) - Number(b.reportKey));
 
   return (
     <div className="space-y-8 pb-8">
@@ -139,12 +61,6 @@ export default function Home() {
           </CardFooter>
         </Card>
       </div>
-
-      <LeagueSalaryTable rows={reportRows} />
-
-      <LeagueSalaryChart data={chartData} />
-
-      <LeagueAverageChart data={averageChartData} />
     </div>
   );
 }

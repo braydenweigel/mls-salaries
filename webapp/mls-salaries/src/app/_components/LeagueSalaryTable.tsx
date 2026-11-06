@@ -4,7 +4,7 @@ import { useState } from "react"
 import Link from "next/link"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
-import { cn } from "@/lib/utils"
+import { cn, formatCompactCurrency } from "@/lib/utils"
 
 type Metric = "guarComp" | "baseSal"
 
@@ -33,8 +33,8 @@ export default function LeagueSalaryTable({ rows }: Props){
     const [metric, setMetric] = useState<Metric>("guarComp")
 
     return (
-        <Card>
-            <CardHeader className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
+        <Card className="my-4 border-0 shadow-none bg-transparent py-0 sm:border sm:shadow-sm sm:bg-card sm:py-6">
+            <CardHeader className="px-0 sm:px-6 flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
                 <div>
                     <CardTitle className="text-xl">Total league salary spend by report</CardTitle>
                     <CardDescription>
@@ -58,37 +58,44 @@ export default function LeagueSalaryTable({ rows }: Props){
                     ))}
                 </div>
             </CardHeader>
-            <CardContent>
-                <div className="max-h-[70vh] overflow-auto">
-                    <Table>
-                        <TableHeader>
-                            <TableRow>
-                                <TableHead className="sticky top-0 z-10 bg-card">Report</TableHead>
-                                <TableHead className="sticky top-0 z-10 bg-card text-right hidden md:table-cell">Average</TableHead>
-                                <TableHead className="sticky top-0 z-10 bg-card text-right hidden md:table-cell">Median</TableHead>
-                                <TableHead className="sticky top-0 z-10 bg-card text-right">Total</TableHead>
-                            </TableRow>
-                        </TableHeader>
-                        <TableBody>
-                            {rows.map((row) => {
-                                const total = metric === "guarComp" ? row.totalGuar : row.totalBase
-                                const avg = metric === "guarComp" ? row.avgGuar : row.avgBase
-                                const med = metric === "guarComp" ? row.medianGuar : row.medianBase
+            <CardContent className="px-0 sm:px-6">
+                <Table>
+                    <TableHeader>
+                        <TableRow>
+                            <TableHead>Report</TableHead>
+                            <TableHead className="text-right">Average</TableHead>
+                            <TableHead className="text-right">Median</TableHead>
+                            <TableHead className="text-right">Total</TableHead>
+                        </TableRow>
+                    </TableHeader>
+                    <TableBody>
+                        {rows.map((row) => {
+                            const total = metric === "guarComp" ? row.totalGuar : row.totalBase
+                            const avg = metric === "guarComp" ? row.avgGuar : row.avgBase
+                            const med = metric === "guarComp" ? row.medianGuar : row.medianBase
 
-                                return (
-                                    <TableRow key={row.reportKey}>
-                                        <TableCell>
-                                            <Link href={`/clubs?year=${row.reportKey}`} className="hover:underline">{row.year} {row.season}</Link>
-                                        </TableCell>
-                                        <TableCell className="text-right hidden md:table-cell">${Math.round(avg).toLocaleString()}</TableCell>
-                                        <TableCell className="text-right hidden md:table-cell">${Math.round(med).toLocaleString()}</TableCell>
-                                        <TableCell className="text-right">${Math.round(total).toLocaleString()}</TableCell>
-                                    </TableRow>
-                                )
-                            })}
-                        </TableBody>
-                    </Table>
-                </div>
+                            return (
+                                <TableRow key={row.reportKey}>
+                                    <TableCell>
+                                        <Link href={`/reports/${row.reportKey}`} className="hover:underline">{row.year} {row.season}</Link>
+                                    </TableCell>
+                                    <TableCell className="text-right">
+                                        <span className="sm:hidden">{formatCompactCurrency(Math.round(avg))}</span>
+                                        <span className="hidden sm:inline">${Math.round(avg).toLocaleString()}</span>
+                                    </TableCell>
+                                    <TableCell className="text-right">
+                                        <span className="sm:hidden">{formatCompactCurrency(Math.round(med))}</span>
+                                        <span className="hidden sm:inline">${Math.round(med).toLocaleString()}</span>
+                                    </TableCell>
+                                    <TableCell className="text-right">
+                                        <span className="sm:hidden">{formatCompactCurrency(Math.round(total))}</span>
+                                        <span className="hidden sm:inline">${Math.round(total).toLocaleString()}</span>
+                                    </TableCell>
+                                </TableRow>
+                            )
+                        })}
+                    </TableBody>
+                </Table>
             </CardContent>
         </Card>
     )

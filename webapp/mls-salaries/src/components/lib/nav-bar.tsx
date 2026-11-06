@@ -12,6 +12,11 @@ export default function NavigationBar(){
         <NavigationMenu viewport={false} className="hidden md:inline">
             <NavigationMenuList>
             <NavigationMenuItem>
+                <Link href="/reports" className={navLinkClass}>
+                    Reports
+                </Link>
+            </NavigationMenuItem>
+            <NavigationMenuItem>
                 <Link href="/players" className={navLinkClass}>
                     Players
                 </Link>

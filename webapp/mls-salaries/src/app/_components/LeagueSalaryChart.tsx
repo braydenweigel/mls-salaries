@@ -66,7 +66,7 @@ export default function LeagueSalaryChart({
     }
 
     return (
-        <Card className="py-4 gap-3 md:py-6 md:gap-6">
+        <Card className="py-4 gap-3 md:py-6 md:gap-6 my-4">
             <CardHeader className="px-4 md:px-6 flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
                 <div>
                     <CardTitle className="text-lg md:text-xl">League salary spend over time</CardTitle>

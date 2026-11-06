@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { Sheet, SheetContent, SheetFooter, SheetHeader, SheetTitle, SheetTrigger } from "../ui/sheet";
-import { ArrowLeftRight, ChevronDownIcon, ChevronUpIcon, DollarSign, Home, Menu, Monitor, Moon, Shield, Sun, Users } from "lucide-react";
+import { ArrowLeftRight, BarChart3, ChevronDownIcon, ChevronUpIcon, DollarSign, Home, Menu, Monitor, Moon, Shield, Sun, Users } from "lucide-react";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useTheme } from "next-themes";
@@ -12,6 +12,7 @@ import { cn } from "@/lib/utils";
 
 const NAV_ITEMS = [
     { href: "/", label: "Home", icon: Home },
+    { href: "/reports", label: "Reports", icon: BarChart3 },
     { href: "/players", label: "Players", icon: Users },
     { href: "/clubs", label: "Clubs", icon: Shield },
 ]
