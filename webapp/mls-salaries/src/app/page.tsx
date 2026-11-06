@@ -1,10 +1,9 @@
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
 import { Metadata } from "next";
 import Link from "next/link";
 import type { ReactNode } from "react";
-import { ArrowRight, ChevronLeft, ChevronRight } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import records from "@/lib/data/records.json";
 import clubsData from "@/lib/data/clubs.json";
 import type { PlayerRecord, Club } from "@/lib/data/types";
@@ -23,14 +22,14 @@ const POSITION_GROUPS = [
   { key: "GK", label: "Goalkeepers" },
 ];
 
-const EXAMPLE_PLAYER_ID = "up30uj"; // Hany Mukhtar
+const EXAMPLE_PLAYER_ID = "DcH4r4"; // Diego Chara
 const EXAMPLE_COMPARE_PLAYER_IDS = [
   { id: "DcH4r4", key: "chara" },   // Diego Chara
   { id: "5kpuwp", key: "fagundez" }, // Diego Fagundez
   { id: "KNi915", key: "rossi" },   // Diego Rossi
 ];
-const EXAMPLE_CLUB_ID = "NSH"; // Nashville SC
-const EXAMPLE_COMPARE_CLUB_IDS = ["ATL", "ATX", "CIN", "CLB"];
+const EXAMPLE_CLUB_ID = "POR"; // Portland Timbers
+const EXAMPLE_COMPARE_CLUB_IDS = ["POR", "SEA", "CIN", "CLB"];
 const COMPARE_COLORS = ["var(--chart-1)", "var(--chart-2)", "var(--chart-3)", "var(--chart-4)"];
 
 function median(values: number[]): number {
@@ -62,9 +61,6 @@ export default function Home() {
   const reportKeysByDate = Object.keys(reports).sort((a, b) => Number(a) - Number(b));
   const latestReportKey = CURRENT_YEAR;
   const latestReport = reports[latestReportKey];
-  const latestIndex = reportKeysByDate.indexOf(latestReportKey);
-  const previousReportKey = latestIndex > 0 ? reportKeysByDate[latestIndex - 1] : null;
-  const nextReportKey = latestIndex >= 0 && latestIndex < reportKeysByDate.length - 1 ? reportKeysByDate[latestIndex + 1] : null;
 
   const latestRecords = filterRecordsByReport(allRecords, latestReport.year, latestReport.season);
 
@@ -155,7 +151,7 @@ export default function Home() {
       .sort((a, b) => b - a)
       .slice(0, 5);
   }
-  const compareClubsChartData = [0, 1, 2, 3, 4].map((i) => {
+  const compareClubsChartData = [4, 3, 2, 1, 0].map((i) => {
     const row: Record<string, number | string> = { rank: `#${i + 1}` };
     for (const clubId of EXAMPLE_COMPARE_CLUB_IDS){
       if (compareClubsTop5[clubId][i] !== undefined) row[clubId] = compareClubsTop5[clubId][i];
@@ -168,7 +164,7 @@ export default function Home() {
       <section className="pt-6">
         <Link href={`/reports/${latestReportKey}`} className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground">
           <Badge className="border-transparent bg-foreground text-background">New</Badge>
-          {latestReport.season} {latestReport.year} salary release is live
+          {latestReport.season} {latestReport.year} salary report is live
           <ArrowRight className="size-3.5"/>
         </Link>
 
@@ -178,7 +174,7 @@ export default function Home() {
               Every MLS salary since {firstYear}, searchable and comparable.
             </h1>
             <p className="mt-4 max-w-xl text-muted-foreground">
-              Base salary and guaranteed compensation for every rostered player, from every MLS Players Association release. Look up a player, dig into a club&apos;s payroll, or put them side by side.
+              Base salary and guaranteed compensation for every rostered player, from every MLS Players Association report. Look up a player, dig into a club&apos;s payroll, or put them side by side.
             </p>
             <div className="mt-6">
               <HeroSearch/>
@@ -194,7 +190,7 @@ export default function Home() {
               </div>
             </div>
             <div className="flex items-center justify-between gap-3 px-4 py-3">
-              <span className="text-sm text-muted-foreground">Latest release</span>
+              <span className="text-sm text-muted-foreground">Latest report</span>
               <Link href={`/reports/${latestReportKey}`} className="text-sm font-semibold hover:underline">{latestReport.season} {latestReport.year}</Link>
             </div>
             <div className="flex items-center justify-between gap-3 px-4 py-3">
@@ -214,7 +210,7 @@ export default function Home() {
           <PreviewCard
             path="/players"
             title="Salary table"
-            description="Every player in a release, filterable by name, club and position."
+            description="Every player in a report, filterable by name, club and position."
             footerHref={`/players?year=${latestReportKey}`}
             footerLabel="See the full table"
           >
@@ -237,9 +233,9 @@ export default function Home() {
           <PreviewCard
             path={`/players/${EXAMPLE_PLAYER_ID}`}
             title="Player history"
-            description="A player's pay across every release they appear in."
+            description="A player's pay across every report they appear in."
             footerHref={`/players/${EXAMPLE_PLAYER_ID}`}
-            footerLabel="View a player"
+            footerLabel="View an individual player"
           >
             <div className="rounded-lg border bg-muted/40 p-3">
               <div className="flex items-center justify-between gap-3">
@@ -274,7 +270,7 @@ export default function Home() {
             path="/players/compare"
             title="Compare players"
             description="Chart up to four players' salaries against each other over time."
-            footerHref={`/players/compare?players=${EXAMPLE_COMPARE_PLAYER_IDS.map((p) => p.id).join(",")}`}
+            footerHref="/players/compare"
             footerLabel="Start comparing"
           >
             <div className="rounded-lg border bg-muted/40 p-3">
@@ -303,7 +299,7 @@ export default function Home() {
           <PreviewCard
             path="/clubs"
             title="Club payrolls"
-            description="Every club's total guaranteed comp. for a release, ranked."
+            description="Every club's total guaranteed comp. for a report, ranked."
             footerHref={`/clubs?year=${latestReportKey}`}
             footerLabel="See every club"
           >
@@ -331,7 +327,7 @@ export default function Home() {
             title="Club roster"
             description="How a club's payroll is split across its roster."
             footerHref={`/clubs/${EXAMPLE_CLUB_ID}`}
-            footerLabel="View a club"
+            footerLabel="View an individual club"
           >
             <div className="rounded-lg border bg-muted/40 p-3">
               <div className="flex items-center justify-between gap-3">
@@ -363,7 +359,7 @@ export default function Home() {
             path="/clubs/compare"
             title="Compare clubs"
             description="Line up four payrolls and their top earners, rank by rank."
-            footerHref={`/clubs/compare?clubs=${EXAMPLE_COMPARE_CLUB_IDS.map((id) => `${id}:${latestReportKey}`).join(",")}`}
+            footerHref="/clubs/compare"
             footerLabel="Start comparing"
           >
             <div className="rounded-lg border bg-muted/40 p-3">
@@ -391,29 +387,15 @@ export default function Home() {
         <div className="grid gap-4 md:grid-cols-2">
           <PreviewCard
             path={`/reports/${latestReportKey}`}
-            title="Release report"
-            description="League totals, averages and medians for one release, broken down by position."
+            title="Report summary"
+            description="League totals, averages and medians for one report, broken down by position."
             footerHref={`/reports/${latestReportKey}`}
             footerLabel="Read the latest report"
           >
             <div className="rounded-lg border bg-muted/40 p-3">
-              <div className="flex items-center justify-between gap-2">
-                <Button variant="outline" size="icon" className="size-7 shrink-0" disabled={!previousReportKey} asChild={!!previousReportKey}>
-                  {previousReportKey
-                    ? <Link href={`/reports/${previousReportKey}`} aria-label="Previous report"><ChevronLeft className="size-3.5"/></Link>
-                    : <ChevronLeft className="size-3.5"/>
-                  }
-                </Button>
-                <div className="flex items-center gap-2">
-                  <span className="text-sm font-semibold">{latestReport.season} {latestReport.year}</span>
-                  <Badge className="border-transparent bg-green-600 text-white">Latest</Badge>
-                </div>
-                <Button variant="outline" size="icon" className="size-7 shrink-0" disabled={!nextReportKey} asChild={!!nextReportKey}>
-                  {nextReportKey
-                    ? <Link href={`/reports/${nextReportKey}`} aria-label="Next report"><ChevronRight className="size-3.5"/></Link>
-                    : <ChevronRight className="size-3.5"/>
-                  }
-                </Button>
+              <div className="flex items-center justify-center gap-2">
+                <span className="text-sm font-semibold">{latestReport.season} {latestReport.year}</span>
+                <Badge className="border-transparent bg-green-600 text-white">Latest</Badge>
               </div>
 
               <div className="mt-3 grid grid-cols-3 gap-2">
@@ -450,8 +432,8 @@ export default function Home() {
 
           <PreviewCard
             path="/reports"
-            title="Every release"
-            description={`Each MLSPA salary release since ${firstYear}, newest first.`}
+            title="Every report"
+            description={`Each MLSPA salary report since ${firstYear}, newest first.`}
             footerHref="/reports"
             footerLabel="Browse all reports"
           >
@@ -465,7 +447,7 @@ export default function Home() {
                   {index === 0 && <span className="text-xs text-muted-foreground">Latest</span>}
                 </Link>
               ))}
-              <p className="px-3 py-2 text-xs text-muted-foreground">&hellip; and every release back to {firstYear}</p>
+              <p className="px-3 py-2 text-xs text-muted-foreground">&hellip; and every report back to {firstYear}</p>
             </div>
           </PreviewCard>
         </div>
@@ -483,14 +465,14 @@ function PreviewCard({ path, title, description, footerHref, footerLabel, childr
   children: ReactNode
 }){
   return (
-    <Card className="gap-3 py-4">
+    <Card className="h-full gap-3 py-4">
       <CardHeader className="gap-1 px-4">
         <p className="font-mono text-xs text-muted-foreground">{path}</p>
         <CardTitle className="text-lg">{title}</CardTitle>
         <CardDescription>{description}</CardDescription>
       </CardHeader>
       <CardContent className="px-4">{children}</CardContent>
-      <CardFooter className="border-t px-4">
+      <CardFooter className="mt-auto border-t px-4">
         <Link href={footerHref} className="text-sm hover:underline">{footerLabel} &rarr;</Link>
       </CardFooter>
     </Card>
