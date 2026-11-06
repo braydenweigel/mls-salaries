@@ -63,7 +63,7 @@ export default function Home() {
     .map((row) => ({
       report: row.reportKey,
       baseSalary: row.baseSal,
-      guaranteedComp: row.guarComp - row.baseSal,
+      guaranteedComp: row.guarComp,
     }))
     .sort((a, b) => Number(a.report) - Number(b.report));
 
@@ -147,15 +147,7 @@ export default function Home() {
         </CardContent>
       </Card>
 
-      <Card className="hidden md:block">
-        <CardHeader>
-          <CardTitle className="text-xl">League salary spend over time</CardTitle>
-          <CardDescription>Total base salary and guaranteed compensation across all MLS clubs, by report</CardDescription>
-        </CardHeader>
-        <CardContent>
-          <LeagueSalaryChart data={chartData} />
-        </CardContent>
-      </Card>
+      <LeagueSalaryChart data={chartData} />
     </div>
   );
 }
