@@ -1,6 +1,5 @@
 import { ClubReportsSelector, PlayerReportSelector } from "@/components/lib/report-selectors";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Metadata } from "next";
 import Link from "next/link";
 import React from "react";
@@ -11,6 +10,15 @@ import { filterRecordsByReport } from "@/lib/data/filters";
 import { CURRENT_YEAR, reports, clubs as clubsObject } from "@/lib/globals";
 import { isValidClub } from "@/lib/storeUtils";
 import LeagueSalaryChart from "./_components/LeagueSalaryChart";
+import LeagueSalaryTable from "./_components/LeagueSalaryTable";
+import LeagueAverageChart from "./_components/LeagueAverageChart";
+
+function median(values: number[]): number {
+  if (values.length === 0) return 0;
+  const sorted = [...values].sort((a, b) => a - b);
+  const mid = Math.floor(sorted.length / 2);
+  return sorted.length % 2 !== 0 ? sorted[mid] : (sorted[mid - 1] + sorted[mid]) / 2;
+}
 
 export const metadata: Metadata = {
   title: "Home - MLS Salaries",
@@ -43,29 +51,45 @@ export default function Home() {
   const firstYear = Math.min(...reportYears);
   const lastYear = Math.max(...reportYears);
 
-  const totalsByReport = new Map<string, { baseSal: number; guarComp: number }>();
+  const valuesByReport = new Map<string, { base: number[]; guar: number[] }>();
   for (const record of records as PlayerRecord[]) {
     const key = `${record.recordyear}-${record.recordseason}`;
-    const totals = totalsByReport.get(key) ?? { baseSal: 0, guarComp: 0 };
-    totals.baseSal += record.basesalary;
-    totals.guarComp += record.guaranteedcomp;
-    totalsByReport.set(key, totals);
+    const entry = valuesByReport.get(key) ?? { base: [], guar: [] };
+    entry.base.push(record.basesalary);
+    entry.guar.push(record.guaranteedcomp);
+    valuesByReport.set(key, entry);
   }
 
   const reportRows = Object.entries(reports)
     .map(([reportKey, { year: reportYear, season: reportSeason }]) => {
-      const totals = totalsByReport.get(`${reportYear}-${reportSeason}`) ?? { baseSal: 0, guarComp: 0 };
-      return { reportKey, year: reportYear, season: reportSeason, ...totals };
+      const entry = valuesByReport.get(`${reportYear}-${reportSeason}`) ?? { base: [], guar: [] };
+      const count = entry.base.length;
+      const totalBase = entry.base.reduce((sum, v) => sum + v, 0);
+      const totalGuar = entry.guar.reduce((sum, v) => sum + v, 0);
+
+      return {
+        reportKey,
+        year: reportYear,
+        season: reportSeason,
+        totalBase,
+        totalGuar,
+        avgBase: count ? totalBase / count : 0,
+        avgGuar: count ? totalGuar / count : 0,
+        medianBase: median(entry.base),
+        medianGuar: median(entry.guar),
+      };
     })
     .sort((a, b) => Number(b.reportKey) - Number(a.reportKey));
 
   const chartData = reportRows
     .map((row) => ({
       report: row.reportKey,
-      baseSalary: row.baseSal,
-      guaranteedComp: row.guarComp,
+      baseSalary: row.totalBase,
+      guaranteedComp: row.totalGuar,
     }))
     .sort((a, b) => Number(a.report) - Number(b.report));
+
+  const averageChartData = [...reportRows].sort((a, b) => Number(a.reportKey) - Number(b.reportKey));
 
   return (
     <div className="space-y-8 pb-8">
@@ -116,38 +140,11 @@ export default function Home() {
         </Card>
       </div>
 
-      <Card>
-        <CardHeader>
-          <CardTitle className="text-xl">Total league salary spend by report</CardTitle>
-          <CardDescription>Combined base salary and guaranteed compensation across all MLS clubs, per report</CardDescription>
-        </CardHeader>
-        <CardContent>
-          <div className="max-h-[70vh] overflow-auto">
-            <Table>
-              <TableHeader>
-                <TableRow>
-                  <TableHead className="sticky top-0 z-10 bg-card">Report</TableHead>
-                  <TableHead className="sticky top-0 z-10 bg-card text-right hidden md:table-cell">Total Base Salary</TableHead>
-                  <TableHead className="sticky top-0 z-10 bg-card text-right">Total Guaranteed Comp</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {reportRows.map((row) => (
-                  <TableRow key={row.reportKey}>
-                    <TableCell>
-                      <Link href={`/clubs?year=${row.reportKey}`} className="hover:underline">{row.year} {row.season}</Link>
-                    </TableCell>
-                    <TableCell className="text-right hidden md:table-cell">${row.baseSal.toLocaleString()}</TableCell>
-                    <TableCell className="text-right">${row.guarComp.toLocaleString()}</TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          </div>
-        </CardContent>
-      </Card>
+      <LeagueSalaryTable rows={reportRows} />
 
       <LeagueSalaryChart data={chartData} />
+
+      <LeagueAverageChart data={averageChartData} />
     </div>
   );
 }
