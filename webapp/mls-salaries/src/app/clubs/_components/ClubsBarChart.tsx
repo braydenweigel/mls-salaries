@@ -1,6 +1,6 @@
 "use client"
 
-import { ChartConfig, ChartContainer, ChartLegend, ChartLegendContent, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart"
+import { ChartConfig, ChartContainer, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart"
 import { Bar, BarChart, CartesianGrid, Cell, Customized, XAxis, YAxis } from "recharts"
 
 const CHART_BAR_CLIP_ID = "clubs-bar-chart-clip"
@@ -86,12 +86,12 @@ export default function ClubsBarChart({
                                 if (name === "guarComp"){
                                     return `Guaranteed Compensation: $${(base + value).toLocaleString()}`
                                 }
-                                return `Base Salary: $${value.toLocaleString()}`
+                                return `Base Salary: $${value!.toLocaleString()}`
                             }}
                         />
                         }
                     />
-                    <ChartLegend content={<ChartLegendContent/>}/>
+                    
                 </BarChart>
             </ChartContainer>
         </div>

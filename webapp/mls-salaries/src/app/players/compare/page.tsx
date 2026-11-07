@@ -10,15 +10,11 @@ import ComparePlayersChart from "./_components/compare-players-chart";
 import { PlayerSummaryCard } from "./_components/player-summary-card";
 import { initialPlayerList } from "@/lib/players";
 import { buildPlayerListFromIds, compareColors, getPlayerIdsFromList, removePlayerFromList } from "@/lib/compare-players-utils";
-import { Empty, EmptyContent, EmptyDescription, EmptyHeader, EmptyMedia, EmptyTitle } from "@/components/ui/empty";
+import { Empty, EmptyDescription, EmptyHeader, EmptyMedia, EmptyTitle } from "@/components/ui/empty";
 import { Check, LineChart, Link2 } from "lucide-react";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
 
-const PRESET_COMPARISONS: { label: string; ids: string[] }[] = [
-  { label: "Chara vs. Fagundez vs. Rossi", ids: ["DcH4r4", "5kpuwp", "KNi915"] },
-  { label: "Mukhtar vs. Rossi", ids: ["up30uj", "KNi915"] },
-]
 
 export type PlayerData = {
   player: Player,

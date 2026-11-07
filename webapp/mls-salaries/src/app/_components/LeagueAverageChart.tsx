@@ -206,7 +206,7 @@ export default function LeagueAverageChart({
                                 fill={`url(#${CHART_AREA_GRADIENT_ID})`}
                                 stroke={COLOR}
                                 strokeWidth={2.5}
-                                dot={(dotProps: unknown) => renderDot(dotProps)}
+                                dot={(dotProps: any) => renderDot(dotProps)}
                                 activeDot={{ r: isMobile ? 4 : 5 }}
                             />
                             <Area
@@ -216,7 +216,7 @@ export default function LeagueAverageChart({
                                 stroke={COLOR}
                                 strokeWidth={2.5}
                                 strokeDasharray="5 5"
-                                dot={(dotProps: unknown) => renderDot(dotProps)}
+                                dot={(dotProps: any) => renderDot(dotProps)}
                                 activeDot={{ r: isMobile ? 4 : 5 }}
                             />
                             {!isMobile && (

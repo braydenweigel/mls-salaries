@@ -188,9 +188,9 @@ export default function LeagueSalaryChart({
                                             if (item.payload.baseSalary == 0 && item.payload.guaranteedComp == 0) return null
 
                                             if (name === "guaranteedComp"){
-                                                return `Guaranteed Compensation: $${value.toLocaleString()}`
+                                                return `Guaranteed Compensation: $${value!.toLocaleString()}`
                                             }
-                                            return `Base Salary: $${value.toLocaleString()}`
+                                            return `Base Salary: $${value!.toLocaleString()}`
                                         }}
                                     />
                                     }

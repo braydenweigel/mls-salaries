@@ -1,7 +1,7 @@
 "use client"
 
 import React from "react"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
+import { Card, CardContent } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { ClubFilter } from "@/components/lib/ClubFilter"
 import { ClubTable } from "./ClubTable"
@@ -9,7 +9,7 @@ import { clubColumns, TableClub } from "./clubTableColumns"
 import ClubsBarChart from "./ClubsBarChart"
 import ClubsSelectReport from "./ClubsSelectReport"
 import Link from "next/link"
-import { ArrowLeftRight, Shuffle } from "lucide-react"
+import { ArrowLeftRight } from "lucide-react"
 
 interface Props {
     data: TableClub[]

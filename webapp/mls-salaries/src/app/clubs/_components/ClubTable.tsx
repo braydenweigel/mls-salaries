@@ -22,9 +22,8 @@ import {
 } from "@/components/ui/table"
 import { Button } from "@/components/ui/button";
 import React from "react";
-import { Input } from "@/components/ui/input";
 import { ExportCsvButton } from "@/components/lib/ExportCsvButton";
-import { ArrowUpDown, Columns3, Search } from "lucide-react";
+import { ArrowUpDown, Columns3 } from "lucide-react";
 import { TableClub } from "./clubTableColumns";
 import { cn } from "@/lib/utils";
 import {
