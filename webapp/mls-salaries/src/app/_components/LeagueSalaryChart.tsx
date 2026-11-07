@@ -165,7 +165,7 @@ export default function LeagueSalaryChart({
                                 fill={`url(#${CHART_AREA_GRADIENT_ID})`}
                                 stroke={COLOR}
                                 strokeWidth={2.5}
-                                dot={(dotProps: unknown) => renderDot(dotProps)}
+                                dot={(dotProps: unknown) => renderDot(dotProps) as React.ReactElement<SVGElement>}
                                 activeDot={{ r: isMobile ? 4 : 5 }}
                             />
                             <Area
@@ -175,7 +175,7 @@ export default function LeagueSalaryChart({
                                 stroke={COLOR}
                                 strokeWidth={2.5}
                                 strokeDasharray="5 5"
-                                dot={(dotProps: unknown) => renderDot(dotProps)}
+                                dot={(dotProps: unknown) => renderDot(dotProps) as React.ReactElement<SVGElement>}
                                 activeDot={{ r: isMobile ? 4 : 5 }}
                             />
                             {!isMobile && (
