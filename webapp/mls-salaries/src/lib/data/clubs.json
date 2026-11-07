@@ -120,14 +120,6 @@
     "colorsecondary": "#0a0a0a"
   },
   {
-    "clubname": "MLS Pool",
-    "clubid": "MLS",
-    "yearfirst": "0",
-    "yearfinal": "0",
-    "colorprimary": "#FaFaFa",
-    "colorsecondary": "#0a0a0a"
-  },
-  {
     "clubname": "Minnesota United",
     "clubid": "MNUFC",
     "yearfirst": "2017",
@@ -254,5 +246,13 @@
     "yearfinal": "0",
     "colorprimary": "#1e3a8a",
     "colorsecondary": "#fafafa"
+  },
+  {
+    "clubname": "MLS Pool",
+    "clubid": "MLS",
+    "yearfirst": "0",
+    "yearfinal": "0",
+    "colorprimary": "#888888",
+    "colorsecondary": "#0a0a0a"
   }
 ]

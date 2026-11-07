@@ -57,6 +57,8 @@ function createTableData(clubs: typeof clubsObject, reportValue: string){
 
       } else if (key == "CHV" && Number(reports[reportValue].year) > 2014) {
 
+      } else if (key == "MLS") {
+
       } else {
         data.push({
           clubid: key,
