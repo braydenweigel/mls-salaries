@@ -1,7 +1,7 @@
 import { Fragment } from "react"
 import { ClubData, ClubList } from "../page"
 import { ChartConfig, ChartContainer, ChartLegend, ChartTooltip, } from "@/components/ui/chart"
-import { Bar, BarChart, CartesianGrid, Customized, TooltipProps, XAxis, YAxis } from "recharts"
+import { Bar, BarChart, CartesianGrid, Customized, TooltipContentProps, XAxis, YAxis } from "recharts"
 
 const CHART_BAR_CLIP_ID = "compare-clubs-bar-chart-clip"
 
@@ -159,7 +159,7 @@ type CustomTooltipEntry = {
   payload?: CompareClubsChartData
 }
 
-const CustomTooltip = ({ active, payload }: TooltipProps<number, string>) => {
+const CustomTooltip = ({ active, payload }: Partial<TooltipContentProps<number, string>>) => {
   if (!active || !payload?.length) return null
 
   return (

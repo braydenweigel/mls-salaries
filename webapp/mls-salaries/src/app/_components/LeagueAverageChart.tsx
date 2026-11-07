@@ -169,7 +169,7 @@ export default function LeagueAverageChart({
                     <ChartContainer config={chartConfig} className="aspect-auto h-40 md:h-56">
                         <AreaChart
                             data={chartData}
-                            margin={{ right: isMobile ? 4 : 24, bottom: isMobile ? 0 : undefined}}
+                            margin={{ right: isMobile ? 4 : 24, bottom: isMobile ? 0 : 5}}
                             onClick={handleChartClick}
                         >
                             <Customized component={ChartAreaClipDefs}/>
@@ -189,14 +189,14 @@ export default function LeagueAverageChart({
                                 interval={0} // ensures all ticks show
                                 ticks={ticks}
                                 tick={isMobile ? <CustomTick compact ticks={ticks}/> : <CustomTick yearOnly/>}
-                                height={isMobile ? 20 : undefined}
+                                height={isMobile ? 20 : 30}
                             />
                             <YAxis
                                 type="number"
                                 tickLine={false}
                                 axisLine={false}
                                 width={isMobile ? 36 : 70}
-                                tickCount={isMobile ? 3 : undefined}
+                                tickCount={isMobile ? 3 : 5}
                                 tickFormatter={(value: number) => {return isMobile ? formatCompactCurrency(value) : `$${value.toLocaleString()}`}}
                                 tick={{ fontSize: isMobile ? 9 : 10 }}
                             />
@@ -224,7 +224,7 @@ export default function LeagueAverageChart({
                                     cursor={false}
                                     content={<ChartTooltipContent
                                         className="min-w-24 gap-1 px-2 py-1 text-[10px] md:min-w-32 md:gap-1.5 md:px-2.5 md:py-1.5 md:text-xs"
-                                        labelFormatter={(value) => {return (reports[value].year + " " + reports[value].season)}}
+                                        labelFormatter={(value) => {return (reports[String(value)].year + " " + reports[String(value)].season)}}
                                         formatter={(value, name) => {
                                             if (name === "avg"){
                                                 return `Average: $${Math.round(Number(value)).toLocaleString()}`

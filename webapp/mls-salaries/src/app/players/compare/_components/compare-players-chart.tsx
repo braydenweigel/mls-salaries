@@ -3,7 +3,7 @@ import { Card, CardAction, CardContent, CardDescription, CardHeader, CardTitle }
 import { Button } from "@/components/ui/button"
 import { ChartConfig, ChartContainer, ChartLegend, ChartTooltip } from "@/components/ui/chart"
 import { PlayerData, PlayerList } from "../page"
-import { Area, AreaChart, CartesianGrid, Customized, ReferenceLine, TextProps, TooltipProps, XAxis, YAxis } from "recharts"
+import { Area, AreaChart, CartesianGrid, Customized, ReferenceLine, TextProps, TooltipContentProps, XAxis, YAxis } from "recharts"
 import { ChevronLeft, ChevronRight } from "lucide-react"
 import { reports } from "@/lib/globals"
 import { compareColors as colors } from "@/lib/compare-players-utils"
@@ -315,7 +315,7 @@ type CustomTooltipEntry = {
   payload?: ComparePlayersChartData
 }
 
-type CustomTooltipProps = TooltipProps<number, string> & {
+type CustomTooltipProps = Partial<TooltipContentProps<number, string>> & {
   metric: "guarComp" | "baseSal"
 }
 

@@ -88,12 +88,12 @@ export default function ClubIDChart({
                                 if (name === "guarComp"){
                                     return `Guaranteed Compensation: $${(base + value).toLocaleString()}`
                                 }
-                                return `Base Salary: $${value.toLocaleString()}`
+                                return `Base Salary: $${value!.toLocaleString()}`
                             }}
                         />
                         }
                     />
-                    <ChartLegend content={<ChartLegendContent/>}/>
+                    <ChartLegend content={<ChartLegendContent payload={[]}/>}/>
                 </BarChart>
             </ChartContainer>
         </div>
