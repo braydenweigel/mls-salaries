@@ -1,7 +1,7 @@
 "use client"
 
 import { ChartConfig, ChartContainer, ChartLegend, ChartLegendContent, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart"
-import { Bar, BarChart, CartesianGrid, Customized, XAxis, YAxis } from "recharts"
+import { Bar, BarChart, CartesianGrid, Cell, Customized, XAxis, YAxis } from "recharts"
 
 const CHART_BAR_CLIP_ID = "clubs-bar-chart-clip"
 
@@ -9,7 +9,8 @@ interface Props {
     data: {
         clubName: string,
         baseSal: number,
-        guarComp: number
+        guarComp: number,
+        colorPrimary?: string
     }[]
 }
 
@@ -60,13 +61,21 @@ export default function ClubsBarChart({
                         dataKey="baseSal"
                         stackId="a"
                         fill="var(--primary)"
-                    />
+                    >
+                        {data.map((entry) => (
+                            <Cell key={entry.clubName} fill={entry.colorPrimary ?? "var(--primary)"}/>
+                        ))}
+                    </Bar>
                     <Bar
                         dataKey="guarComp"
                         stackId="a"
                         fill="var(--primary)"
                         fillOpacity={0.6}
-                    />
+                    >
+                        {data.map((entry) => (
+                            <Cell key={entry.clubName} fill={entry.colorPrimary ?? "var(--primary)"} fillOpacity={0.6}/>
+                        ))}
+                    </Bar>
                     <ChartTooltip
                         cursor={false}
                         content={<ChartTooltipContent

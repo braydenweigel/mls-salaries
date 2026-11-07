@@ -39,6 +39,7 @@ export default function ClubsDashboard({
             clubName: club.clubName,
             baseSal: club.totalBaseSal,
             guarComp: club.totalGuarComp - club.totalBaseSal,
+            colorPrimary: club.colorPrimary,
         }))
         .toReversed()
 

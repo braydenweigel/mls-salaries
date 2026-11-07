@@ -1,9 +1,12 @@
 import { reports, clubs as clubsObject, CURRENT_YEAR} from "@/lib/globals"
 import { TableClub} from "@/app/clubs/_components/clubTableColumns"
 import { filterRecordsByReport } from "@/lib/data/filters"
-import { PlayerRecord } from "@/lib/data/types"
+import { Club, PlayerRecord } from "@/lib/data/types"
 import records from "@/lib/data/records.json"
+import clubColors from "@/lib/data/clubs.json"
 import ClubsDashboard from "./_components/ClubsDashboard"
+
+const clubColorMap = new Map((clubColors as Club[]).map((club) => [club.clubid, club.colorprimary]))
 
 export async function generateMetadata({ searchParams }: { searchParams: Promise<{ year?: string }> })  {
   const { year: report } = await searchParams
@@ -60,7 +63,8 @@ function createTableData(clubs: typeof clubsObject, reportValue: string){
           clubName: club.clubName,
           totalBaseSal: club.totalBaseSal,
           totalGuarComp: club.totalGuarComp,
-          reportYear: reportValue
+          reportYear: reportValue,
+          colorPrimary: clubColorMap.get(key)
         })
       }
     }

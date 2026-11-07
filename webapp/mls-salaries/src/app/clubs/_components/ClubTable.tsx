@@ -42,11 +42,12 @@ interface DataTableProps<TData extends TableClub, TValue>{
     exportFilename?: string
 }
 
-const MOBILE_HIDDEN_COLUMNS = new Set(["totalBaseSal"])
+const MOBILE_HIDDEN_COLUMNS = new Set(["totalBaseSal", "payroll"])
 
 const COLUMN_LABELS: Record<string, string> = {
     totalBaseSal: "Base salary",
     totalGuarComp: "Guaranteed comp.",
+    payroll: "Payroll",
 }
 
 const SORT_OPTIONS = [

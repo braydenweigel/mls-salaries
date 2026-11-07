@@ -11,6 +11,12 @@ export type TableClub = {
     totalBaseSal: number;
     totalGuarComp: number;
     reportYear: string;
+    colorPrimary?: string;
+}
+
+function getPayrollWidthPercent(club: TableClub, allClubs: TableClub[]){
+    const maxGuarComp = Math.max(...allClubs.map((c) => c.totalGuarComp), 1)
+    return (club.totalGuarComp / maxGuarComp) * 100
 }
 
 function SortableHeader({ column, label, mobileLabel }: { column: Column<TableClub, unknown>, label: string, mobileLabel?: string }){
@@ -56,12 +62,22 @@ export const clubColumns: ColumnDef<TableClub>[] = [
         accessorKey: "clubName",
         header: "Club",
         enableHiding: false,
-        cell: ({ row }) => {
+        cell: ({ row, table }) => {
             const club = row.original
+            const allClubs = table.options.data as TableClub[]
+            const widthPercent = getPayrollWidthPercent(club, allClubs)
             return (
-                <Link href={`/clubs/${club.clubid}?year=${club.reportYear}`} className="font-medium hover:underline" prefetch={false}>
-                    {club.clubName}
-                </Link>
+                <div className="flex flex-col">
+                    <Link href={`/clubs/${club.clubid}?year=${club.reportYear}`} className="font-medium hover:underline" prefetch={false}>
+                        {club.clubName}
+                    </Link>
+                    <div className="mt-1 h-1 w-full max-w-24 rounded-full bg-muted md:hidden">
+                        <div
+                            className="h-1 rounded-full"
+                            style={{ width: `${widthPercent}%`, backgroundColor: club.colorPrimary ?? "var(--primary)" }}
+                        />
+                    </div>
+                </div>
             )
         },
     },
@@ -83,6 +99,27 @@ export const clubColumns: ColumnDef<TableClub>[] = [
                 <div className="flex flex-col items-end">
                     <span className="font-semibold">${value.toLocaleString()}</span>
                     <span className="md:hidden text-xs text-muted-foreground">Base ${baseSal.toLocaleString()}</span>
+                </div>
+            )
+        }
+    },
+    {
+        id: "payroll",
+        header: () => "Payroll",
+        enableSorting: false,
+        enableHiding: false,
+        cell: ({ row, table }) => {
+            const club = row.original
+            const allClubs = table.options.data as TableClub[]
+            const widthPercent = getPayrollWidthPercent(club, allClubs)
+            return (
+                <div className="w-full min-w-24">
+                    <div className="h-1.5 w-full rounded-full bg-muted">
+                        <div
+                            className="h-1.5 rounded-full"
+                            style={{ width: `${widthPercent}%`, backgroundColor: club.colorPrimary ?? "var(--primary)" }}
+                        />
+                    </div>
                 </div>
             )
         }
