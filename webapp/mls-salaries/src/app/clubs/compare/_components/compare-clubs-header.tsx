@@ -118,7 +118,7 @@ export default function CompareClubsHeader({clubList, setClubList, club, id}: Co
                         defaultReport={reportValue}
                         onReportValueChange={(report) => setReportValue(report)}
                         size="sm"
-                        className="w-[108px] text-[11px]"
+                        className="w-[120px] text-[11px]"
                     />
                     <Button
                         variant="outline"

@@ -32,6 +32,10 @@ const EXAMPLE_CLUB_ID = "POR"; // Portland Timbers
 const EXAMPLE_COMPARE_CLUB_IDS = ["POR", "SEA", "CIN", "CLB"];
 const COMPARE_COLORS = ["var(--chart-1)", "var(--chart-2)", "var(--chart-3)", "var(--chart-4)"];
 
+function formatCompactCurrency(value: number): string {
+  return `$${Intl.NumberFormat("en-US", { notation: "compact", maximumFractionDigits: 1 }).format(Math.round(value))}`;
+}
+
 function median(values: number[]): number {
   if (values.length === 0) return 0;
   const sorted = [...values].sort((a, b) => a - b);
@@ -400,16 +404,16 @@ export default function Home() {
 
               <div className="mt-3 grid grid-cols-3 gap-2">
                 <div className="rounded-md border bg-background p-2">
-                  <p className="text-xs text-muted-foreground">Total guaranteed</p>
-                  <p className="text-sm font-semibold">${Math.round(totalGuar).toLocaleString()}</p>
+                  <p className="flex min-h-8 items-start text-xs text-muted-foreground">Total guaranteed</p>
+                  <p className="text-sm font-semibold">{formatCompactCurrency(totalGuar)}</p>
                 </div>
                 <div className="rounded-md border bg-background p-2">
-                  <p className="text-xs text-muted-foreground">Average</p>
-                  <p className="text-sm font-semibold">${Math.round(avgGuar).toLocaleString()}</p>
+                  <p className="flex min-h-8 items-start text-xs text-muted-foreground">Average</p>
+                  <p className="text-sm font-semibold">{formatCompactCurrency(avgGuar)}</p>
                 </div>
                 <div className="rounded-md border bg-background p-2">
-                  <p className="text-xs text-muted-foreground">Median</p>
-                  <p className="text-sm font-semibold">${Math.round(medGuar).toLocaleString()}</p>
+                  <p className="flex min-h-8 items-start text-xs text-muted-foreground">Median</p>
+                  <p className="text-sm font-semibold">{formatCompactCurrency(medGuar)}</p>
                 </div>
               </div>
 
