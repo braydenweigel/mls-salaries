@@ -53,9 +53,11 @@ export default function PlayerIDChart({
     }
 
     const ticks = isMobile
-        ? [data[0], data[Math.floor((data.length - 1) / 2)], data[data.length - 1]]
-            .filter(Boolean)
-            .map(d => d.report)
+        ? [...new Set(
+            [data[0], data[Math.floor((data.length - 1) / 2)], data[data.length - 1]]
+                .filter(Boolean)
+                .map(d => d.report)
+          )]
         : data.map(d => d.report)
 
     const handleChartClick = (state: { activeLabel?: string | number }) => {
