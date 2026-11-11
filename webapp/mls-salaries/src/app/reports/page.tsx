@@ -61,13 +61,13 @@ export default function Reports() {
   const averageChartData = [...reportRows].sort((a, b) => Number(a.reportKey) - Number(b.reportKey));
 
   return (
-    <div className="flex flex-col gap-4 min-h-0 pb-8">
-      <div className="hidden shrink-0 md:flex items-center gap-1.5 text-sm text-muted-foreground">
+    <div className="min-h-0 pb-8">
+      <div className="hidden shrink-0 md:flex items-center gap-1.5 text-sm text-muted-foreground mb-2">
         <Link href="/" className="hover:underline">Home</Link>
         <span>/</span>
         <span className="text-foreground">Reports</span>
       </div>
-      <div className="shrink-0">
+      <div className="shrink-0 mb-4">
         <h1 className="text-2xl md:text-3xl font-bold">Reports</h1>
         <p className="hidden md:block text-sm text-muted-foreground mt-1">
           League-wide salary trends across every MLS report
