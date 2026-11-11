@@ -1,3 +1,4 @@
+import argparse
 import csv
 import json
 import random
@@ -7,9 +8,15 @@ def randomString(length):
     chars = string.ascii_letters + string.digits
     return ''.join(random.choice(chars) for _ in range(length))
 
-input_file = "spring_2026_updated.csv"
-output_csv = "spring_2026_final.csv"
-output_json = "players_new_only2.json"
+parser = argparse.ArgumentParser()
+parser.add_argument("input_file") #input file (output of 3-compare-reports)
+parser.add_argument("output_csv") #csv of finished report
+parser.add_argument("output_json") #json file of new player records
+args = parser.parse_args()
+
+input_file = args.input_file
+output_csv = args.output_csv
+output_json = args.output_json
 
 rows = []
 json_output = []

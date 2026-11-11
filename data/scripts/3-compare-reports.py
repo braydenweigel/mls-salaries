@@ -1,37 +1,44 @@
+import argparse
 import csv
 
-spring_file = "fall_2025_final.csv"
-fall_file = "2026-sp.csv"
-output_file = "spring_2026_updated.csv"
+parser = argparse.ArgumentParser()
+parser.add_argument("prev_file")
+parser.add_argument("new_file")
+parser.add_argument("output_file")
+args = parser.parse_args()
+
+prev_file = args.prev_file
+new_file = args.new_file
+output_file = args.output_file
 
 # normalize names (important!)
 def normalize(name: str) -> str:
     return name.strip().lower()
 
-# build lookup from spring
-spring_lookup = {}
+# build lookup from previous report
+prev_lookup = {}
 
-with open(spring_file, "r") as f:
+with open(prev_file, "r") as f:
     reader = csv.DictReader(f)
 
     for row in reader:
         key = (normalize(row["firstname"]), normalize(row["lastname"]))
 
-        if key not in spring_lookup:
-            spring_lookup[key] = []
+        if key not in prev_lookup:
+            prev_lookup[key] = []
 
-        spring_lookup[key].append(row["playerid"])
+        prev_lookup[key].append(row["playerid"])
 
-# process fall data
+# process new report
 updated_rows = []
 
-with open(fall_file, "r") as f:
+with open(new_file, "r") as f:
     reader = csv.DictReader(f)
 
     for row in reader:
         key = (normalize(row["firstname"]), normalize(row["lastname"]))
 
-        matches = spring_lookup.get(key, [])
+        matches = prev_lookup.get(key, [])
 
         if len(matches) == 1:
             row["playerid"] = matches[0]
