@@ -11,7 +11,6 @@ import React from "react"
 
 const CHART_AREA_CLIP_ID = "league-chart-area-clip"
 const CHART_AREA_GRADIENT_ID = "league-chart-area-gradient"
-const COLOR = "var(--primary)"
 
 type ChartDatum = {
     report: string,
@@ -21,10 +20,16 @@ type ChartDatum = {
 
 interface Props {
     data: ChartDatum[]
+    title?: string
+    description?: string
+    color?: string
 }
 
 export default function LeagueSalaryChart({
-    data
+    data,
+    title = "League salary spend over time",
+    description = "Total base salary and guaranteed compensation across all MLS clubs, by report",
+    color: COLOR = "var(--primary)"
 }: Props){
     const isMobile = useIsMobile()
     const lastReport = data.length ? data[data.length - 1].report : ""
@@ -69,8 +74,8 @@ export default function LeagueSalaryChart({
         <Card className="py-4 gap-3 md:py-6 md:gap-6 my-4">
             <CardHeader className="px-4 md:px-6 flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
                 <div>
-                    <CardTitle className="text-lg md:text-xl">League salary spend over time</CardTitle>
-                    <CardDescription className="hidden md:block">Total base salary and guaranteed compensation across all MLS clubs, by report</CardDescription>
+                    <CardTitle className="text-lg md:text-xl">{title}</CardTitle>
+                    <CardDescription className="hidden md:block">{description}</CardDescription>
                 </div>
                 <div className="flex items-center gap-4 text-xs md:text-sm text-muted-foreground shrink-0">
                     <span className="flex items-center gap-1.5">

@@ -11,7 +11,6 @@ import React from "react"
 
 const CHART_AREA_CLIP_ID = "league-avg-chart-area-clip"
 const CHART_AREA_GRADIENT_ID = "league-avg-chart-area-gradient"
-const COLOR = "var(--primary)"
 
 type Metric = "guarComp" | "baseSal"
 
@@ -36,10 +35,16 @@ type ChartDatum = {
 
 interface Props {
     data: LeagueAverageRow[]
+    title?: string
+    scopeLabel?: string
+    color?: string
 }
 
 export default function LeagueAverageChart({
-    data
+    data,
+    title = "Average & median salary over time",
+    scopeLabel = "across all MLS clubs",
+    color: COLOR = "var(--primary)"
 }: Props){
     const isMobile = useIsMobile()
     const [metric, setMetric] = React.useState<Metric>("guarComp")
@@ -92,9 +97,9 @@ export default function LeagueAverageChart({
         <Card className="py-4 gap-3 md:py-6 md:gap-6 my-4">
             <CardHeader className="px-4 md:px-6 flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
                 <div>
-                    <CardTitle className="text-lg md:text-xl">Average &amp; median salary over time</CardTitle>
+                    <CardTitle className="text-lg md:text-xl">{title}</CardTitle>
                     <CardDescription className="hidden md:block">
-                        {metric === "guarComp" ? "Guaranteed compensation" : "Base salary"} per player across all MLS clubs, by report
+                        {metric === "guarComp" ? "Guaranteed compensation" : "Base salary"} per player {scopeLabel}, by report
                     </CardDescription>
                 </div>
                 <div className="flex items-center gap-3 shrink-0">

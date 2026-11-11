@@ -23,3 +23,11 @@ export function filterRecordsByReportAndClub(records: PlayerRecord[], year: stri
         return true
     })
 }
+
+export function filterRecordsByClub(records: PlayerRecord[], club: string){
+    return records.filter(record => {
+        if (record.club != club) return false
+
+        return true
+    })
+}

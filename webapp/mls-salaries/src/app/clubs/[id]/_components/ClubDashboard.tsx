@@ -36,6 +36,11 @@ export default function ClubDashboard({
 
     return (
         <div className="flex flex-col gap-4 min-h-0">
+            <Card>
+                <CardContent className="overflow-hidden space-y-2">
+                    <ClubIDChart data={chartData} colors={colors}/>
+                </CardContent>
+            </Card>
             <Card className="min-h-0 border-0 shadow-none bg-transparent py-0 gap-0 md:border md:shadow-sm md:bg-card md:py-6">
                 <CardContent className="min-h-0 flex flex-col overflow-hidden px-0 md:px-6">
                     <ClubPlayersTable
@@ -49,11 +54,6 @@ export default function ClubDashboard({
                         positionFilter={positionFilter}
                         onPositionFilterChange={setPositionFilter}
                     />
-                </CardContent>
-            </Card>
-            <Card className="hidden md:block">
-                <CardContent className="overflow-hidden space-y-2">
-                    <ClubIDChart data={chartData} colors={colors}/>
                 </CardContent>
             </Card>
         </div>

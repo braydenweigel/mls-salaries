@@ -27,18 +27,24 @@ export type LeagueSalaryRow = {
 
 interface Props {
     rows: LeagueSalaryRow[]
+    title?: string
+    scopeLabel?: string
 }
 
-export default function LeagueSalaryTable({ rows }: Props){
+export default function LeagueSalaryTable({
+    rows,
+    title = "Total league salary spend by report",
+    scopeLabel = "across all MLS clubs"
+}: Props){
     const [metric, setMetric] = useState<Metric>("guarComp")
 
     return (
         <Card className="my-4 border-0 shadow-none bg-transparent py-0 sm:border sm:shadow-sm sm:bg-card sm:py-6">
             <CardHeader className="px-0 sm:px-6 flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
                 <div>
-                    <CardTitle className="text-xl">Total league salary spend by report</CardTitle>
+                    <CardTitle className="text-xl">{title}</CardTitle>
                     <CardDescription>
-                        {metric === "guarComp" ? "Guaranteed compensation" : "Base salary"} across all MLS clubs, per report
+                        {metric === "guarComp" ? "Guaranteed compensation" : "Base salary"} {scopeLabel}, per report
                     </CardDescription>
                 </div>
                 <div className="flex items-center gap-1 rounded-md bg-muted p-1 shrink-0">
