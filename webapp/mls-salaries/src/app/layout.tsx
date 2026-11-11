@@ -71,8 +71,11 @@ export default function RootLayout({
                   {children}
                 </Suspense>
               </div>
-              <footer className="hidden shrink-0 md:flex justify-center items-center mx-auto w-full max-w-[96%] md:max-w-[66%] px-4 py-2 text-center text-xs md:text-base">
-                <div><Link href="/players/list" className="hover:underline">All Players List</Link> • <Link href="/clubs/list" className="hover:underline">All Clubs List</Link></div>
+              <footer className="hidden shrink-0 md:block mt-6 border-t bg-background">
+                <div className="mx-auto flex w-full max-w-[96%] lg:max-w-[66%] items-center justify-end gap-4 px-4 py-4 text-xs text-muted-foreground md:px-6">
+                  <Link href="/players/list" className="hover:text-foreground hover:underline">All Players List</Link>
+                  <Link href="/clubs/list" className="hover:text-foreground hover:underline">All Clubs List</Link>
+                </div>
               </footer>
             </div>
           </main>
