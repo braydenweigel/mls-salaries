@@ -88,6 +88,7 @@ export default function NavigationSideBar(){
                 <div className="my-2 border-t"/>
                 <Link href="/players/list" className={navItemClass(false)}>All Players List</Link>
                 <Link href="/clubs/list" className={navItemClass(false)}>All Clubs List</Link>
+                <Link href="/about" className={navItemClass(false)}>About</Link>
             </div>
             <SheetFooter className="mt-auto border-t">
                 <div className="flex items-center justify-between">

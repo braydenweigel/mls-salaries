@@ -73,6 +73,7 @@ export default function RootLayout({
               </div>
               <footer className="hidden shrink-0 md:block mt-6 border-t bg-background">
                 <div className="mx-auto flex w-full max-w-[96%] lg:max-w-[66%] items-center justify-end gap-4 px-4 py-4 text-xs text-muted-foreground md:px-6">
+                  <Link href="/about" className="hover:text-foreground hover:underline">About</Link>                  
                   <Link href="/players/list" className="hover:text-foreground hover:underline">All Players List</Link>
                   <Link href="/clubs/list" className="hover:text-foreground hover:underline">All Clubs List</Link>
                 </div>
